@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'AR Refund Upload | Oracle EBS SQL Report'
-description: 'Bulk-refund customer credit balances in AR. Each row refunds either an open credit memo or the unapplied/on-account portion of a customer cash receipt by…'
+description: 'Bulk-refund customer credit balances in AR. Each row refunds either an open credit memo or the unapplied portion of a customer cash receipt by applying it…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Refund, ar_payment_schedules_all, ra_customer_trx_all, hr_all_organization_units_vl'
 permalink: /AR%20Refund%20Upload/
 report_name: 'AR Refund Upload'
@@ -14,11 +14,11 @@ report_web_name: ar-refund-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ar-refund-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload).
 
 ## Overview
-Bulk-refund customer credit balances in AR. Each row refunds either an open credit memo or the unapplied/on-account portion of a customer cash receipt by applying it against the operating unit's Credit Memo Refund Receivables Activity, via AR_CM_APPLICATION_PUB.Activity_application or AR_RECEIPT_API_PUB.Activity_application.
+Bulk-refund customer credit balances in AR. Each row refunds either an open credit memo or the unapplied portion of a customer cash receipt by applying it to the operating unit's Credit Memo Refund receivables activity.
 
 WHEN TO USE EACH REFUND SOURCE
 - Credit Memo - the customer has an open credit memo (e.g. overpayment recorded as a CM) and wants the money back.
-- Unapplied Receipt - the customer paid more than they owed, or paid against the account with no specific invoice. The receipt has an unapplied/on-account balance to return.
+- Unapplied Receipt - the customer paid more than they owed, or paid against the account with no specific invoice. The receipt has an unapplied balance to return; cash placed on account must be unapplied first.
 
 WORKFLOW (review and select)
 The template downloads (Create, Update mode) pre-populated with every eligible credit memo and unapplied receipt for the parameters, showing Customer Name and Open Balance. Review the list, then:
@@ -29,11 +29,11 @@ The template downloads (Create, Update mode) pre-populated with every eligible c
 To add a row manually: pick Refund Source, then the Credit Memo Number or Receipt Number (the LOV adapts to the source).
 
 APPROVAL LIMITS
-The AR API runs with p_chk_approval_limit_flag='Y' - the user's AR approval limit applies. Rows over the limit error with the API's own message. Limits are never bypassed.
+The user's AR approval limits apply. Rows over the limit error with the API's own message. Limits are never bypassed.
 
 END-TO-END FLOW
-1. AR (this upload): a new ar_receivable_applications_all row is created (application_type='CM' or 'CASH', status='ACTIVITY').
-2. AR -> AP business event (automatic): AP creates a Payment Request invoice (source='Receivables', invoice_type_lookup_code='PAYMENT REQUEST') payable to the customer's TCA party.
+1. AR (this upload): the credit memo or receipt is applied to the Credit Memo Refund activity.
+2. AR -> AP (automatic): AP creates a Payment Request invoice with source Receivables, payable to the customer.
 3. AP Invoice Validation (standard AP concurrent).
 4. AP Payment Process Request issues the disbursement.
 
@@ -44,15 +44,15 @@ Each OU that processes refunds needs a Credit Memo Refund-type Receivables Activ
 
 CANDIDATE IDENTIFICATION
 - Credit Memo Number LOV: open credit memos in the OU whose customer account has no open invoices (standard refund-candidate rule). Set "Include accounts with open invoices" = Yes to override the safety filter (e.g. when open invoices are disputed).
-- Receipt Number LOV: unapplied/on-account customer receipts in the OU with positive unapplied amount.
+- Receipt Number LOV: customer receipts in the OU with a positive unapplied amount.
 - Download in Create, Update mode to see existing candidates as rows.
 
 FILTER PARAMETERS
 - Operating Unit - filters both branches.
 - Customer Name - LOV of customers that have an eligible refund in the OU (respects the open-invoice rules below).
-- GL Date From / To, Credit Memo Number (multi-value), Batch Name (multi-value LOV on AR transaction batches) - Credit Memo branch only. The Receipt branch always shows all unapplied/on-account receipts in the chosen OU.
+- GL Date From / To, Credit Memo Number, Batch Name - filter the credit memos only. The unapplied receipts of the operating unit are always listed.
 - Include accounts with open invoices - default blank (= safety filter on for CMs). Does not apply to receipts.
-- Open Invoice Due Within Days - applies only when Include accounts with open invoices = Yes (otherwise ignored). Enter any number N: a credit memo is hidden only when the customer has an open invoice due within N days; invoices due later are ignored so the CM can still be refunded. Blank = due dates not considered.
+- Open Invoice Due Within Days - available only when Include accounts with open invoices = Yes. With a number of days N (0 to 999), a credit memo is hidden only when the customer has an open invoice due within N days; invoices due later are ignored so the CM can still be refunded. Blank = due dates not considered.
 
 MODE
 Create, Update by default so the eligible candidates pre-populate. Only rows with Refund = Yes are processed; the result XLSM lists the refunded rows.
@@ -63,13 +63,13 @@ Create, Update by default so the eligible candidates pre-populate. Only rows wit
 Upload Mode, Operating Unit, GL Date From, GL Date To, Credit Memo Number, Customer Name, Batch Name, Include accounts with open invoices, Open Invoice Due Within Days
 
 ## Oracle EBS Tables Used
-[ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload), [dual](https://www.enginatics.com/library/?pg=1&find=dual&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload), [ar_receivable_applications_all](https://www.enginatics.com/library/?pg=1&find=ar_receivable_applications_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload), [ar_cash_receipts_all](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipts_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload)
+[ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload), [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload), [xxen_report_org_access](https://www.enginatics.com/library/?pg=1&find=xxen_report_org_access&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload), [ar_receivable_applications_all](https://www.enginatics.com/library/?pg=1&find=ar_receivable_applications_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload), [ar_cash_receipts_all](https://www.enginatics.com/library/?pg=1&find=ar_cash_receipts_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload)
 
 ## Related Reports
-[ONT Order to Cash Tracker](/ONT%20Order%20to%20Cash%20Tracker/ "ONT Order to Cash Tracker Oracle EBS SQL Report"), [AR Unapplied Receipts Register](/AR%20Unapplied%20Receipts%20Register/ "AR Unapplied Receipts Register Oracle EBS SQL Report"), [AR Receipt Register](/AR%20Receipt%20Register/ "AR Receipt Register Oracle EBS SQL Report"), [AR Credit Memo Application Upload](/AR%20Credit%20Memo%20Application%20Upload/ "AR Credit Memo Application Upload Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [IEX Collection Note Upload](/IEX%20Collection%20Note%20Upload/ "IEX Collection Note Upload Oracle EBS SQL Report"), [AR Customer Credit Limits](/AR%20Customer%20Credit%20Limits/ "AR Customer Credit Limits Oracle EBS SQL Report"), [AR Customer Statement](/AR%20Customer%20Statement/ "AR Customer Statement Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[ONT Order to Cash Tracker](/ONT%20Order%20to%20Cash%20Tracker/ "ONT Order to Cash Tracker Oracle EBS SQL Report"), [AR Receipt Analysis - Days Late](/AR%20Receipt%20Analysis%20-%20Days%20Late/ "AR Receipt Analysis - Days Late Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [AR Aging](/AR%20Aging/ "AR Aging Oracle EBS SQL Report"), [AR Unapplied Receipts Register](/AR%20Unapplied%20Receipts%20Register/ "AR Unapplied Receipts Register Oracle EBS SQL Report"), [AR Cash Receipt Upload](/AR%20Cash%20Receipt%20Upload/ "AR Cash Receipt Upload Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [AR Credit Memo Application Upload](/AR%20Credit%20Memo%20Application%20Upload/ "AR Credit Memo Application Upload Oracle EBS SQL Report"), [AR Transactions and Payments](/AR%20Transactions%20and%20Payments/ "AR Transactions and Payments Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Refund%20Upload/AR%20Refund%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-refund-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

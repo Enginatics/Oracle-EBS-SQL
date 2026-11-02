@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'PER Location Upload | Oracle EBS SQL Report'
 description: 'Upload to create, update, and delete HR Locations. Supports all country-specific address styles with address field validation. Includes site flags…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, PER, Location, fnd_timezones_vl, hr_locations_all, hr_locations_all_tl'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, PER, Location, per_all_people_f, fnd_timezones_vl, hr_locations_all'
 permalink: /PER%20Location%20Upload/
 report_name: 'PER Location Upload'
 report_web_name: per-location-upload
@@ -38,7 +38,7 @@ If the ship to site flag is set to Yes, the receiving site flag is also set to Y
 Upload Mode, Default Address Style, Location Name, Location Name Like, Location Status, Country, Global, Legal Address, Bill To Site, Ship To Site, Receiving Site, Internal Site, Office Site
 
 ## Oracle EBS Tables Used
-[fnd_timezones_vl](https://www.enginatics.com/library/?pg=1&find=fnd_timezones_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-location-upload), [hr_locations_all](https://www.enginatics.com/library/?pg=1&find=hr_locations_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-location-upload), [hr_locations_all_tl](https://www.enginatics.com/library/?pg=1&find=hr_locations_all_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-location-upload), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-location-upload), [per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-location-upload), [per_business_groups](https://www.enginatics.com/library/?pg=1&find=per_business_groups&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-location-upload)
+[per_all_people_f](https://www.enginatics.com/library/?pg=1&find=per_all_people_f&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-location-upload), [fnd_timezones_vl](https://www.enginatics.com/library/?pg=1&find=fnd_timezones_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-location-upload), [hr_locations_all](https://www.enginatics.com/library/?pg=1&find=hr_locations_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-location-upload), [hr_locations_all_tl](https://www.enginatics.com/library/?pg=1&find=hr_locations_all_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-location-upload), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-location-upload), [per_business_groups](https://www.enginatics.com/library/?pg=1&find=per_business_groups&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-location-upload)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-location-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-location-upload)

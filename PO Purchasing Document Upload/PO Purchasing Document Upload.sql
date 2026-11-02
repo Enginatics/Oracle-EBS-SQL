@@ -7,6 +7,8 @@
 -- Report Name: PO Purchasing Document Upload
 -- Description: Upload to create and update purchase documents
 -- The buyer of an existing standard purchase order can be changed. An approved order then requires reapproval, which the upload submits with the new buyer as preparer.
+-- Cancel Line removes a standard purchase order line as the purchase order form does: a line that was never approved and has no reserved funds is deleted, any other line is cancelled. Cancelled lines are downloaded with Cancel Line Yes and cannot be changed.
+-- The item of an existing standard purchase order line cannot be changed. A changed item creates a new line with the row's values at the next free line number, and once the new line is imported the old line is deleted or cancelled by the same rule. Change the item on every row of the line.
 -- Excel Example Output: https://www.enginatics.com/example/po-purchasing-document-upload/
 -- Library Link: https://www.enginatics.com/reports/po-purchasing-document-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -44,6 +46,8 @@ pla.not_to_exceed_price limit_price,
 pla.quantity line_quantity,
 pla.item_description description,
 pla.vendor_product_num supplier_item,
+xxen_util.yes(pla.cancel_flag) cancel_line,
+pla.cancel_reason,
 mcv.category_concat_segs category,
 xxen_util.display_flexfield_context(201,'PO_LINES',pla.attribute_category) line_dff_context,
 xxen_util.display_flexfield_value(201,'PO_LINES',pla.attribute_category,'ATTRIBUTE1',pla.rowid,pla.attribute1) line_attribute1,
@@ -67,7 +71,7 @@ po_line_types_tl pltt,
 mtl_categories_v mcv,
 mtl_system_items_vl msiv
 where
-nvl(pla.cancel_flag,'N')='N' and
+(nvl(pla.cancel_flag,'N')='N' or (select pha.type_lookup_code from po_headers_all pha where pla.po_header_id=pha.po_header_id)='STANDARD') and
 nvl(pla.closed_code,'OPEN')<>'FINALLY CLOSED' and
 pltt.language=userenv('lang') and
 pltt.line_type_id=pla.line_type_id and
@@ -193,6 +197,8 @@ pl.limit_price,
 pl.line_quantity,
 pl.supplier_item,
 pl.note_to_vendor line_note_to_vendor,
+pl.cancel_line,
+pl.cancel_reason,
 pl.line_dff_context,
 pl.line_attribute1,
 pl.line_attribute2,
@@ -281,7 +287,8 @@ null attachment_title_,
 null attachment_description_,
 null attachment_type_,
 null attachment_content_,
-null attachment_file_id_
+null attachment_file_id_,
+to_number(null) upload_row
 from
 po_headers_all pha,
 gl_daily_conversion_types gdct,

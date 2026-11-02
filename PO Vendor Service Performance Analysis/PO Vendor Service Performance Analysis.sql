@@ -154,7 +154,7 @@ where
 gsob.set_of_books_id=fspa.set_of_books_id and
 fspa.org_id=hou.organization_id and
 poh.org_id=hou.organization_id and
-poh.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+poh.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 poh.vendor_id=aps.vendor_id and
 poh.po_header_id=pol.po_header_id and
 pol.po_line_id=pll.po_line_id and

@@ -5,16 +5,15 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Assignment Upload
--- Description: Upload to maintain Blitz Report assignments.
--- The upload support creating, deleting or copying assignment and can be run with the following modes:
--- -Create with 'Create Empty File'=Yes:
--- Opens an empty Excel file to enter new assignments.
--- -Create with 'Create Empty File'=blank:
--- You can query a list of reports that you want create assignments for by report name, category or report type.
--- -Create, Update:
--- Allows querying existing assignments, which can be deleted, or copied to a different assignment level.
--- A frequent use case for customers having custom responsibilities linked to custom applications would be to copy seeded application level Enginatics assignments to custom applications instead.
--- For this, you can query all Enginatics application level assignments, replace the application names with the corresponding custom applications, and upload the file again. Note that in this scenario, the Action column would show 'Update', but it would create new records, not update when uploading the file.
+-- Description: Upload to create, update, copy and delete Blitz Report assignments, which make reports available at site, application, request group, responsibility, user, form or function level.
+-- Upload modes:
+-- - Create with Create Empty File = Yes opens an empty sheet to enter new assignments.
+-- - Create with Create Empty File blank lists the reports selected by Report Name starts with, Report Category or Report Type, one row per report, to enter new assignments for them.
+-- - Create, Update downloads the existing assignments.
+-- An assignment is identified by report, assignment level and assignment value, and by Description at Request Group, Responsibility and Form level, where it names the application. A row matching an existing assignment updates its Include/Exclude, Disabled, Form Block, Users and parameter defaulting; any other row creates a new assignment. Changing the level or value of a downloaded row therefore copies the assignment, for example to copy the seeded Enginatics application level assignments to custom applications. Delete = Yes deletes the assignment, or only the parameter defaulting of the row's Parameter Name.
+-- Users limits an Include assignment at Application, Request Group, Responsibility, Form or Function level to the listed users, entered as comma separated user names.
+-- At Form level, Form Block limits the assignment to one block of the form, and Parameter Name with either Block Name and Item Name or a Constant Value defaults a report parameter from a form field or a constant when the report is opened from the form. Id or Value tells whether the form field holds the parameter's id or its displayed value.
+-- Assignments of uploads can only be maintained with Blitz Report Access System.
 -- Excel Example Output: https://www.enginatics.com/example/blitz-report-assignment-upload/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-assignment-upload/
 -- Run Report: https://demo.enginatics.com/

@@ -11,13 +11,13 @@
 -- 'End Date Matching List Lines?'
 -- When creating new Price List Lines, the upload can automatically end date any existing matching active price list line by setting the report parameter 'End Date Matching List Lines?' to Yes.
 -- Set this parameter to Yes to automatically end date any active matching price list line on upload.
--- Any price list lines downloaded when this parameter is set to yes will have the Action field automatically set to ’Create’ to indicate a new Price List Line should be created instead off the existing price list line being updated. This allows the user to use the downloaded (current) price list lines as a basis for creating the new price list lines.
+-- Any price list lines downloaded when this parameter is set to yes will have the Action field automatically set to ’Create’ to indicate a new Price List Line should be created instead of the existing price list line being updated. This allows the user to use the downloaded (current) price list lines as a basis for creating the new price list lines.
 -- - Price Breaks
 -- To enter the Price Breaks in the upload, repeat the Price Break Header Line and enter/adjust the Price Break Columns for each Price Break.
 -- - Price List Line Pricing Attributes
 -- By default, the upload will treat all rows with the same Product, Unit of Measure, and Start Date as the same Price List Line.
--- If you have different Price List Lines that use the same Product, Unit of Measure and Start Date but which have different Pricing Attribute assignments, the use the ‘Line No’ column to distinguish the different Price List Lines. If not specified, then all rows with the same Product, Unit of Measure, and Start Date will be uploaded as a single Price List Line and any Pricing Attributes will be added to that Price List Line.
--- The Line Number entered here is not uploaded to Oracle. It is only used by the upload to distinguish different lines with the same product, Unit of Measure, and Start date.
+-- If you have different Price List Lines that use the same Product, Unit of Measure and Start Date but which have different Pricing Attribute assignments, then use the ‘Line No’ column to distinguish the different Price List Lines. If not specified, then all rows with the same Product, Unit of Measure, and Start Date will be uploaded as a single Price List Line and any Pricing Attributes will be added to that Price List Line.
+-- The Line Number entered here is not uploaded to Oracle. It is only used by the upload to distinguish different lines with the same product, Unit of Measure, and Start date. Downloaded lines show the line number Oracle assigned, which keeps them apart; leave it unchanged.
 -- - Price Lists Qualifiers
 -- Qualifier Groups can be copied to the Price List by selecting the Qualifier Group and leaving all other qualifier columns blank. The upload will copy and attach all the qualifier group's qualifiers to the price list.
 -- Alternatively, you can select specific qualifiers from a Qualifier Group by selecting the Qualifier Group and the Qualifier Group Qualifier ID. The upload excel will then default in the details of that qualifier into the excel. In this scenario you would enter each qualifier on a separate row in the excel.
@@ -55,12 +55,12 @@ from
 --
 select
 -- Price List Header
-qslhv.pte_code pte_code,
-qslhv.source_system_code source_system_code,
+qslhv.pte_code,
+qslhv.source_system_code,
 xxen_util.meaning(qslhv.list_type_code,'LIST_TYPE_CODE',661) type,
 qslhv.orig_system_header_ref list_orig_sys_ref,
-qslhv.name name,
-qslhv.description description,
+qslhv.name,
+qslhv.description,
 xxen_util.meaning(nvl(qslhv.global_flag,'Y'),'YES_NO',0) global,
 qp_util.get_ou_name(qslhv.orig_org_id) operating_unit,
 qslhv.currency_code currency,
@@ -73,7 +73,7 @@ xxen_util.meaning(qslhv.freight_terms_code,'FREIGHT_TERMS',660) freight_terms,
 qslhv.ship_method_code ship_method,
 (select rtt.name from ra_terms_tl rtt where qslhv.terms_id=rtt.term_id and rtt.language(+)=userenv('lang')) payment_term,
 xxen_util.meaning(qslhv.mobile_download,'YES_NO',0) mobile_download,
-qslhv.comments comments,
+qslhv.comments,
 -- Price List DFF Attributes
 xxen_util.display_flexfield_context(661,'QP_LIST_HEADERS',qslhv.context) list_header_dff_context,
 xxen_util.display_flexfield_value(661,'QP_LIST_HEADERS',qslhv.context,'ATTRIBUTE1',qslhv.row_id,qslhv.attribute1) list_header_attribute1,
@@ -158,7 +158,7 @@ qqv.qualifier_grouping_no qualifier_grouping_number,
 qp_util.get_context('QP_ATTR_DEFNS_QUALIFIER',qqv.qualifier_context) qualifier_context,
 qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_QUALIFIER',qqv.qualifier_context,qqv.qualifier_attribute) qualifier_attribute,
 xxen_util.meaning(qqv.qualify_hier_descendents_flag,'YES_NO',0) qualifier_applies_party_hier,
-qqv.qualifier_precedence qualifier_precedence,
+qqv.qualifier_precedence,
 qqv.comparision_operator_code qualifier_operator,
 rtrim(replace(
  qp_util.get_attribute_value
@@ -212,7 +212,7 @@ to_number(null) secondary_price_list_precedenc,
 null delete_secondary_price_list,
 -- IDs
 qslhv.list_header_id price_list_id,
-qqv.qualifier_id qualifier_id,
+qqv.qualifier_id,
 to_number(null) sec_price_list_qualifier_id,
 to_number(null) price_list_line_id,
 to_number(null) price_break_line_id,
@@ -261,12 +261,12 @@ union
 --
 select
 -- Price List Header
-qslhv.pte_code pte_code,
-qslhv.source_system_code source_system_code,
+qslhv.pte_code,
+qslhv.source_system_code,
 xxen_util.meaning(qslhv.list_type_code,'LIST_TYPE_CODE',661) type,
 qslhv.orig_system_header_ref list_orig_sys_ref,
-qslhv.name name,
-qslhv.description description,
+qslhv.name,
+qslhv.description,
 xxen_util.meaning(nvl(qslhv.global_flag,'Y'),'YES_NO',0) global,
 qp_util.get_ou_name(qslhv.orig_org_id) operating_unit,
 qslhv.currency_code currency,
@@ -279,7 +279,7 @@ xxen_util.meaning(qslhv.freight_terms_code,'FREIGHT_TERMS',660) freight_terms,
 qslhv.ship_method_code ship_method,
 (select rtt.name from ra_terms_tl rtt where qslhv.terms_id=rtt.term_id and rtt.language(+)=userenv('lang')) payment_term,
 xxen_util.meaning(qslhv.mobile_download,'YES_NO',0) mobile_download,
-qslhv.comments comments,
+qslhv.comments,
 -- Price List DFF Attributes
 xxen_util.display_flexfield_context(661,'QP_LIST_HEADERS',qslhv.context) list_header_dff_context,
 xxen_util.display_flexfield_value(661,'QP_LIST_HEADERS',qslhv.context,'ATTRIBUTE1',qslhv.row_id,qslhv.attribute1) list_header_attribute1,
@@ -442,12 +442,12 @@ union
 --
 select
 -- Price List Header
-qslhv.pte_code pte_code,
-qslhv.source_system_code source_system_code,
+qslhv.pte_code,
+qslhv.source_system_code,
 xxen_util.meaning(qslhv.list_type_code,'LIST_TYPE_CODE',661) type,
 qslhv.orig_system_header_ref list_orig_sys_ref,
-qslhv.name name,
-qslhv.description description,
+qslhv.name,
+qslhv.description,
 xxen_util.meaning(nvl(qslhv.global_flag,'Y'),'YES_NO',0) global,
 qp_util.get_ou_name(qslhv.orig_org_id) operating_unit,
 qslhv.currency_code currency,
@@ -460,7 +460,7 @@ xxen_util.meaning(qslhv.freight_terms_code,'FREIGHT_TERMS',660) freight_terms,
 qslhv.ship_method_code ship_method,
 (select rtt.name from ra_terms_tl rtt where qslhv.terms_id=rtt.term_id and rtt.language(+)=userenv('lang'))payment_term,
 xxen_util.meaning(qslhv.mobile_download,'YES_NO',0) mobile_download,
-qslhv.comments comments,
+qslhv.comments,
 -- Price List DFF Attributes
 xxen_util.display_flexfield_context(661,'QP_LIST_HEADERS',qslhv.context) list_header_dff_context,
 xxen_util.display_flexfield_value(661,'QP_LIST_HEADERS',qslhv.context,'ATTRIBUTE1',qslhv.row_id,qslhv.attribute1) list_header_attribute1,
@@ -603,7 +603,7 @@ to_number(null)qualifier_id,
 to_number(null) sec_price_list_qualifier_id,
 qllv.list_line_id price_list_line_id,
 to_number(null) price_break_line_id,
-qpa.pricing_attribute_id pricing_attribute_id,
+qpa.pricing_attribute_id,
 'List Line' row_type,
 3 upload_row
 from
@@ -647,12 +647,12 @@ union
 --
 select
 -- Price List Header
-qslhv.pte_code pte_code,
-qslhv.source_system_code source_system_code,
+qslhv.pte_code,
+qslhv.source_system_code,
 xxen_util.meaning(qslhv.list_type_code,'LIST_TYPE_CODE',661) type,
 qslhv.orig_system_header_ref list_orig_sys_ref,
-qslhv.name name,
-qslhv.description description,
+qslhv.name,
+qslhv.description,
 xxen_util.meaning(nvl(qslhv.global_flag,'Y'),'YES_NO',0) global,
 qp_util.get_ou_name(qslhv.orig_org_id) operating_unit,
 qslhv.currency_code currency,
@@ -665,7 +665,7 @@ xxen_util.meaning(qslhv.freight_terms_code,'FREIGHT_TERMS',660) freight_terms,
 qslhv.ship_method_code ship_method,
 (select rtt.name from ra_terms_tl rtt where qslhv.terms_id=rtt.term_id and rtt.language(+)=userenv('lang'))payment_term,
 xxen_util.meaning(qslhv.mobile_download,'YES_NO',0) mobile_download,
-qslhv.comments comments,
+qslhv.comments,
 -- Price List DFF Attributes
 xxen_util.display_flexfield_context(661,'QP_LIST_HEADERS',qslhv.context) list_header_dff_context,
 xxen_util.display_flexfield_value(661,'QP_LIST_HEADERS',qslhv.context,'ATTRIBUTE1',qslhv.row_id,qslhv.attribute1) list_header_attribute1,

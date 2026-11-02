@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'FND Profile Option Value Upload | Oracle EBS SQL Report'
 description: 'Upload to create, update and delete profile option values on site, application, responsibility, server, operating unit and user level, as in the System…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, FND, Profile, Option, Value, fnd_profile_options_vl, fnd_profile_option_values, fnd_application_vl'
@@ -16,9 +16,9 @@ report_web_name: fnd-profile-option-value-upload
 ## Overview
 Upload to create, update and delete profile option values on site, application, responsibility, server, operating unit and user level, as in the System Profile Values form. Levels that the profile option definition does not allow to update are not offered.
 
-The Value column shows and accepts the visible value of profile options validated by a list of values, e.g. a responsibility name instead of its id. Its list of values is derived from each profile option's SQL validation. A stored value is accepted as well. A few validations cannot be evaluated outside the profile form, e.g. because they depend on the responsibility being updated. These offer no list, save the value as entered and say so in the row message.
+The Profile Option Value column shows and accepts the visible value of profile options validated by a list of values, e.g. a responsibility name instead of its id. Its list of values is derived from each profile option's SQL validation. A stored value is accepted as well. A few validations cannot be evaluated outside the profile form, e.g. because they depend on the responsibility being updated. These offer no list, save the value as entered and say so in the row message.
 
-Clearing the Value of an existing row deletes the profile option value on that level.
+Clearing the Profile Option Value of an existing row deletes the profile option value on that level.
 
 The Server column is used only for profile options with the server and responsibility hierarchy, to set a value for a responsibility on a specific server.
 
@@ -34,7 +34,7 @@ Upload Mode, Profile Option, Profile Option Code, Application, Level, Level Valu
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-profile-option-value-upload)
 
 ## Related Reports
-[FND Profile Option Values](/FND%20Profile%20Option%20Values/ "FND Profile Option Values Oracle EBS SQL Report"), [FND Debug and Trace Settings](/FND%20Debug%20and%20Trace%20Settings/ "FND Debug and Trace Settings Oracle EBS SQL Report"), [FND User Login History](/FND%20User%20Login%20History/ "FND User Login History Oracle EBS SQL Report"), [FND Responsibilities](/FND%20Responsibilities/ "FND Responsibilities Oracle EBS SQL Report"), [FND Concurrent Requests](/FND%20Concurrent%20Requests/ "FND Concurrent Requests Oracle EBS SQL Report"), [FND Responsibility Access](/FND%20Responsibility%20Access/ "FND Responsibility Access Oracle EBS SQL Report"), [Blitz Report Access Upload](/Blitz%20Report%20Access%20Upload/ "Blitz Report Access Upload Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report")
+[FND Profile Option Values](/FND%20Profile%20Option%20Values/ "FND Profile Option Values Oracle EBS SQL Report"), [FND Debug and Trace Settings](/FND%20Debug%20and%20Trace%20Settings/ "FND Debug and Trace Settings Oracle EBS SQL Report"), [FND User Login History](/FND%20User%20Login%20History/ "FND User Login History Oracle EBS SQL Report"), [FND Responsibilities](/FND%20Responsibilities/ "FND Responsibilities Oracle EBS SQL Report"), [FND Concurrent Requests](/FND%20Concurrent%20Requests/ "FND Concurrent Requests Oracle EBS SQL Report"), [FND Responsibility Access](/FND%20Responsibility%20Access/ "FND Responsibility Access Oracle EBS SQL Report"), [Blitz Report Access Upload](/Blitz%20Report%20Access%20Upload/ "Blitz Report Access Upload Oracle EBS SQL Report"), [Blitz Report Assignments and Responsibilities](/Blitz%20Report%20Assignments%20and%20Responsibilities/ "Blitz Report Assignments and Responsibilities Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/FND%20Profile%20Option%20Value%20Upload/FND%20Profile%20Option%20Value%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-profile-option-value-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

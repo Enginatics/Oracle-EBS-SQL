@@ -9,6 +9,7 @@
 -- With Select All Programs set to Yes, every listed row is downloaded with Convert Program set to Yes and already flagged for upload, so after filtering the list you only need to set Convert Program to No on the programs you do not want and upload the file.
 -- With Include Custom Views set to Yes, the list additionally shows custom database views whose name starts with the Custom Object Prefix. Selecting a view gathers its definition and its custom dependency closure into the same zip - use this to extract the views that Discoverer-migrated or other custom reports are based on.
 -- With Include Noetix Views set to Yes on an instance running NoetixViews, the NOETIXSYS query views are listed as program type Noetix View. Selecting one gathers the complete view definition closure - the view, its NOETIXSYS helper views and packages, and the security wrapper views - into a noetix subfolder of the zip, as input for migrating Noetix based reporting to Blitz Report. Excel4apps Reports Wand programs show as program type Excel4apps and gather their report SQL.
+-- With Include WebADI Integrators set to Yes, the enabled WebADI integrators are listed as program type WebADI Integrator, with their interface tables or procedures as Executable. Selecting one gathers the complete integrator definition (interfaces, layouts, contents, mappings, importer, lists of values and security rules), its custom dependencies and the responsibilities that can use it, as input for converting the integrator to a Blitz Upload. Run counts and dates are not shown for integrators.
 -- Excel Example Output: https://www.enginatics.com/example/blitz-report-custom-reports-converter/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-custom-reports-converter/
 -- Run Report: https://demo.enginatics.com/
@@ -148,6 +149,45 @@ dv.view_name not like 'N\_%' escape '\' and
 dv.owner=do.owner and
 dv.view_name=do.object_name and
 do.object_type='VIEW'
+union all
+select
+fav.application_name application,
+biv.user_name program,
+biv.integrator_code short_name,
+'WebADI Integrator' program_type,
+interfaces.interface_name executable,
+null method,
+null execution_file_name,
+null output_format,
+to_number(null) run_count,
+to_number(null) distinct_users,
+to_date(null) last_run_date,
+to_date(null) first_run_date,
+xxen_util.user_name(biv.created_by) created_by,
+xxen_util.client_time(biv.creation_date) creation_date,
+to_number(null) concurrent_program_id,
+biv.application_id
+from
+fnd_application_vl fav,
+bne_integrators_vl biv,
+(
+select
+bib.integrator_app_id,
+bib.integrator_code,
+listagg(bib.interface_name,', ') within group (order by bib.upload_order,bib.interface_name) interface_name
+from
+bne_interfaces_b bib
+group by
+bib.integrator_app_id,
+bib.integrator_code
+) interfaces
+where
+4=4 and
+:include_webadi_integrators='Y' and
+fav.application_id=biv.application_id and
+biv.application_id=interfaces.integrator_app_id(+) and
+biv.integrator_code=interfaces.integrator_code(+) and
+biv.enabled_flag='Y'
 ) x
 where
 1=1

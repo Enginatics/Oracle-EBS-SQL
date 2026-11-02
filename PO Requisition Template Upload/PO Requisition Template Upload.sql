@@ -9,18 +9,17 @@
 -- ================================
 -- The purpose of the PO Requisition Template Upload is to allow for:
 -- - the creation of new Requisition Templates (Create Mode).
--- - the update of existing Requisition Templates (Update Mode). Update includes the update to existing template and template lines, the creation of new template lines against an existing template, and the deletion of template lines from an existing template.
+-- - the update of existing Requisition Templates (Create, Update mode). Update includes the update to existing template and template lines, the creation of new template lines against an existing template, and the deletion of template lines from an existing template.
 -- As far as feasible, the upload provides the user with the same functionality available in the ‘Requisition Template’ Form. (Purchasing: + Setup – Purchasing – Requisition Templates)
 -- Upload Mode
 -- ============
 -- The upload mode determines the actions the user is allowed to perform in the upload.
 -- Create - the user may upload new Requisition Templates only.
--- Update - the user may update existing Requisition Templates only. This includes adding new and deleting existing template lines from the template.
--- Create and Update - the user can create new Requisition Templates and update existing Requisition Templates.
+-- Create, Update - the user can create new Requisition Templates and update existing Requisition Templates. Update includes adding new and deleting existing template lines.
 -- Parameters
 -- ==========
 -- Upload Mode (Required=Yes Default=Create) - See above.
--- The following optional parameters are only applicable in the 'Create and Update' and 'Update' modes, and can be used to restrict the template data downloaded for update:
+-- The following optional parameters are only applicable in the Create, Update mode, and can be used to restrict the template data downloaded for update:
 -- - Operating Unit - the operating unit(s) the templates belong to.
 -- - Template Type - the template type (Purchase Requisition, Internal Requisition).
 -- - Template Name - the template name(s) to be downloaded.
@@ -45,7 +44,7 @@ to_char(null) publish_template_to_icx,
 haouv.name operating_unit,
 prha.express_name template_name,
 prha.description template_description,
-podt.type_name type,
+pdtav.type_name type,
 prha.inactive_date,
 xxen_util.meaning(prha.reserve_po_number,'RESERVE PO NUM',201) reserve_po_number,
 -- lines
@@ -94,7 +93,7 @@ po_reqexpress_headers_all prha,
 ) prla,
 hr_all_organization_units_vl haouv,
 po_line_types plt,
-po_document_types_all_tl podt,
+po_document_types_all_vl pdtav,
 mtl_system_items_vl msiv,
 mtl_categories_kfv mck,
 mtl_units_of_measure_vl muomv,
@@ -106,12 +105,11 @@ where
 1=1 and
 nvl(:p_publish_template_to_icx,'N')=nvl(:p_publish_template_to_icx,'N') and
 nvl(:p_pre_delete_template_lines,'N')=nvl(:p_pre_delete_template_lines,'N') and
-prha.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+prha.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 prha.org_id = haouv.organization_id and
-prha.type_lookup_code = podt.document_subtype and
-prha.org_id = podt.org_id and
-podt.document_type_code = 'REQUISITION' and
-podt.language = userenv ('LANG') and
+prha.type_lookup_code=pdtav.document_subtype and
+prha.org_id=pdtav.org_id and
+pdtav.document_type_code='REQUISITION' and
 prha.express_name = prla.express_name (+) and
 prha.org_id = prla.org_id (+) and
 prla.line_type_id = plt.line_type_id (+) and

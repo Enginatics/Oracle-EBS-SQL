@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'CAC WIP Account Value | Oracle EBS SQL Report'
 description: 'Report to show WIP values and all accounts for discrete manufacturing, in summary by inventory, organization, with WIP class, job status, name and other…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Cost Accounting, Enginatics, CAC, WIP, Account, Value, mtl_secondary_inventories, mtl_parameters, hr_organization_information'

@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-02
 title: 'Oracle EBS Quality Reports | 7 SQL reports'
 description: '7 free Oracle E-Business Suite Quality SQL reports for Excel: QA Collection Plan Actions, QA Collection Plan Element Values, QA Collection Plan Elements…'
-keywords: 'Oracle EBS Quality reports, Oracle Quality SQL, Oracle E-Business Suite, Blitz Report, qa_plans, mtl_parameters, org_access_view, qa_chars, qa_plan_chars'
+keywords: 'Oracle EBS Quality reports, Oracle Quality SQL, Oracle E-Business Suite, Blitz Report, qa_plans, mtl_parameters, xxen_report_org_access, qa_chars, qa_plan_chars'
 permalink: /modules/quality/
 module: 'Quality'
 module_page: true
@@ -11,7 +11,7 @@ module_page: true
 
 # Oracle EBS Quality Reports
 
-7 ready-to-run SQL reports for **Oracle E-Business Suite Quality**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Quality tables in these reports are `qa_plans`, `mtl_parameters`, `org_access_view`, `qa_chars`, `qa_plan_chars`, `qa_plan_char_value_lookups`.
+7 ready-to-run SQL reports for **Oracle E-Business Suite Quality**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Quality tables in these reports are `qa_plans`, `mtl_parameters`, `xxen_report_org_access`, `qa_chars`, `qa_plan_chars`, `qa_plan_char_value_lookups`.
 
 > **Run any of these reports in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=module-quality) – your first 30 reports are free.
 

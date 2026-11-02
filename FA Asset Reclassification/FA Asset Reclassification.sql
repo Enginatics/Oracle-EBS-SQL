@@ -27,6 +27,8 @@ select
  decode(fah_end.asset_type,'CIP','', fcb_end.deprn_reserve_acct) to_reserve_account,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('asset_cat', 'OFA', 'CAT#', fsc.category_flex_structure, null, fc_end.category_id,'ALL','Y','VALUE') to_asset_category,
  fa.asset_number asset_number,
+ fakk.concatenated_segments asset_key,
+ fakk.concatenated_segments||' - '||fa.description asset_key_description,
  sum(decode(fadj_cost.debit_credit_flag,'DR',1,'CR',-1) * fadj_cost.adjustment_amount) cost_adjustment,
  sum(decode(fadj_resv.debit_credit_flag,'DR',-1,'CR',1)  * nvl(fadj_resv.adjustment_amount,0)) reserve_adjustment,
  fth.transaction_header_id transaction_header_id
@@ -37,6 +39,7 @@ from
  fa_deprn_periods        fdp_start,
  fa_deprn_periods        fdp_end,
  fa_additions            fa,
+ fa_asset_keywords_kfv   fakk,
  gl_code_combinations    gcc_dh,
  fa_categories           fc_start,
  fa_categories           fc_end,
@@ -82,6 +85,7 @@ where
  fth.date_effective >= fdp.period_open_date and
  fth.date_effective <= nvl (fdp.period_close_date, sysdate) and
  fa.asset_id = fth.asset_id and
+ fa.asset_key_ccid = fakk.code_combination_id(+) and
  fah_start.asset_id = fth.asset_id and
  fah_start.date_ineffective = fth.date_effective and
  fah_end.asset_id = fth.asset_id and
@@ -126,6 +130,8 @@ group by
  decode(fah_end.asset_type,'CIP','',fcb_end.deprn_reserve_acct),
  fc_end.category_id,
  fa.asset_number,
+ fakk.concatenated_segments,
+ fa.description,
  fth.transaction_header_id
 order by
  balancing_segment,

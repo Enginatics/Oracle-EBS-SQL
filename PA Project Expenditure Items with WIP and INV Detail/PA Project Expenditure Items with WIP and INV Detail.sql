@@ -77,7 +77,7 @@ peia.task_id=pt.task_id(+) and
 peia.expenditure_id=pea.expenditure_id and
 peia.expenditure_type=pet.expenditure_type and
 peia.org_id=haouv.organization_id and
-haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+haouv.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 pea.incurred_by_person_id=ppx.person_id(+) and
 case when peia.system_linkage_function='WIP' and peia.transaction_source='Work In Process' then to_number(peia.orig_transaction_reference default null on conversion error) end=wt.transaction_id(+) and
 coalesce(wt.wip_entity_id,decode(mmt.transaction_source_type_id,5,mmt.transaction_source_id))=we.wip_entity_id(+) and

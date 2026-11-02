@@ -16,7 +16,7 @@
 -- Opens an empty spreadsheet to enter new banks and branches.
 -- Create, Update
 -- --------------
--- Returns existing bank branches. Edit fields and re-upload to update.
+-- Returns existing bank branches, optionally restricted by the Country and Bank Name parameters. Edit fields and re-upload to update.
 -- Required Fields
 -- ===============
 -- - Country: Country of the bank (e.g. United States, Australia).
@@ -39,7 +39,7 @@
 -- - Bank is matched by Country + Bank Name (+ Bank Number if provided). If no match is found, a new bank is created.
 -- - Branch is matched by Bank + Branch Name. If no match is found, a new branch is created within the bank.
 -- - Bank fields (Short Bank Name, Alternate Bank Name) are only applied on bank creation, not on update.
--- - Country-specific routing number format validation is bypassed to allow loading data across all countries.
+-- - New banks and branches are validated against the country-specific bank and branch number formats. Updates of existing branches bypass this validation.
 -- Excel Example Output: https://www.enginatics.com/example/ce-bank-and-branch-upload/
 -- Library Link: https://www.enginatics.com/reports/ce-bank-and-branch-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -112,7 +112,8 @@ hpb.attribute20 bank_attribute20,
 hpb.attribute21 bank_attribute21,
 hpb.attribute22 bank_attribute22,
 hpb.attribute23 bank_attribute23,
-hpb.attribute24 bank_attribute24
+hpb.attribute24 bank_attribute24,
+to_number(null) upload_row
 from
 ce_bank_branches_v cbbv,
 hz_parties hp,

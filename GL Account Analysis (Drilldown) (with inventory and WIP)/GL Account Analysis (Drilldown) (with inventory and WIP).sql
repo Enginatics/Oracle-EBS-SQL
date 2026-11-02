@@ -102,6 +102,7 @@ fdh.total_length<=4000
 --AP
 nvl(aia.invoice_num,rcta.trx_number) invoice_number,
 nvl(aia.description,rcta.comments) description,
+xal.description subledger_line_description,
 nvl(aia.invoice_date,rcta.trx_date) invoice_date,
 aia.gl_date,
 nvl(aia.invoice_currency_code,rcta.invoice_currency_code) invoice_currency,

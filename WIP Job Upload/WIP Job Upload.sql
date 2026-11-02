@@ -12,7 +12,7 @@
 -- Scheduled Start and Completion Dates. For jobs with a routing (the assembly’s own routing for Standard jobs, or a Routing Reference for Non-Standard jobs), supply one of Scheduled Start Date or Scheduled Completion Date — providing the start forward-schedules, providing the completion backward-schedules. The system computes the other end from the routing lead times. If both are supplied, forward-scheduling from the start is used. For jobs without a routing, both dates are required and are stored verbatim. The same rules apply on update: changing only the start triggers a forward reschedule, changing only the completion triggers a backward reschedule.
 -- Job creation supports both automatic job name generation (via the WIP Job Prefix profile and sequence) and manual job naming. The Upload Job Identifier column uniquely identifies a job in the upload and provides traceability between uploaded rows and the eventual job name when automatic naming is used. It must be unique per logical job within a single upload. For manual job naming, the Upload Job Identifier will also be used as the Job Name if a Job Name is not specifically entered in the upload.
 -- Non-standard jobs without an assembly or routing reference cannot be updated through WIP Mass Load; such jobs must be edited in the Discrete Jobs form directly. The upload reports a clear error if attempted.
--- Processing uses the WIP Mass Load interface (wipjobscheduleinterface and wipjobdtlsinterface) with the WICMLP concurrent program. Validation errors are detected per job and cascaded to all rows of the affected job so the job is either processed in its entirety or not at all.
+-- Validation errors are detected per job and cascaded to all rows of the affected job, so a job is processed in its entirety or not at all.
 -- Excel Example Output: https://www.enginatics.com/example/wip-job-upload/
 -- Library Link: https://www.enginatics.com/reports/wip-job-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -155,7 +155,7 @@ wip_entities we,
 wip_operations wo,
 wip_operation_resources wor
 where
-mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_code in (select ood.organization_code from org_organization_definitions ood where ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')) and
 mp.organization_id=wdj.organization_id and
 we.entity_type not in (5,6,7,8,9,10) and
 wdj.status_type in (1,3,4,6,7) and
@@ -166,8 +166,7 @@ case when :p_download_operations='Y' then wdj.organization_id end=wo.organizatio
 wo.wip_entity_id=wor.wip_entity_id(+) and
 wo.operation_seq_num=wor.operation_seq_num(+) and
 wo.organization_id=wor.organization_id(+) and
-1=1 and
-2=2
+1=1
 union all
 -- branch 2: components
 select
@@ -292,7 +291,7 @@ wip_discrete_jobs wdj,
 wip_entities we,
 wip_requirement_operations wro
 where
-mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_code in (select ood.organization_code from org_organization_definitions ood where ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')) and
 mp.organization_id=wdj.organization_id and
 we.entity_type not in (5,6,7,8,9,10) and
 wdj.status_type in (1,3,4,6,7) and
@@ -303,6 +302,5 @@ wdj.organization_id=wro.organization_id and
 wro.wip_supply_type<>6 and
 wro.operation_seq_num>0 and
 :p_download_components='Y' and
-1=1 and
-2=2
+1=1
 ) x

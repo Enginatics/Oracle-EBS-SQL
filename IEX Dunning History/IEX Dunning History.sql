@@ -70,7 +70,7 @@ iex_dunnings id,
 iex_delinquencies_all ida
 where
 2=2 and
-(id.org_id is null or id.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)) and
+(id.org_id is null or id.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU')) and
 id.delinquency_id=ida.delinquency_id(+)
 ) x
 ) y,

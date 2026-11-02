@@ -33,8 +33,8 @@
 -- - Insert new Cost Information Only: uploading a rate for a resource that already has one raises an error
 -- Auto Populate Upload Columns (Default: Yes) -
 -- Applies to downloaded rates only. If set to Yes, the downloaded records are flagged ready for upload even if no changes have been made. If left blank, records are only flagged for upload when the user amends them.
--- Source Cost Type - Optionally specify the Cost Type from which to download the current Resource Rates, to amend them or to copy them to a different Target Cost Type.
--- Include Resources without a Rate - Set to Yes to also download rate eligible resources that do not yet have a rate in the Source Cost Type, with a blank rate ready to be entered. To rate new resources for a cost type, select that cost type as both Source and Target Cost Type.
+-- Source Cost Type - The Cost Type whose Resource Rates are downloaded. To amend the rates of the Target Cost Type, select the same Cost Type here; to copy rates, select a different one. Left blank, the download is an empty sheet for entering new rates.
+-- Include Resources without a Rate - Set to Yes to also download rate eligible resources that do not yet have a rate in the Source Cost Type, with a blank rate ready to be entered. Auto Populate Upload Columns does not flag these rows, so only those given a rate are uploaded. To rate new resources for a cost type, select that cost type as both Source and Target Cost Type.
 -- Rollup Costs - set to Yes to do a cost rollup after the rates are imported
 -- Rollup Type - All items or Specific item
 -- Rollup Option - Single level rollup or Full cost rollup
@@ -47,9 +47,9 @@
 -- Run Report: https://demo.enginatics.com/
 
 select
-case when nvl2(:p_autopopulate_upload_status,'Y','N')='Y' then xxen_upload.action_meaning(xxen_upload.action_update) else null end action_,
-case when nvl2(:p_autopopulate_upload_status,'Y','N')='Y' then xxen_upload.status_meaning(xxen_upload.status_new) else null end status_,
-case when nvl2(:p_autopopulate_upload_status,'Y','N')='Y' then xxen_util.description('U_EXCEL_MSG_VALIDATION_PENDING','XXEN_REPORT_TRANSLATIONS',0) else null end message_,
+case when :p_autopopulate_upload_status is not null and crc.rowid is not null then xxen_upload.action_meaning(xxen_upload.action_update) end action_,
+case when :p_autopopulate_upload_status is not null and crc.rowid is not null then xxen_upload.status_meaning(xxen_upload.status_new) end status_,
+case when :p_autopopulate_upload_status is not null and crc.rowid is not null then xxen_util.description('U_EXCEL_MSG_VALIDATION_PENDING','XXEN_REPORT_TRANSLATIONS',0) end message_,
 to_number(null) request_id_,
 null modified_columns_,
 null row_id,
@@ -94,7 +94,7 @@ cst_resource_costs crc
 where
 1=1 and
 :p_upload_mode=:p_upload_mode and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 mp.cost_organization_id=mp.organization_id and
 nvl(mp.process_enabled_flag,'N')<>'Y' and
 cct_s.cost_type=:p_source_cost_type and

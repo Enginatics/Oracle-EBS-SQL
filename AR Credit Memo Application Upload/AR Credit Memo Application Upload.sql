@@ -5,8 +5,8 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AR Credit Memo Application Upload
--- Description: Applies open on account credit memos to invoices and debit memos, and unapplies existing credit memo applications - the Applications action of the Transactions workbench (arcmapipub).
--- The download lists the operating unit's open credit memos (Apply To Invoice empty) and their existing active applications (one row per application). To apply, enter Apply To Invoice on an open credit memo row. To unapply, set Unapply to Yes on an application row.
+-- Description: Applies open on account credit memos to invoices and debit memos, and unapplies existing credit memo applications - the Applications action of the Transactions workbench.
+-- The download lists the operating unit's open credit memos (Apply To Invoice empty) and their existing active applications (one row per application). To apply, enter Apply To Invoice on an open credit memo row, or add a row with the Credit Memo Number, which fills the customer and currency. To unapply, set Unapply to Yes on an application row.
 -- An existing application cannot be changed in place: unapply it, then enter the new application on the credit memo's open row.
 -- Excel Example Output: https://www.enginatics.com/example/ar-credit-memo-application-upload/
 -- Library Link: https://www.enginatics.com/reports/ar-credit-memo-application-upload/
@@ -48,7 +48,7 @@ where
 apsa.class='CM' and
 apsa.status='OP' and
 apsa.amount_due_remaining<>0 and
-apsa.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+apsa.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 apsa.customer_trx_id=rcta.customer_trx_id and
 rcta.batch_source_id=rbsa.batch_source_id(+) and
 rcta.org_id=rbsa.org_id(+) and
@@ -95,7 +95,7 @@ where
 araa.application_type='CM' and
 araa.status='APP' and
 araa.display='Y' and
-araa.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+araa.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 araa.customer_trx_id=rcta.customer_trx_id and
 rcta.batch_source_id=rbsa.batch_source_id(+) and
 rcta.org_id=rbsa.org_id(+) and

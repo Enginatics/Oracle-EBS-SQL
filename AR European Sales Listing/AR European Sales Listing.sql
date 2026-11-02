@@ -128,7 +128,7 @@ zx_party_tax_profile zptp,
 ) zr
 where
 1=1 and
-rcta.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+rcta.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 gl.ledger_id=hou.set_of_books_id and
 gl.ledger_id=rcta.set_of_books_id and
 hou.organization_id=rcta.org_id and

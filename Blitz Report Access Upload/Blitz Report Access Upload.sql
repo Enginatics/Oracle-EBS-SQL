@@ -5,10 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report Access Upload
--- Description: Upload to update value for profile option 'Blitz Report Access' at user or responsibility level.
--- Someone having this upload assigned, can maintain the profile option values for other users or responsibilities up to their own access level.
--- He could, for example, set the value to 'User' for other users, but not to anything higher, such as 'Developer'.
--- Someone with Developer access could set the value for other users and developers, but not to the highest level 'System'.
+-- Description: Upload to maintain the values of profile option Blitz Report Access at user and responsibility level.
+-- Users of this upload can set the access of other users and responsibilities up to their own access level. With User Admin access, for example, the value can be set to User or User Admin, but not to Developer or System.
+-- Clearing Access on a downloaded row deletes the profile option value at that level, so the value of the next level applies.
 -- Excel Example Output: https://www.enginatics.com/example/blitz-report-access-upload/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-access-upload/
 -- Run Report: https://demo.enginatics.com/

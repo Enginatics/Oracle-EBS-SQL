@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'QP Price List Upload | Oracle EBS SQL Report'
 description: 'This upload supports the creation and update of Standard Price Lists in Oracle Advanced Pricing. The upload supports creation/update/deletion of the…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Price, List, qp_currency_lists_vl, ra_terms_tl, qp_secu_list_headers_vl'
@@ -23,7 +23,7 @@ The upload supports creation/update/deletion of the following entities within th
 'End Date Matching List Lines?'
 When creating new Price List Lines, the upload can automatically end date any existing matching active price list line by setting the report parameter 'End Date Matching List Lines?' to Yes. 
 Set this parameter to Yes to automatically end date any active matching price list line on upload. 
-Any price list lines downloaded when this parameter is set to yes will have the Action field automatically set to ’Create’ to indicate a new Price List Line should be created instead off the existing price list line being updated. This allows the user to use the downloaded (current) price list lines as a basis for creating the new price list lines.  
+Any price list lines downloaded when this parameter is set to yes will have the Action field automatically set to ’Create’ to indicate a new Price List Line should be created instead of the existing price list line being updated. This allows the user to use the downloaded (current) price list lines as a basis for creating the new price list lines.  
 
 - Price Breaks
 
@@ -33,9 +33,9 @@ To enter the Price Breaks in the upload, repeat the Price Break Header Line and 
 
 By default, the upload will treat all rows with the same Product, Unit of Measure, and Start Date as the same Price List Line.
 
-If you have different Price List Lines that use the same Product, Unit of Measure and Start Date but which have different Pricing Attribute assignments, the use the ‘Line No’ column to distinguish the different Price List Lines. If not specified, then all rows with the same Product, Unit of Measure, and Start Date will be uploaded as a single Price List Line and any Pricing Attributes will be added to that Price List Line. 
+If you have different Price List Lines that use the same Product, Unit of Measure and Start Date but which have different Pricing Attribute assignments, then use the ‘Line No’ column to distinguish the different Price List Lines. If not specified, then all rows with the same Product, Unit of Measure, and Start Date will be uploaded as a single Price List Line and any Pricing Attributes will be added to that Price List Line. 
 
-The Line Number entered here is not uploaded to Oracle. It is only used by the upload to distinguish different lines with the same product, Unit of Measure, and Start date.
+The Line Number entered here is not uploaded to Oracle. It is only used by the upload to distinguish different lines with the same product, Unit of Measure, and Start date. Downloaded lines show the line number Oracle assigned, which keeps them apart; leave it unchanged.
 
 - Price Lists Qualifiers
 

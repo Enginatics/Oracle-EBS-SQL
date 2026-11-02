@@ -155,7 +155,7 @@ hz_cust_site_uses_all hcsua_ls
 where
 1=1 and
 okhab.scs_code='SERVICE' and
-okhab.authoring_org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+okhab.authoring_org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 okhab.id=okht.id and
 okht.language=userenv('lang') and
 okhab.id=okhb.chr_id(+) and

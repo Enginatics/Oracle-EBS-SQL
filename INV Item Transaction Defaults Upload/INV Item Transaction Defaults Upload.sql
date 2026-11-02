@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: INV Item Transaction Defaults Upload
--- Description: This upload can be used to create and update Item transaction default subinventories and locators
+-- Description: This upload creates, updates and deletes the default subinventories and default locators of items for shipping, receiving and move order receipt transactions.
 -- Excel Example Output: https://www.enginatics.com/example/inv-item-transaction-defaults-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-item-transaction-defaults-upload/
 -- Run Report: https://demo.enginatics.com/

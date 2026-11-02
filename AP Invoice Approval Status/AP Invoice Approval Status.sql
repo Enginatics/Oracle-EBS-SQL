@@ -146,7 +146,7 @@ where
 nvl(:p_status,'?')=nvl(:p_status,'?') and
 1=1 and
 2=2 and
-aia.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+aia.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 aiaha.invoice_id=aia.invoice_id and
 aia.set_of_books_id=gl.ledger_id and
 aia.invoice_currency_code=fc.currency_code and
@@ -208,7 +208,7 @@ ap_lookup_codes alc3
 where
 1=1 and
 2=2 and
-aia.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+aia.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 aia.invoice_id=ail.invoice_id and
 aiaha.invoice_id=ail.invoice_id and
 aiaha.line_number=ail.line_number and
@@ -267,7 +267,7 @@ where
 :p_sort_by='T' and
 1=1 and
 3=3 and
-aia.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+aia.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 aia.set_of_books_id=gl.ledger_id and
 aia.invoice_currency_code=fc.currency_code and
 hp.party_id=aia.party_id and
@@ -319,7 +319,7 @@ where
 1=1 and
 2=2 and
 awh.response='FUTURE' and
-aia.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+aia.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 awh.invoice_id=aia.invoice_id and
 aia.set_of_books_id=gl.ledger_id and
 aia.invoice_currency_code=fc.currency_code and

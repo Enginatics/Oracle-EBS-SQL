@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'BOM Routing Upload | Oracle EBS SQL Report'
-description: 'Report: BOM Routing Upload This upload can be used to create and/or update existing manufacturing BOM Routings. - Create new Standard, Flow, and Lot Based…'
+description: 'Creates and updates manufacturing routings - standard, flow and lot based (network) routings - through the Oracle routing business object API: routing…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, BOM, Routing, mtl_item_locations_kfv, mtl_system_items_vl, bom_operational_routings'
 permalink: /BOM%20Routing%20Upload/
 report_name: 'BOM Routing Upload'
@@ -14,12 +14,15 @@ report_web_name: bom-routing-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/bom-routing-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-routing-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-routing-upload).
 
 ## Overview
-Report: BOM Routing Upload
+Creates and updates manufacturing routings - standard, flow and lot based (network) routings - through the Oracle routing business object API: routing headers, revisions, operations, operation resources, substitute resources and the operation network of lot based routings.
 
-This upload can be used to create and/or update existing manufacturing BOM Routings.
-- Create new Standard, Flow, and Lot Based (Network) Routings
-- Update or Delete existing Standard, Flow, and Lot Based (Network) Routings
-- Upload new Common Routing Assignments
+Each row holds one operation resource, substitute resource or network link, with the routing and operation columns repeated on every row of the routing.
+
+Set Delete Routing, Delete Revision, Delete Operation, Delete Resource or Delete Network Link to remove that record. Routings and operations are deleted through delete groups, as in the Delete Groups form.
+
+Common Routing Item assigns a common routing to a routing that has no operations of its own; the Common Routing Assignments template downloads and uploads these assignments.
+
+With End Date Matching Op Seq? set to Yes, creating an operation end-dates the active operation with the same sequence number.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=bom-routing-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 

@@ -59,7 +59,7 @@ rcv_receiving_sub_ledger rrsl,
 gl_code_combinations_kfv gcck
 where
 1=1 and
-clat.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+clat.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 clat.rcv_transaction_id=rt.transaction_id and
 rt.shipment_header_id=rsh.shipment_header_id and
 rt.lcm_shipment_line_id=isl.ship_line_id(+) and

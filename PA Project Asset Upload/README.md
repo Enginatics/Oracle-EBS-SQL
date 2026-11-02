@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'PA Project Asset Upload | Oracle EBS SQL Report'
-description: 'PA Project Asset Upload ====================== Create, update, or delete project assets and their task assignments for Oracle Projects capital projects…'
+description: 'PA Project Asset Upload ====================== Create and update the project assets of Oracle Projects capital projects, and add or delete their task…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Project, Asset, pa_project_asset_assignments, pa_projects_all, hr_all_organization_units_vl'
 permalink: /PA%20Project%20Asset%20Upload/
 report_name: 'PA Project Asset Upload'
@@ -16,10 +16,10 @@ report_web_name: pa-project-asset-upload
 ## Overview
 PA Project Asset Upload
 ======================
-Create, update, or delete project assets and their task assignments for Oracle Projects capital projects, using the public API pa_project_assets_pub.
+Create and update the project assets of Oracle Projects capital projects, and add or delete their task assignments.
 
 Supported Actions:
-- Create / Update project asset (ESTIMATED or AS-BUILT types only — RETIREMENT_ADJUSTMENT is excluded)
+- Create / Update project asset (ESTIMATED or AS-BUILT types only - RETIREMENT_ADJUSTMENT is excluded)
 - Add / Delete asset-to-task assignment (top-task rollup or leaf-task)
 
 Row Structure (bundled parent-child):
@@ -38,9 +38,9 @@ Asset Lines:
 - Transferred lines cannot be changed
 
 Notes:
-- Capitalization and Reversal are NOT supported via this upload — use the Capital Assets form for those workflow actions
+- Capitalization and Reversal are NOT supported via this upload - use the Capital Assets form for those workflow actions
 - The Depreciation Expense Account KFF is resolved against the chart of accounts of the project's ledger
-- Asset-to-task assignments do not support an update API — to modify an existing assignment DFF, delete and re-add
+- Asset-to-task assignments do not support an update API - to modify an existing assignment DFF, delete and re-add
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-asset-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
@@ -54,7 +54,7 @@ Upload Mode, Operating Unit, Project Number, Asset Lines, Unassigned Asset Lines
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-asset-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-asset-upload)
 
 ## Related Reports
-[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [AP Invoice Upload](/AP%20Invoice%20Upload/ "AP Invoice Upload Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [FA Mass Additions Upload](/FA%20Mass%20Additions%20Upload/ "FA Mass Additions Upload Oracle EBS SQL Report"), [FA Mass Additions Upload 11i](/FA%20Mass%20Additions%20Upload%2011i/ "FA Mass Additions Upload 11i Oracle EBS SQL Report"), [PA Capital Project Summary with Asset Detail](/PA%20Capital%20Project%20Summary%20with%20Asset%20Detail/ "PA Capital Project Summary with Asset Detail Oracle EBS SQL Report"), [GL Account Analysis 11g](/GL%20Account%20Analysis%2011g/ "GL Account Analysis 11g Oracle EBS SQL Report")
+[GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [AP Invoice Upload](/AP%20Invoice%20Upload/ "AP Invoice Upload Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [FA Mass Additions Upload](/FA%20Mass%20Additions%20Upload/ "FA Mass Additions Upload Oracle EBS SQL Report"), [FA Mass Additions Upload 11i](/FA%20Mass%20Additions%20Upload%2011i/ "FA Mass Additions Upload 11i Oracle EBS SQL Report"), [GL Account Analysis 11g](/GL%20Account%20Analysis%2011g/ "GL Account Analysis 11g Oracle EBS SQL Report"), [PA Capital Project Summary with Asset Detail](/PA%20Capital%20Project%20Summary%20with%20Asset%20Detail/ "PA Capital Project Summary with Asset Detail Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PA%20Project%20Asset%20Upload/PA%20Project%20Asset%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-project-asset-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

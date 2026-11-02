@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-02
 title: 'PER Payroll Element Entry Upload | Oracle EBS SQL Report'
-description: 'PER Payroll Element Entry Upload ================== Use this upload to upload new or update existing PER Payroll Element Entries, or to enter adjustment…'
+description: 'PER Payroll Element Entry Upload ================================ Use this upload to create, update and delete payroll element entries of employees''…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, PER, Payroll, Element, Entry, pay_input_values_f_vl, pay_element_entry_values_f, per_all_people_f'
 permalink: /PER%20Payroll%20Element%20Entry%20Upload/
 report_name: 'PER Payroll Element Entry Upload'
@@ -15,8 +15,14 @@ report_web_name: per-payroll-element-entry-upload
 
 ## Overview
 PER Payroll Element Entry Upload
-==================
-Use this upload to upload new or update existing PER Payroll Element Entries, or to enter adjustment entries.
+================================
+Use this upload to create, update and delete payroll element entries of employees' primary assignments, or to enter adjustment entries.
+
+Only recurring elements that are processed in the payroll run can be entered: the Element Name list offers these, and a downloaded entry of a nonrecurring element cannot be uploaded again.
+
+The input values of an entry are listed in pairs of Input Value Name and Entry Value, in the order of the Element Entries form (display sequence, then name). The download shows the entries current today.
+
+Employees with the same name are told apart by the Employee Number, which downloaded rows carry and which can be entered on new rows.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 

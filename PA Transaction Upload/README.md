@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'PA Transaction Upload | Oracle EBS SQL Report'
-description: 'PA Transaction Upload =================== This upload can be used to upload transactions from external cost collection systems into Oracle Projects…'
+description: 'PA Transaction Upload =================== Uploads transactions from external cost collection systems into Oracle Projects. Transaction Import creates…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Transaction, pa_transaction_sources, gl_code_combinations_kfv, pa_transaction_interface_all'
 permalink: /PA%20Transaction%20Upload/
 report_name: 'PA Transaction Upload'
@@ -16,16 +16,13 @@ report_web_name: pa-transaction-upload
 ## Overview
 PA Transaction Upload
 ===================
-This upload can be used to upload transactions from external cost collection systems into Oracle Projects. 
-Transaction Import creates pre-approved expenditure items from transaction data entered in external cost collection systems.
+Uploads transactions from external cost collection systems into Oracle Projects. Transaction Import creates pre-approved expenditure items from the transaction data.
 
-If the 'Operating Unit' and/or 'Transaction Source' parameters are specified, then the upload excel will be restricted to the specified Operating Unit and/or Transaction Source.
+The upload opens an empty sheet. The Operating Unit, Transaction Source and Batch Name parameters default the columns of the same name on new rows, and Expenditure Ending Date the Expnd Ending Date column, moved to the end of the operating unit's expenditure week.
 
-If the 'Batch Name' parameter is specified, this will default as the Batch Name in the upload Excel.
+If the 'All Negative Expend Unmatched' parameter is set to Yes, the 'Negative Txn Flag' column defaults to Yes on every row with a negative quantity.
 
-If the 'All Negative Expend Unmatched' parameter is set to Yes, then all negative transations then the 'Unmatched Negative Txn Flag' column will automatically default to Yes against any negative transactions entered into upload Excel.
-
-If the 'Reverse in Future Period' parameter is set to Yes, then the 'Accrual Flag' column will default to Yes against every transaction entered in the upload Excel
+If the 'Reverse in Future Period' parameter is set to Yes, the 'Accrual Flag' column defaults to Yes on every row.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-transaction-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
@@ -39,7 +36,7 @@ Operating Unit, Transaction Source, Batch Name, Expenditure Ending Date, All Neg
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-transaction-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-transaction-upload)
 
 ## Related Reports
-[GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [ONT Orders and Lines 11i](/ONT%20Orders%20and%20Lines%2011i/ "ONT Orders and Lines 11i Oracle EBS SQL Report"), [ONT Orders and Lines](/ONT%20Orders%20and%20Lines/ "ONT Orders and Lines Oracle EBS SQL Report"), [AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report"), [CAC Receiving Value (Period-End)](/CAC%20Receiving%20Value%20%28Period-End%29/ "CAC Receiving Value (Period-End) Oracle EBS SQL Report")
+[GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report"), [CAC OPM Costed Formula](/CAC%20OPM%20Costed%20Formula/ "CAC OPM Costed Formula Oracle EBS SQL Report"), [ONT Orders and Lines 11i](/ONT%20Orders%20and%20Lines%2011i/ "ONT Orders and Lines 11i Oracle EBS SQL Report"), [ONT Orders and Lines](/ONT%20Orders%20and%20Lines/ "ONT Orders and Lines Oracle EBS SQL Report"), [AR Transaction Upload](/AR%20Transaction%20Upload/ "AR Transaction Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PA%20Transaction%20Upload/PA%20Transaction%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pa-transaction-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

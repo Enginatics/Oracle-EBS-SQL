@@ -42,7 +42,7 @@ peia.project_id=ppa.project_id and
 peia.task_id=pt.task_id and
 pea.incurred_by_person_id=ppx.person_id and
 ppa.org_id=haouv.organization_id and
-haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+haouv.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 peia.organization_id=haouv2.organization_id
 group by
 haouv.name,

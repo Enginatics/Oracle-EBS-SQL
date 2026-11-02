@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'Blitz Upload Example (API) | Oracle EBS SQL Report'
 description: 'Example upload, which can be used as a template by copying (Tools>Copy Report) to create new uploads using an API.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Blitz, Example, (API), xxen_upload_example'
@@ -19,7 +19,7 @@ Example upload, which can be used as a template by copying (Tools>Copy Report) t
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
-Name
+Upload Mode, Name
 
 ## Oracle EBS Tables Used
 [xxen_upload_example](https://www.enginatics.com/library/?pg=1&find=xxen_upload_example&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api)

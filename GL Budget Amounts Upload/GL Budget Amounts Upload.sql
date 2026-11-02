@@ -7,7 +7,9 @@
 -- Report Name: GL Budget Amounts Upload
 -- Description: GL Budget Amounts Upload
 -- ===================
--- This can be used to upload GL Budget Amounts
+-- Loads budget amounts into a budget organization of a GL budget. Each row holds one account and fiscal year with up to 20 period amounts. A blank period amount leaves the period unchanged.
+-- For a budget that does not require budget journals, the rows go to the budget interface and the Upload Budget Amounts program runs after the upload. Add Or Replace decides whether an entered amount is added to the period balance or replaces it.
+-- For a budget that requires budget journals, each entered period amount becomes a budget journal line of the row's Journal Source and Journal Category, imported through Journal Import and funds reserved. Such amounts are always added to the balance: the Create, Update download shows the period balances, so a downloaded amount uploaded again unchanged is added a second time. Enter only the change.
 -- Excel Example Output: https://www.enginatics.com/example/gl-budget-amounts-upload/
 -- Library Link: https://www.enginatics.com/reports/gl-budget-amounts-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -810,7 +812,8 @@ gb.period_year=gbpr.period_year and
 gb.actual_flag='B' and
 gcck.code_combination_id=gb.code_combination_id
 ) 
-end period20_amount
+end period20_amount,
+to_number(null) upload_row
 from
 gl_budget_assignments_unique_v gbauv,
 gl_budgets_v gbv,

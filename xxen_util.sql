@@ -7,7 +7,7 @@ create or replace package apps.xxen_util is
 /*       www.enginatics.com this utility package is free for use, regardless if                */
 /*       you are a Blitz Report customer or not.                                               */
 /*                                                                                             */
-/*                          (c) 2010-2021 Enginatics GmbH                                      */
+/*                               (c) Enginatics GmbH                                           */
 /*                                 www.enginatics.com                                          */
 /*                                                                                             */
 /*                             Copyright and legal notes:                                      */
@@ -33,79 +33,88 @@ create or replace package apps.xxen_util is
 /***********************************************************************************************/
 
 /***********************************************************************************************/
-/*  EBS base language                                                                          */
+/*  Language code of the EBS base language, for example US.                                    */
 /***********************************************************************************************/
 function base_language return varchar2 deterministic;
 
 /***********************************************************************************************/
-/* ISO language code for the current nls language                                              */
+/*  ISO code of the database instance's nls_language parameter, for example en-US.             */
+/*  It reads the instance parameter, not the session language.                                 */
 /***********************************************************************************************/
 function nls_language_iso_code return varchar2;
 
 /***********************************************************************************************/
-/*  trunc(sysdate), which can be used in SQLs that require result caching                      */
+/*  Returns trunc(sysdate), for SQL with a result_cache hint, which is not cached when it references sysdate directly.  */
 /***********************************************************************************************/
 function trunc_sysdate return date;
 
 /***********************************************************************************************/
-/*  returns the fnd message for a language, defaulting to US if it doesn't exist               */
+/*  Text of an FND message in the session language, falling back to the base language and then to the message name.  */
+/*  p_application_short_name defaults to the Blitz Report application. Message tokens are not substituted.  */
 /***********************************************************************************************/
 function fnd_message(p_message_name in varchar2, p_application_short_name in varchar2 default null) return varchar2;
 
 /***********************************************************************************************/
-/*  lookup code to meaning translation                                                         */
+/*  Translated meaning of a lookup code in the session language, from fnd_lookup_values, or null when there is none.  */
+/*  p_application_id is the lookup's view application id, for example 0 for FND, 222 for AR and 660 for OM lookups.  */
+/*  p_code_if_null 'Y' returns the code itself when no meaning exists.                         */
+/*  Results are cached, so it is cheap per row. Fixed Assets lookups are kept in fa_lookups and are not found.  */
 /***********************************************************************************************/
 function meaning(p_lookup_code in varchar2, p_lookup_type in varchar2, p_application_id in varchar2, p_code_if_null in varchar2 default null) return varchar2;
 
 /***********************************************************************************************/
-/*  lookup code to description translation                                                     */
+/*  Description of a lookup code in the session language, falling back to the base language.   */
 /***********************************************************************************************/
 function description(p_lookup_code in varchar2, p_lookup_type in varchar2, p_application_id in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  lookup meaning to code translation                                                         */
+/*  Lookup code for a translated meaning in the session language, the reverse of meaning.      */
+/*  p_meaning_if_null 'Y' returns the meaning itself when no code is found.                    */
 /***********************************************************************************************/
 function lookup_code(p_meaning in varchar2, p_lookup_type in varchar2, p_application_id in varchar2, p_meaning_if_null in varchar2 default null) return varchar2;
 
 /***********************************************************************************************/
-/*  shows the lookup meaning for Y from the YES_NO value set                                   */
+/*  Translated Yes for 'Y' and null for any other value, to show a flag column as Yes or blank.*/
 /***********************************************************************************************/
 function yes(p_lookup_code in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  escape regexp metacharacters with a backslash e.g. ( to \(                                 */
+/*  Escapes the regular expression metacharacters of a text with a backslash, for example ( to \(, so that regexp functions match it literally.  */
 /***********************************************************************************************/
 function regexp_escape(p_text in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  translate data delimiter characters: / -> ~^, | -> `^, \ -> @^                             */
+/*  Prepares a text for the Blitz Report webservice row format: removes control characters other than tab, line feed and carriage return,  */
+/*  and replaces / with ~^, | with `^ and \ with @^.                                           */
 /***********************************************************************************************/
 function json_translate(p_text in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  escape JSON special characters in a string                                                 */
+/*  Escapes a text for use inside a JSON string (backslash, double quote and control characters), without adding the quotes. chr(0) is removed.  */
 /***********************************************************************************************/
 function json_escape(p_text in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  escape JSON special characters in a clob                                                   */
+/*  Escapes a clob of any length for use inside a JSON string, as the varchar2 version does.   */
 /***********************************************************************************************/
 function json_escape(p_clob in clob) return clob;
 
 /***********************************************************************************************/
-/*  used in LOVs to compare column values with parameter values they depend on                 */
+/*  Returns 'Y' when p_column_value is one of the values in the semicolon separated list p_parameter_value, otherwise null.  */
+/*  Use it in a dependent LOV query, xxen_util.contains(:$flex$.parameter,column)='Y', so that a multiple values parent parameter filters the list.  */
+/*  The list may carry the <multiple_values> prefix. When it contains %, its values are matched with like.  */
 /***********************************************************************************************/
 function contains(p_parameter_value in varchar2, p_column_value in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  used to translate GL segments, such as PROJECT to Project to avoid diplicate SQL columns   */
+/*  Initcap of an upper case name of more than three characters without blanks, for example PROJECT to Project, to turn flexfield prompts into column headings.  */
+/*  Any other text is returned unchanged.                                                      */
 /***********************************************************************************************/
 function init_cap(p_text in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  select statement with the columns profile_option_value and visible_option_value, parsed    */
-/*  from a profile option's sql validation. p_translated_only='Y' returns null when the        */
-/*  validation does not translate the stored value into a different visible value              */
+/*  Select statement with the columns profile_option_value and visible_option_value, derived from a profile option's SQL validation.  */
+/*  p_translated_only 'Y' returns null when the validation shows the stored value unchanged.   */
 /***********************************************************************************************/
 function profile_option_value_sql(
 p_application_id in number,
@@ -114,7 +123,8 @@ p_translated_only in varchar2 default null
 ) return varchar2 result_cache;
 
 /***********************************************************************************************/
-/*  translate a fnd profile option value into the user visible profile option value            */
+/*  User visible value of a stored profile option value, for example the responsibility name for a responsibility id.  */
+/*  Returns the stored value when the option has no list or the value is not in it.            */
 /***********************************************************************************************/
 function display_profile_option_value(
 p_application_id in number,
@@ -123,8 +133,8 @@ p_profile_option_value in varchar2
 ) return varchar2;
 
 /***********************************************************************************************/
-/*  pipelined lov function for profile option values, from the profile option's sql validation */
-/*  each row is returned as stored value and visible value, separated by p_lov_delimter         */
+/*  Pipelined list of a profile option's valid values, from its SQL validation.                */
+/*  Each row is the stored value and the visible value, separated by p_lov_delimter. A validation that cannot run outside the profile form returns no rows.  */
 /***********************************************************************************************/
 function profile_option_value_lov(
 p_application_id in number,
@@ -133,7 +143,7 @@ p_lov_delimter in varchar2 default '~'
 ) return fnd_table_of_varchar2_4000 pipelined;
 
 /***********************************************************************************************/
-/*  translate a descriptive flexfield context code into the user visible context name          */
+/*  Name of a descriptive flexfield context, or the code when the flexfield has no context of that code.  */
 /***********************************************************************************************/
 function display_flexfield_context(
 p_application_id in number,
@@ -142,7 +152,10 @@ p_context_code in varchar2
 ) return varchar2;
 
 /***********************************************************************************************/
-/*  translate a descriptive flexfield value into the user visible value                        */
+/*  Display value of a descriptive flexfield segment, translating the stored value of a validated segment, for example an id, into what the user sees.  */
+/*  Pass the stored value in p_value, or the row's rowid in p_rowid to read it from the flexfield's table. The rowid also supplies the parent and other segment values that dependent value sets need.  */
+/*  p_display_mode null returns the value, 'D' the description and 'C' the value followed by ': ' and the description.  */
+/*  p_business_group_id, p_organization_id and p_org_information_id feed value sets that reference them. On an error the stored value is returned.  */
 /***********************************************************************************************/
 function display_flexfield_value(
 p_application_id in number,
@@ -158,7 +171,9 @@ p_display_mode in varchar2 default null
 ) return varchar2;
 
 /***********************************************************************************************/
-/*  translate the display value of a descriptive flexfield attribute into its stored id        */
+/*  Stored value of a descriptive flexfield segment for its display value, the reverse of display_flexfield_value, for example to pass an uploaded value to an API.  */
+/*  p_column_name is the segment column, for example ATTRIBUTE5. p_attribute1 to p_attribute30 carry the display values of all segments, which dependent value sets need.  */
+/*  A date is returned in canonical format, a segment without a list returns its display value. p_recursion_path is for internal use.  */
 /***********************************************************************************************/
 function dff_attribute_value_to_id(
 p_application_id in number,
@@ -199,7 +214,9 @@ p_recursion_path in varchar2 default null
 ) return varchar2;
 
 /***********************************************************************************************/
-/*  pipelined lov function for descriptive flexfield attributes                                */
+/*  Pipelined list of values of a descriptive flexfield segment, for upload column LOVs. Each row is the value and the description, separated by p_lov_delimter.  */
+/*  p_context_name takes the context name or code. p_attribute1 to p_attribute30 carry the display values of the segments, which dependent value sets need.  */
+/*  A value in the segment's own attribute restricts the list to values starting with its first two characters.  */
 /***********************************************************************************************/
 function dff_attribute_lov(
 p_application_id in number,
@@ -240,10 +257,11 @@ p_attribute30 in varchar2 default null
 ) return fnd_table_of_varchar2_4000 pipelined;
 
 /***********************************************************************************************/
-/*  pipelined lov function for key flexfield segments, e.g. accounting flexfield segments.      */
-/*  covers every value set validation type, so a table validated segment returns its values     */
-/*  from the validation table instead of the empty fnd_flex_values list.                        */
-/*  each row is returned as id, value and description, separated by p_lov_delimter.             */
+/*  Pipelined list of values of a key flexfield segment, for example an accounting flexfield segment, for report and upload LOVs.  */
+/*  It covers every value set validation type, so a table validated segment returns its values from the validation table.  */
+/*  Each row is id, value and description, separated by p_lov_delimter. p_enabled_only 'Y' lists enabled values only. Rows are not sorted.  */
+/*  p_segment1 to p_segment30 carry the other segments' values, which dependent value sets need. A value in the requested segment's own position restricts the list to values starting with its first two characters.  */
+/*  Values the current responsibility's flexfield value security excludes are left out.        */
 /***********************************************************************************************/
 function kff_segment_lov(
 p_application_id in number,
@@ -285,12 +303,15 @@ p_segment30 in varchar2 default null
 ) return fnd_table_of_varchar2_4000 pipelined;
 
 /***********************************************************************************************/
-/*  concatenated segments for a given gl code combination                                      */
+/*  Concatenated segments of a GL code combination.                                            */
+/*  Cached per session; in a report over many code combinations joining gl_code_combinations_kfv is cheaper.  */
 /***********************************************************************************************/
-function concatenated_segments(p_code_combination_id in number) return varchar2 result_cache;
+function concatenated_segments(p_code_combination_id in number) return varchar2;
 
 /***********************************************************************************************/
-/*  single gl account or other key flexfield segment description for a given segment value     */
+/*  Description of a key flexfield segment value, by default of the accounting flexfield, in full length.  */
+/*  p_column_name is the segment column, for example SEGMENT3, and p_id_flex_num the structure, for the accounting flexfield the chart of accounts id.  */
+/*  A value of a dependent value set is found only with p_parent_segment_value. Returns null when the value does not exist.  */
 /***********************************************************************************************/
 function segment_description(
 p_segment_value in varchar2,
@@ -302,8 +323,8 @@ p_id_flex_code in varchar2 default 'GL#'
 ) return varchar2;
 
 /***********************************************************************************************/
-/*  Concatenated key flexfield segment value description for a given id, for example           */
-/*  gl code combination. Provide the chart of accounts id for better performance               */
+/*  Descriptions of all segments of a key flexfield combination, one line per segment in the form prompt: description.  */
+/*  p_id is the combination id, for example code_combination_id, and p_id_flex_num the structure, for the accounting flexfield the chart of accounts id.  */
 /***********************************************************************************************/
 function segments_description(
 p_id in number,
@@ -313,159 +334,162 @@ p_id_flex_code in varchar2 default 'GL#'
 ) return varchar2;
 
 /***********************************************************************************************/
-/*  overloeaded (slower) segment value description function, without chart of accounts id      */
+/*  Segment descriptions of a GL code combination, as the other version, with the chart of accounts looked up from the combination. Slower than passing it.  */
 /***********************************************************************************************/
 function segments_description(p_code_combination_id in number) return varchar2;
 
 /***********************************************************************************************/
-/*  reverse the element order of a delimited text e.g. a path /gordon/supervisor/project to    */
-/*  /project/supervisor/gordon. this is useful e.g. for connect by sqls to show                */
-/*  sys connect by path in reverse order without changing the starting point of the query      */
+/*  Reverses the element order of a delimited path, for example /gordon/supervisor/project to /project/supervisor/gordon.  */
+/*  Useful to show sys_connect_by_path in reverse order without changing the start of the connect by query.  */
+/*  The text must start with the delimiter, as sys_connect_by_path returns it. Otherwise the first element is lost.  */
 /***********************************************************************************************/
 function reverse(p_text in varchar2, p_delimiter in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  convert clob to blob                                                                       */
+/*  Converts a clob to a blob in AL32UTF8, or in the character set p_charset_id (see nls_charset_id). Returns null for an empty clob.  */
 /***********************************************************************************************/
 function clob_to_blob(p_clob in clob, p_charset_id in number default null) return blob;
 
 /***********************************************************************************************/
-/*  convert blob to clob                                                                       */
-/*  useful for example to extract text content from xml files stored in the db such as the     */
-/*  dataquery sql statement from xml publisher data templates                                  */
+/*  Converts a blob encoded in AL32UTF8, or in the character set p_charset_id, to a clob. A UTF-8 byte order mark is removed.  */
+/*  Useful for example to read text files stored in the database, such as the SQL of BI Publisher data templates.  */
 /***********************************************************************************************/
 function blob_to_clob(p_blob in blob, p_charset_id in number default null) return clob;
 
 /***********************************************************************************************/
-/*  returns 'Y' when a blob converts to the database character set without losing characters,  */
-/*  i.e. when an uploaded file really is encoded as expected. Returns null when                */
-/*  dbms_lob.converttoclob reports an inconvertible character, which blob_to_clob replaces      */
-/*  with the unicode replacement character                                                     */
+/*  Returns 'Y' when a blob converts to the database character set without inconvertible characters, otherwise null.  */
+/*  Use it to check that an uploaded file has the expected encoding, as blob_to_clob replaces such characters silently.  */
 /***********************************************************************************************/
 function blob_is_utf8(p_blob in blob, p_charset_id in number default null) return varchar2;
 
 /***********************************************************************************************/
-/*  convert long datatype to clob                                                              */
+/*  Value of a LONG column as a clob, for the row p_row_id of table p_table_name.              */
 /***********************************************************************************************/
 function long_to_clob(p_table_name in varchar2, p_column_name in varchar2, p_row_id in rowid) return clob;
 
 /***********************************************************************************************/
-/*  convert blob to base64                                                                     */
+/*  Base64 encoding of a blob. On a Unix database server a line break follows about every 32767 characters, so each line fits a SQL*Plus line.  */
 /***********************************************************************************************/
 function blob_to_base64(p_blob in blob) return clob;
 
 /***********************************************************************************************/
-/*  convert base64 to blob                                                                     */
+/*  Decodes base64 text to a blob. Line breaks in the text are ignored.                        */
 /***********************************************************************************************/
 function base64_to_blob(p_clob in clob) return blob;
 
 /***********************************************************************************************/
-/*  lengthb for clobs see oracle note 790886.1                                                 */
+/*  Length of a clob in bytes, counted in AL32UTF8 encoding.                                   */
 /***********************************************************************************************/
 function clob_lengthb(p_clob in clob) return number;
 
 /***********************************************************************************************/
-/*  substrb for clobs up to 32767 characters, see oracle note 1571041.1                        */
+/*  Part of a clob of at most p_byte_length bytes, starting at character position p_char_position, up to 32767 bytes.  */
+/*  Use dbms_lob.substr(xxen_util.clob_substrb(clob,4000,1)) to read a clob as a varchar2 of up to 4000 bytes in SQL without ORA-06502 on multibyte data.  */
 /***********************************************************************************************/
 function clob_substrb(p_clob in clob, p_byte_length in pls_integer, p_char_position in pls_integer default 1) return clob;
 
 /***********************************************************************************************/
-/*  replaces first occurrence of substring in a string                                         */
+/*  Replaces the first occurrence of p_search in a clob. Search and replacement may be clobs of any length.  */
 /***********************************************************************************************/
 function replace_first_occurrence(p_source in clob, p_search in clob, p_replacement in clob) return clob;
 
 /***********************************************************************************************/
-/*  replaces all occurrences of clob in a clob                                                 */
+/*  Replaces all occurrences of p_search in a clob.                                            */
+/*  It repeats until the search text no longer occurs, so it never ends when the replacement contains the search text: use replace_first_occurrence for that.  */
 /***********************************************************************************************/
 function clob_replace(p_source in clob, p_search in clob, p_replacement in clob) return clob;
 
 /***********************************************************************************************/
-/*  instring for long multiple values as regexp_substr on clobs is too slow, especially on 19c */
+/*  Element number p_occurrence of a text delimited by p_separator, trimmed, or null when there are fewer elements.  */
+/*  Faster than regexp_substr on long multiple value lists, especially on clobs.               */
 /***********************************************************************************************/
 function instring(p_text in clob, p_separator in varchar2, p_occurrence in pls_integer) return varchar2 deterministic;
 
 /***********************************************************************************************/
-/*  generate x number of rows for use in sql e.g. for regexp: table(xxen_util.rowgen(n)) rowgen*/
+/*  Generates p_rows rows in SQL, numbered from 1 in column_value, for example table(xxen_util.rowgen(n)) rowgen to split a delimited list.  */
 /***********************************************************************************************/
 function rowgen(p_rows in number) return fnd_table_of_number deterministic;
 
 /***********************************************************************************************/
-/*  classification of data_type ids in varchar2, number, date, clob                            */
+/*  Class of a dbms_sql column data type code: varchar2, number, date, clob or rowid.          */
 /***********************************************************************************************/
 function data_type_class(p_data_type in pls_integer) return varchar2;
 
 /***********************************************************************************************/
-/*  parse and return sql column names for use in sql e.g.                                      */
-/*  select x.* from table(xxen_util.sql_columns('select * from hz_parties')) x                 */
+/*  Columns of a SQL statement, which is parsed and described but not executed, for example select x.* from table(xxen_util.sql_columns('select * from hz_parties')) x.  */
+/*  A statement that does not parse returns one row with column_name '---- error ----' and the error in data_type.  */
+/*  By default the Number and Date binds of the current Blitz Report run are bound with dummy values; p_skip_binding 'Y' skips that.  */
 /***********************************************************************************************/
 function sql_columns(p_sql in clob, p_skip_binding in varchar2 default null) return xxen_sql_desc_tab;
 
 /***********************************************************************************************/
-/*  removes empty lines from sql queries                                                       */
+/*  Removes empty and blank lines from a text, for example a SQL statement.                    */
 /***********************************************************************************************/
 function remove_empty_lines(p_clob in clob) return clob;
 
 /***********************************************************************************************/
-/*  Converts html formatted text to plain text                                                 */
+/*  Converts HTML formatted text to plain text: line and block element ends become line breaks, all other tags are removed and entities decoded.  */
+/*  p_remove_empty_lines 'Y' removes all empty lines, otherwise only leading and trailing ones.*/
 /***********************************************************************************************/
 function html_to_text(p_html in clob, p_remove_empty_lines in varchar2 default null) return clob;
 
 /***********************************************************************************************/
-/*  useful to avoid ora-01476: divisor is equal to zero                                        */
+/*  Returns null for 0 and the number otherwise, the same as nullif(p_number,0), for example to avoid ORA-01476 divisor is equal to zero.  */
 /***********************************************************************************************/
 function zero_to_null(p_number in number) return number;
 
 /***********************************************************************************************/
-/*  returns time in format 67d 14h 45.3s for a given number of seconds                         */
+/*  Duration text for a number of seconds, for example 90061 to 1d 1h 1m 1s. Fractions of a second are truncated.  */
 /***********************************************************************************************/
 function time(p_seconds in number) return varchar2 deterministic;
 
 /***********************************************************************************************/
-/*  returns the apps module type e.g. concurrent                                               */
-/*  from a db session's module name e.g. e:per:cp:pay/pyuslv                                   */
+/*  Type of an EBS database session, from v$session module and action: Concurrent Request, Concurrent Manager, Form, Oracle Application Framework,  */
+/*  Workflow, Business Event, Blitz Report or Discoverer, for example Concurrent Request for the module e:per:cp:pay/pyuslv.  */
 /***********************************************************************************************/
 function module_type(p_module in varchar2, p_action in varchar2 default null) return varchar2 result_cache;
 
 /***********************************************************************************************/
-/*  returns the display application module name e.g. payroll worker process                    */
-/*  from a db session's module name e.g. e:per:cp:pay/pyuslv                                   */
+/*  Display name of what an EBS database session runs, from its v$session module, for example Payroll Worker Process for e:per:cp:pay/pyuslv.  */
+/*  Covers concurrent programs and managers, forms, workflow item types, business events, Blitz Reports and Discoverer users. p_program is the v$session program, used as fallback.  */
 /***********************************************************************************************/
 function module_name(p_module in varchar2, p_program in varchar2 default null) return varchar2;
 
 /***********************************************************************************************/
-/*  translates an apps session action e.g. sysadmin/system_administrator                       */
-/*  to the responsibility e.g. system administrator                                            */
+/*  Responsibility name of an EBS database session, from its v$session action, for example System Administrator for SYSADMIN/SYSTEM_ADMINISTRATOR.  */
 /***********************************************************************************************/
 function responsibility(p_module in varchar2, p_action in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  translates an fnd user_name e.g. CLAUDIA to a user_name including description              */
-/*  e.g. CLAUDIA (Claudia Renner)                                                              */
+/*  User name followed by the user's description in brackets, for example CLAUDIA (Claudia Renner).  */
+/*  The description is the employee name, else the user description, else the email address, and is shown unless profile Blitz Report Show User Description is No.  */
 /***********************************************************************************************/
 function user_name(p_user_name in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  returns user_name including description for an fnd user_id                                 */
+/*  User name for a user id, with its description as user_name(p_user_name) shows it. p_show_description 'N' returns the user name only.  */
 /***********************************************************************************************/
 function user_name(p_user_id in pls_integer, p_show_description in varchar2 default null) return varchar2;
 
 /***********************************************************************************************/
-/*  returns user_id for a user_name                                                            */
+/*  User id for a user name, or null when the user does not exist.                             */
 /***********************************************************************************************/
 function user_id(p_user_name in varchar2) return pls_integer result_cache;
 
 /***********************************************************************************************/
-/*  returns user_name for a client_id, even for indirect business events through conc requests */
+/*  User name of an EBS database session, from its v$session client_identifier.                */
+/*  For a concurrent request or business event session whose client identifier is a request id, it returns the user who submitted the request.  */
 /***********************************************************************************************/
 function user_name(p_module in varchar2, p_action in varchar2, p_client_id in varchar2) return varchar2 result_cache;
 
 /***********************************************************************************************/
-/*  validates if a clob is a correctly formatted xml                                           */
+/*  Returns 'Y' when a clob is well formed XML, otherwise the parser error stack.              */
 /***********************************************************************************************/
 function is_xml(p_clob in clob) return varchar2;
 
 /***********************************************************************************************/
-/*  ap invoice status (fast)                                                                   */
+/*  Translated invoice status as the Payables Invoice Workbench shows it, for example Validated, Selected for Payment or Needs Revalidation.  */
+/*  Pass the columns of ap_invoices_all. Faster than the version with the invoice id only.     */
 /***********************************************************************************************/
 function ap_invoice_status(
 p_invoice_id in number,
@@ -476,12 +500,13 @@ p_validation_request_id in number
 ) return varchar2;
 
 /***********************************************************************************************/
-/*  ap invoice status (slow)                                                                   */
+/*  Translated invoice status as the Payables Invoice Workbench shows it, read from ap_invoices_all for the invoice id.  */
 /***********************************************************************************************/
 function ap_invoice_status(p_invoice_id in number) return varchar2;
 
 /***********************************************************************************************/
-/*  wsh delivery details next step from the shipping transactions form (fast)                  */
+/*  Translated next step of a delivery detail, as the Shipping Transactions form shows it, for example Pick Release or Ship Confirm/Close Trip Stop.  */
+/*  Pass the columns of wsh_delivery_details (client_id and replenishment_status are null on EBS 11i). Faster than the version with the delivery detail id only.  */
 /***********************************************************************************************/
 function wsh_next_step(
 p_container_flag in wsh_delivery_details.container_flag%type,
@@ -495,207 +520,220 @@ p_move_order_line_id in wsh_delivery_details.move_order_line_id%type
 ) return varchar2;
 
 /***********************************************************************************************/
-/*  wsh delivery details next step from the shipping transactions form (slow)                  */
+/*  Translated next step of a delivery detail, as the Shipping Transactions form shows it, read from wsh_delivery_details for the delivery detail id.  */
 /***********************************************************************************************/
 function wsh_next_step(p_delivery_detail_id in number) return varchar2;
 
 /***********************************************************************************************/
-/*  converts server date to fnd user's client date in local timezone                           */
+/*  Converts a server date to the user's client time zone, when profile Enable Timezone Conversions is Yes and the two time zones differ.  */
 /***********************************************************************************************/
 function client_time(p_date in date) return date deterministic;
 
 /***********************************************************************************************/
-/*  converts fnd user's client date to a date in server timezone                               */
+/*  Converts a date in the user's client time zone to the server time zone, when profile Enable Timezone Conversions is Yes and the two time zones differ.  */
 /***********************************************************************************************/
 function server_time(p_date in date) return date deterministic;
 
 /***********************************************************************************************/
-/*  converts a canonical (YYYY/MM/DD [HH24:MI:SS]) date string to the user's display date      */
-/*  format; returns the input unchanged if it isn't parseable (e.g. dynamic expressions like   */
-/*  sysdate, sysdate-3000 stored as zoom-param-value defaults)                                  */
+/*  Converts a canonical date text (YYYY/MM/DD [HH24:MI:SS]) to the user's display date format.*/
+/*  Text that is not a canonical date, such as the expression sysdate-30, is returned unchanged.  */
 /***********************************************************************************************/
 function canonical_to_displaydate(p_canonical_value in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  same as canonical_to_displaydate but for DateTime (date + time) parameter types            */
+/*  Converts a canonical date text (YYYY/MM/DD [HH24:MI:SS]) to the user's display date and time format, for DateTime parameters.  */
+/*  Text that is not a canonical date is returned unchanged.                                   */
 /***********************************************************************************************/
 function canonical_to_displaydt(p_canonical_value in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  application short name to application name                                                 */
+/*  Application name for an application short name. AP, GL and FA are accepted for SQLAP, SQLGL and OFA.  */
 /***********************************************************************************************/
 function application_name(p_application_short_name in varchar2) return varchar2 result_cache;
 
 /***********************************************************************************************/
-/*  helper function required for correct report short name mapping                             */
+/*  Short name Blitz Report shows for an application: AP, GL and FA for SQLAP, SQLGL and OFA, null for DUMMY. Used for report short names.  */
 /***********************************************************************************************/
 function application_short_name_trans(p_application_short_name in varchar2) return varchar2 deterministic;
 
 /***********************************************************************************************/
-/*  application name to application short name                                                 */
+/*  Application short name for an application name, with AP, GL and FA for SQLAP, SQLGL and OFA, and Blitz for Blitz Report.  */
 /***********************************************************************************************/
 function application_short_name(p_application_name in varchar2) return varchar2 result_cache;
 
 /***********************************************************************************************/
-/*  discoverer eul worksheet execution count                                                   */
+/*  Discoverer migration: number of worksheet executions logged in an EUL's eul5_qpp_stats within the import history period.  */
 /***********************************************************************************************/
 function dis_eul_usage_count(p_eul varchar2) return number;
 
 /***********************************************************************************************/
-/*  discoverer business areas for a given folder object_id                                     */
+/*  Discoverer migration: business areas of a folder, comma separated.                         */
 /***********************************************************************************************/
 function dis_business_area(p_obj_id in number, p_eul in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  discoverer display folder type                                                             */
+/*  Discoverer migration: display name of a folder type, Standard, Complex view or Custom SQL. */
 /***********************************************************************************************/
 function dis_folder_type(p_obj_type in varchar2) return varchar2 deterministic;
 
 /***********************************************************************************************/
-/*  discoverer display item type                                                               */
+/*  Discoverer migration: display name of an expression type, Condition, Calculated Item, Item or Join Predicate.  */
 /***********************************************************************************************/
 function dis_item_type(p_exp_type in varchar2) return varchar2 deterministic;
 
 /***********************************************************************************************/
-/*  discoverer default end user layer (with most frequent executions in eul5_qpp_stats)        */
+/*  Discoverer migration: the default EUL, from profile Blitz Report Discoverer Default EUL, else the EUL with the most executions.  */
 /***********************************************************************************************/
 function dis_default_eul return varchar2;
 
 /***********************************************************************************************/
-/*  discoverer user_id to discoverer username                                                  */
+/*  Discoverer migration: EUL user name for an EUL user id.                                    */
 /***********************************************************************************************/
 function dis_user(p_user_id in number, p_eul in varchar2) return varchar2 result_cache;
 
 /***********************************************************************************************/
-/*  discoverer username to application user name or responsibility                             */
+/*  Discoverer migration: the EBS user name or responsibility name for a Discoverer user name. */
 /***********************************************************************************************/
 function dis_user_name(p_username in varchar2, p_show_description in varchar2 default null, p_eul in varchar2 default null) return varchar2;
 
 /***********************************************************************************************/
-/*  discoverer user_id to application user name or responsibility                              */
+/*  Discoverer migration: the EBS user name or responsibility name for an EUL user id.         */
 /***********************************************************************************************/
 function dis_user_name(p_user_id in number, p_eul in varchar2, p_show_description in varchar2 default null) return varchar2 result_cache;
 
 /***********************************************************************************************/
-/*  discoverer username to user type                                                           */
+/*  Discoverer migration: type of a Discoverer user name, User, Responsibility or Database.    */
 /***********************************************************************************************/
 function dis_user_type(p_username in varchar2) return varchar2 result_cache;
 
 /***********************************************************************************************/
-/*  discoverer user_id to user type                                                            */
+/*  Discoverer migration: type of an EUL user id, User, Responsibility or Database.            */
 /***********************************************************************************************/
 function dis_user_type(p_user_id in number, p_eul in varchar2) return varchar2 result_cache;
 
 /***********************************************************************************************/
-/*  discoverer SQL text for a custom object                                                    */
+/*  Discoverer migration: SQL text of a custom SQL or complex folder.                          */
 /***********************************************************************************************/
 function dis_folder_sql(p_object_id in number, p_eul in varchar2) return clob;
 
 /***********************************************************************************************/
-/*  discoverer SQL text for a custom object                                                    */
+/*  Discoverer migration: SQL text of a custom SQL or complex folder, as an inline view without the outer select and apps. prefixes.  */
 /***********************************************************************************************/
 function dis_folder_sql2(p_object_id in number, p_eul in varchar2) return clob;
 
 /***********************************************************************************************/
-/*  discoverer SQL text for a custom object, simplified, e.g. columns replaced by asterisk *   */
+/*  Discoverer migration: SQL text of a custom SQL or complex folder, as select * from the folder's inline view.  */
 /***********************************************************************************************/
 function dis_folder_sql3(p_object_id in number, p_eul in varchar2) return clob;
 
 /***********************************************************************************************/
-/*  discoverer SQL text for a custom object and column to create Blitz Report LOVs             */
+/*  Discoverer migration: LOV query for a Discoverer item, to create a Blitz Report LOV.       */
 /***********************************************************************************************/
 function dis_lov_query(p_exp_id in pls_integer, p_eul in varchar2) return clob;
 
 /***********************************************************************************************/
-/*  discoverer worksheet SQL text from logging table ams_discoverer_sql                        */
+/*  Discoverer migration: SQL of a worksheet, from the logging table ams_discoverer_sql.       */
 /***********************************************************************************************/
 function dis_worksheet_sql(p_workbook_owner_name in varchar2, p_workbook_name in varchar2, p_worksheet_name in varchar2) return clob;
 
 /***********************************************************************************************/
-/*  checks if discoverer EUL contains any data in eul5_qpp_stats to be imported as folders     */
+/*  Discoverer migration: 'Y' when an EUL has execution statistics in eul5_qpp_stats from which folders can be imported.  */
 /***********************************************************************************************/
 function dis_folder_exists(p_eul in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  returns a string of discoverer items ids used by a stat history (eul5_qpp_stats) record    */
+/*  Discoverer migration: ids of the items an eul5_qpp_stats record used, comma separated.     */
 /***********************************************************************************************/
 function dis_qs_exp_ids(p_qs_id in number, p_eul in varchar2, p_type in varchar2 default null) return clob;
 
 /***********************************************************************************************/
-/*  returns a discoverer folder's object type                                                  */
+/*  Discoverer migration: object type of a folder.                                             */
 /***********************************************************************************************/
 function dis_obj_type(p_obj_id in varchar2, p_eul in varchar2) return varchar2 result_cache;
 
 /***********************************************************************************************/
-/*  returns a discoverer folder's object id                                                    */
+/*  Discoverer migration: object id of a folder for its identifier.                            */
 /***********************************************************************************************/
 function dis_obj_id(p_object_key in varchar2, p_eul in varchar2) return number result_cache;
 
 /***********************************************************************************************/
-/*  returns a discoverer item's expression id                                                  */
+/*  Discoverer migration: expression id of a folder item.                                      */
 /***********************************************************************************************/
 function dis_exp_id(p_object_key in varchar2, p_item_name in varchar2, p_eul in varchar2) return pls_integer result_cache;
 
 /***********************************************************************************************/
-/*  returns a discoverer item's expression data type                                           */
+/*  Discoverer migration: data type of a folder item, Number, Date or Char.                    */
 /***********************************************************************************************/
 function dis_exp_data_type(p_object_key in varchar2, p_item_name in varchar2, p_eul in varchar2) return varchar2 result_cache;
 
 /***********************************************************************************************/
-/*  default mrp planning compile designator for a org_id                                       */
+/*  Default MRP plan of an organization: the plan named in profile MRP_DEFAULT_PLAN when it plans the organization, otherwise the first by name.  */
+/*  Only completed MRP plans that are not disabled are considered.                             */
 /***********************************************************************************************/
 function compile_designator(p_org_id in pls_integer) return varchar2;
 
 /***********************************************************************************************/
-/*  returns the next working day from bom_calendar_dates for a given start date and offset     */
+/*  Date p_offset_days working days from p_date in manufacturing calendar p_calendar_code (bom_calendar_dates).  */
+/*  A start date that is not a working day counts from the next working day for a positive offset and from the previous one for a negative offset.  */
+/*  With offset 0 it returns the date itself, or the next working day.                         */
 /***********************************************************************************************/
 function calendar_date_offset(p_date in date, p_calendar_code in varchar2, p_offset_days in number default 0, p_calendar_exception_set_id in number default -1) return date;
 
 /***********************************************************************************************/
-/*  returns sequence.nextval for use in merge statements to avid wasting sequence values       */
+/*  Next value of a sequence. Use it in the insert branch of a merge, where seq.nextval would use up a value for every updated row too.  */
+/*  The name is concatenated into dynamic PL/SQL, so pass a sequence name only, never user input.  */
 /***********************************************************************************************/
 function sequence_nextval(p_sequence_name in varchar2) return number;
 
 /***********************************************************************************************/
-/*  translates oracle language codes to BCP47 codes e.g. for use in ECC queries                */
+/*  BCP 47 code for an Oracle language code, for example en-GB for GB or zh-Hans for ZHS.      */
 /***********************************************************************************************/
 function bcp47_language(p_language_code in varchar2) return varchar result_cache;
 
 /***********************************************************************************************/
-/*  returns location information such as country or city for a given ip address, see           */
-/*  https://www.enginatics.com/blog/find-an-ip-address-and-geolocation-of-ebs-clients-logins/  */
+/*  Location information, such as country or city, of an IP address from a geolocation web service, cached per address.  */
+/*  The service is called with p_service_url followed by the IP address. For an XML response p_path is the XPath of the value, for JSON the name of a top level field.  */
+/*  p_wallet_path is the Oracle wallet with the service's root certificate for an https URL. The database needs a network ACL for the service.  */
 /***********************************************************************************************/
 function geolocation(p_service_url in varchar2, p_ip_address in varchar2, p_path in varchar2, p_wallet_path in varchar2 default null) return varchar2 result_cache;
 
 /***********************************************************************************************/
-/*  returns parameter value for the currently running blitz report to be used in beforereport  */
-/*  plsql code, for example: xxen_util.parameter_value('Operating Unit')                       */
+/*  Value of a parameter of the Blitz Report running in the current concurrent request, for PL/SQL in a before report trigger,  */
+/*  for example xxen_util.parameter_value('Operating Unit'), with the English parameter name, or by bind name with p_parameter_bind.  */
+/*  Multiple values are returned as <multiple_values>A;B. Returns null outside a concurrent request.  */
 /***********************************************************************************************/
 function parameter_value(p_parameter_name in varchar2 default null, p_parameter_bind in varchar2 default null) return varchar2;
 
 /***********************************************************************************************/
-/*  return the original order line id in case of line splitting for DIFOT data.                */
-/*  it is required as a workaround for an optimizer bug not executing the connect by correctly */
+/*  Id of the original order line a split line derives from, following split_from_line_id up to the first line. A line that was never split returns its own id.  */
+/*  A function is needed because the optimizer does not execute this connect by correctly inside a larger query.  */
 /***********************************************************************************************/
 function orig_order_line_id(p_split_from_line_id in number) return number;
 
 /***********************************************************************************************/
-/*  replaces the default leger name for the current login user                                 */
+/*  Default ledger name for the current user: the single primary ledger of the responsibility's data access set, or with several, the one of the default operating unit.  */
+/*  Returns null when no single ledger qualifies. On EBS 11i it is the set of books of profile GL Set of Books ID.  */
 /***********************************************************************************************/
 function default_ledger return varchar2;
 
 /***********************************************************************************************/
-/*  replaces the default operating unit name for the current login user                        */
+/*  Default operating unit name for the current user: the only operating unit the session's MOAC access (restricted to profile MO: Default Operating Unit when set) contains.  */
+/*  Returns null when there are several or none, or MOAC is not initialized.                   */
 /***********************************************************************************************/
 function default_operating_unit return varchar2;
 
 /***********************************************************************************************/
-/*  returns the previous parameter value used by the current user and login responsibility     */
+/*  Value of a parameter in the user's latest run of its report in the current responsibility within the last 60 days, for parameter defaults.  */
 /***********************************************************************************************/
 function previous_parameter_value(p_parameter_id in pls_integer) return varchar2;
 
 /***********************************************************************************************/
-/*  returns sql text for descriptive flexfield columns                                         */
+/*  Select list text with one column per descriptive flexfield segment of a table, for a lexical parameter in report SQL, preceded by the context column.  */
+/*  A segment prompt used in several contexts becomes one column, headed by the prompt. p_table_name is the flexfield's application table and p_table_alias its alias in the SQL.  */
+/*  p_descr_flex_context_code restricts it to one context, p_column_name_prefix prefixes the headings, p_hide_column_name 'Y' omits the aliases (for a group by) and p_prefix replaces each expression.  */
+/*  p_display_mode null shows values, 'C' value and description, 'S' an additional description column. p_row_id is the rowid column if not rowid.  */
+/*  p_regional_localization 'Y' returns the global descriptive flexfield of the default operating unit's country (or p_org_id's) instead.  */
+/*  Every column ends with a comma, so place the lexical before another column of the outermost select.  */
 /***********************************************************************************************/
 function dff_columns(
 p_table_name in varchar2,
@@ -712,122 +750,134 @@ p_scalar_subquery in varchar2 default 'Y'
 ) return clob;
 
 /***********************************************************************************************/
-/*  returns sql text for item category columns                                                 */
+/*  Select list text with one column per category segment of category set p_category_set_name, followed by the category description, for a lexical parameter in report SQL.  */
+/*  The arguments name the item table alias and its item and organization id columns. An item with several categories in the set shows its first.  */
+/*  Every column ends with a comma, so place the lexical before another column of the outermost select.  */
 /***********************************************************************************************/
 function item_category_columns(p_category_set_name in varchar2, p_table_alias in varchar2 default 'msiv', p_item_id_column in varchar2 default 'inventory_item_id', p_org_id_column in varchar2 default 'organization_id', p_column_name_prefix in varchar2 default null) return clob;
 
 /***********************************************************************************************/
-/*  Wait for request completion, for example for upload                                        */
+/*  Waits for a concurrent request to complete and returns Success when it completed Normal or Warning, otherwise Error.  */
+/*  x_status returns the request status and x_message its completion message. It waits without a time limit.  */
 /***********************************************************************************************/
 function wait_for_request(p_conc_request_id in number, x_status out varchar2, x_message out varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  returns the functional currency code for a ledger                                          */
+/*  Functional currency of a ledger.                                                           */
 /***********************************************************************************************/
 function functional_currency_code(p_ledger_name in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  returns the latest open period for a ledger                                                */
+/*  Latest period of a ledger that has been opened, whether it is still open or closed since.  */
 /***********************************************************************************************/
 function latest_open_period(p_ledger_name in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  returns the segment name for a ledger and segment value from property                      */
+/*  Blitz FSG: display name 'prompt (number)' of an accounting segment of a ledger's chart of accounts, by display name, else by segment number.  */
 /***********************************************************************************************/
 function segment_name(p_ledger_name in varchar2, p_segment_prop_value in varchar2, p_segment_num in number) return varchar2;
 
 /***********************************************************************************************/
-/*  returns the ledger id for a ledger                                                         */
+/*  Ledger id for a ledger name. On EBS 11i the set of books id.                               */
 /***********************************************************************************************/
 function ledger_id(p_ledger_name in varchar2) return number result_cache;
 
 /***********************************************************************************************/
-/*  returns the chart of accounts id for a ledger                                              */
+/*  Chart of accounts id of a ledger.                                                          */
 /***********************************************************************************************/
 function coa_id(p_ledger_name in varchar2) return number result_cache;
 
 /***********************************************************************************************/
-/*  returns 'Y' if flex value security needs to be applied                                     */
+/*  Returns 'Y' when the current responsibility has flexfield value security rules, otherwise null.  */
+/*  Profile Blitz Report Disable GL Flex Value Security set to Yes always returns null.        */
 /***********************************************************************************************/
 function has_flex_value_security return varchar2;
 
 /***********************************************************************************************/
-/*  Flexfield value security - returns 'Y' (accessible) or null, applying the responsibility's */
-/*  security rules the same way the AOL flexfield engine does, hierarchical security included. */
-/*  Version-uniform (11i and r12). Call it only for segments with Security Enabled.            */
+/*  Flexfield value security: returns 'Y' when the responsibility may access a value of a value set, null when its security rules exclude it.  */
+/*  It applies the rules as the EBS flexfield engine does, hierarchical security included, on EBS 11i and R12. Results are cached per session.  */
+/*  Call it only for segments with Security Enabled: a value set shared with an unsecured segment is not secured there.  */
 /***********************************************************************************************/
 function flex_value_accessible(p_resp_appl_id in number, p_resp_id in number, p_flex_value_set_id in number, p_flex_value in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/*  Flexfield value security for a whole code combination - returns 'Y' (accessible) or null.   */
+/*  Flexfield value security for a whole GL code combination: returns 'Y' when every security enabled segment value is accessible, otherwise null.  */
+/*  Use it in place of gl_security_pkg. Results are cached per session.                        */
 /***********************************************************************************************/
 function flex_ccid_accessible(p_resp_appl_id in number, p_resp_id in number, p_code_combination_id in number) return varchar2;
 
 /***********************************************************************************************/
-/*  Escapes characters that may break XML structure                                            */
+/*  Escapes a text for XML: replaces ampersand, less than, greater than and double quote by entities and control characters by blanks, and cuts the result to 4000 bytes.  */
+/*  A value written as ="text" is unwrapped first.                                             */
 /***********************************************************************************************/
 function xml_escape(p_text in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/* Translates escaped characters back to get an original string                                */
+/*  Replaces the XML entities for ampersand, less than, greater than and double quote by the characters.  */
 /***********************************************************************************************/
 function xml_unescape(p_text in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/* Translates escaped characters back to get an original string                                */
+/*  Replaces the XML entities for ampersand, less than, greater than and double quote by the characters, in a clob.  */
 /***********************************************************************************************/
 function xml_unescape_clob(p_text in clob) return clob;
 
 /***********************************************************************************************/
-/* Get the XML attribute value                                                                 */
+/*  Escapes a text for XML element content: replaces ampersand, less than and greater than by entities and control characters other than tab, line feed and carriage return by blanks.  */
+/*  A value written as ="text" is unwrapped first.                                             */
 /***********************************************************************************************/
 function xml_attribute_value(p_vchr in varchar2) return varchar2;
 
 /***********************************************************************************************/
-/* Remove the order by clause from the end of a SQL                                            */
+/*  Removes the order by clause from the end of a SQL statement.                               */
+/*  Only the first order by of the text is considered, so a statement with an earlier one, such as in an analytic function, is returned unchanged.  */
 /***********************************************************************************************/
 function remove_order_by(p_text in clob) return clob;
 
 /***********************************************************************************************/
-/* Identify if the current database is running Oracle EBS                                      */
+/*  True when the database holds Oracle EBS (the APPLSYS schema exists).                       */
 /***********************************************************************************************/
 function is_ebs_database return boolean;
 
 /***********************************************************************************************/
-/* Check if India Localization (JAI) is installed on the current EBS database                   */
+/*  Returns 'Y' when India Localization (JAI) is installed and its party registration API is available, otherwise null.  */
 /***********************************************************************************************/
 function jai_installed return varchar2 result_cache;
 
 /***********************************************************************************************/
-/* Concurrent request log- or out file url, p_file_type: 'O' for out, 'L' for log              */
+/*  Temporary URL to view a concurrent request's output (p_file_type 'O') or log file ('L') without logging in.  */
 /***********************************************************************************************/
 function concurrent_request_file_url(p_file_type in varchar2, p_request_id in number) return varchar2;
 
 /***********************************************************************************************/
-/* Excel column name for a given column number, for example 3 -> C                             */
+/*  Excel column letters for a column number, for example 3 to C.                              */
 /***********************************************************************************************/
 function colname(p_col in pls_integer) return varchar2;
 
 /***********************************************************************************************/
-/* Column position for a given Excel column number, for example C -> 3                         */
+/*  Excel column number for upper case column letters, for example C to 3.                     */
 /***********************************************************************************************/
 function colnum(p_column_name in varchar2) return pls_integer;
 
 /***********************************************************************************************/
-/* Converts an Oracle date to the equivalent numeric value in Excel date format                */
+/*  Excel serial date number of a date, as text with a period as decimal separator, for example 45658 for 01-Jan-2025.  */
 /***********************************************************************************************/
 function date_to_excel_date(p_date in date) return varchar2 deterministic;
 
 /***********************************************************************************************/
-/* Converts a numeric Exel date to the equivalent Oracle date                                  */
+/*  Date for an Excel serial date number, passed as text with a period as decimal separator.   */
 /***********************************************************************************************/
 function excel_date_to_date(p_excel_date in varchar2) return date deterministic;
 
 /***********************************************************************************************/
-/* Returns the file content type(MIME Type) based on file name                                 */
+/*  MIME type for a file name by its extension, application/octet-stream when the extension is not known.  */
 /***********************************************************************************************/
 function file_content_type(p_file_name in varchar2) return varchar2;
 
+/***********************************************************************************************/
+/*  DDL of a database object, rebuilt from the dba_ data dictionary views: packages and other source, views, tables, sequences, synonyms,  */
+/*  indexes, materialized views and database links. Returns null for other object types and on error.  */
+/***********************************************************************************************/
 function object_ddl(p_object_type in varchar2, p_object_name in varchar2, p_owner in varchar2) return clob;
 
 end xxen_util;
@@ -842,7 +892,7 @@ create or replace package body apps.xxen_util is
 /*       www.enginatics.com this utility package is free for use, regardless if                */
 /*       you are a Blitz Report customer or not.                                               */
 /*                                                                                             */
-/*                          (c) 2010-2021 Enginatics GmbH                                      */
+/*                               (c) Enginatics GmbH                                           */
 /*                                 www.enginatics.com                                          */
 /*                                                                                             */
 /*                             Copyright and legal notes:                                      */
@@ -874,6 +924,8 @@ g_security_resp varchar2(33):='-'; --responsibility the flex value security cach
 g_value_set_security g_flag_tbl_type;
 g_value_access g_flag_tbl_type;
 g_ccid_access g_flag_tbl_type;
+type g_segments_tbl_type is table of varchar2(800) index by varchar2(40);
+g_concatenated_segments g_segments_tbl_type;
 c_security_cache_size constant pls_integer:=200000; --about 22 MB of session memory per cache, which then stops adding entries
 --control characters that json requires as \u00XX escapes, apart from the ones with a short escape
 c_json_controls constant varchar2(26):=chr(1)||chr(2)||chr(3)||chr(4)||chr(5)||chr(6)||chr(7)||chr(11)||chr(14)||chr(15)||chr(16)||chr(17)||chr(18)||chr(19)||chr(20)||chr(21)||chr(22)||chr(23)||chr(24)||chr(25)||chr(26)||chr(27)||chr(28)||chr(29)||chr(30)||chr(31);
@@ -1750,7 +1802,7 @@ begin
           dbms_sql.bind_variable(l_cursor,':p_organization_id',p_organization_id);
         end if;
         if l_sql_text like '%:p_org_information_id%' then
-          dbms_sql.bind_variable(l_cursor,':p_org_information_id',p_organization_id);
+          dbms_sql.bind_variable(l_cursor,':p_org_information_id',p_org_information_id);
         end if;
         if l_flex.first is not null then
           for i in l_flex.first..l_flex.last loop
@@ -2617,12 +2669,20 @@ exception
 end kff_segment_lov;
 
 
-function concatenated_segments(p_code_combination_id in number) return varchar2 result_cache is
+function concatenated_segments(p_code_combination_id in number) return varchar2 is
+--cached per session: the segments of a code combination never change
+l_key varchar2(40):=to_char(p_code_combination_id);
 l_concatenated_segments varchar2(800);
 begin
+  if g_concatenated_segments.exists(l_key) then
+    return g_concatenated_segments(l_key);
+  end if;
   for c in (select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id=p_code_combination_id) loop
     l_concatenated_segments:=c.concatenated_segments;
   end loop;
+  if g_concatenated_segments.count<c_security_cache_size then
+    g_concatenated_segments(l_key):=l_concatenated_segments;
+  end if;
   return l_concatenated_segments;
 end concatenated_segments;
 
@@ -2720,7 +2780,7 @@ begin
   from
   fnd_id_flex_segments fifs0
   where
-  fifs.application_id=fifs.application_id and
+  fifs.application_id=fifs0.application_id and
   fifs.id_flex_code=fifs0.id_flex_code and
   fifs.id_flex_num=fifs0.id_flex_num and
   fifs.enabled_flag=fifs0.enabled_flag and
@@ -4969,7 +5029,7 @@ l_segment_name varchar2(30);
 l_coa_id_query varchar2(200):=case when fnd_release.major_version=11 then '(select gsob.chart_of_accounts_id from gl_sets_of_books gsob where gsob.name=:p_ledger_name)' else '(select gl.chart_of_accounts_id from gl_ledgers gl where gl.name=:p_ledger_name)' end;
 begin
   execute immediate '
-  select * from (
+  select x.segment_name from (
   select
   fifsv.form_left_prompt||'' (''||fifsv.segment_num||'')'' segment_name
   from
@@ -4977,21 +5037,13 @@ begin
   where
   fifsv.application_id=101 and
   fifsv.id_flex_code=''GL#'' and
-  fifsv.form_left_prompt||'' (''||fifsv.segment_num||'')''=:p_segment_prop_value and
-  fifsv.id_flex_num='||l_coa_id_query||'
-  union
-  select
-  fifsv.form_left_prompt||'' (''||fifsv.segment_num||'')'' segment_name
-  from
-  fnd_id_flex_segments_vl fifsv
+  fifsv.id_flex_num='||l_coa_id_query||' and
+  (fifsv.form_left_prompt||'' (''||fifsv.segment_num||'')''=:p_segment_prop_value or fifsv.segment_num=:p_segment_num)
+  order by
+  decode(fifsv.form_left_prompt||'' (''||fifsv.segment_num||'')'',:p_segment_prop_value,1,2)
+  ) x
   where
-  fifsv.application_id=101 and
-  fifsv.id_flex_code=''GL#'' and
-  fifsv.segment_num=:p_segment_num and
-  fifsv.id_flex_num='||l_coa_id_query||'
-  )
-  where
-  rownum=1' into l_segment_name using p_segment_prop_value, p_ledger_name, p_segment_num, p_ledger_name;
+  rownum=1' into l_segment_name using p_ledger_name, p_segment_prop_value, p_segment_num, p_segment_prop_value;
 
   return l_segment_name;
 end segment_name;

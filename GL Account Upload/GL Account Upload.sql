@@ -5,7 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Account Upload
--- Description: This upload allows creation of new GL code combinations and update of existing ones. For creation of new code combinations, the upload requires the setup to allow dynamic inserts for code combinations.
+-- Description: This upload creates new GL code combinations and updates existing ones.
+-- New code combinations are created also when dynamic inserts are disabled for the chart of accounts, as in the GL Accounts window. Segment values are validated against the cross-validation rules and the segment value security of the responsibility.
+-- Enabled, Start Date Active, End Date Active, Detail Budgeting Allowed and Detail Posting Allowed entered on a new row are applied to the new code combination. Left blank, they are derived from the segment values.
 -- Excel Example Output: https://www.enginatics.com/example/gl-account-upload/
 -- Library Link: https://www.enginatics.com/reports/gl-account-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -51,7 +53,8 @@ xxen_util.display_flexfield_value(101,'GL_CODE_COMBINATIONS',gcck.context,'ATTRI
 xxen_util.display_flexfield_value(101,'GL_CODE_COMBINATIONS',gcck.context,'ATTRIBUTE8',gcck.rowid,gcck.attribute8) gl_account_attribute8,
 xxen_util.display_flexfield_value(101,'GL_CODE_COMBINATIONS',gcck.context,'ATTRIBUTE9',gcck.rowid,gcck.attribute9) gl_account_attribute9,
 xxen_util.display_flexfield_value(101,'GL_CODE_COMBINATIONS',gcck.context,'ATTRIBUTE10',gcck.rowid,gcck.attribute10) gl_account_attribute10,
-gcck.code_combination_id
+gcck.code_combination_id,
+to_number(null) upload_row
 from
 gl_code_combinations_kfv gcck,
 gl_code_combinations_kfv gccka,

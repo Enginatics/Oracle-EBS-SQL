@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'MSC Plan Order Upload | Oracle EBS SQL Report'
-description: 'Report: MSC Plan Orders Upload Description: Upload to action Plan Order recommendations. This upload can be used to either select for release or release…'
+description: 'MSC Plan Order Upload ===================== Upload to action Plan Order recommendations. This upload can be used to either select for release or release…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, MSC, Plan, Order, msc_system_items, msc_item_categories, msc_category_sets'
 permalink: /MSC%20Plan%20Order%20Upload/
 report_name: 'MSC Plan Order Upload'
@@ -14,8 +14,9 @@ report_web_name: msc-plan-order-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/msc-plan-order-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-plan-order-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-plan-order-upload).
 
 ## Overview
-Report: MSC Plan Orders Upload
-Description: Upload to action Plan Order recommendations.
+MSC Plan Order Upload
+=====================
+Upload to action Plan Order recommendations.
 
 This upload can be used to either select for release or release Plan Order Recommendations from ASCP planning instances.
 
@@ -47,7 +48,7 @@ In this scenario, the generated excel can be saved and uploaded without the user
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-plan-order-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
-Upload Mode, Auto Populate Release Status, Planning Instance, Plan, Organization, Source Organiziation, Category Set, Category, Item, Explode Assemblies, Project, Planner, Buyer, Make/Buy, Order Type, Action, Selected for Release, Suggested Due From, Suggested Due To, Show Item Descriptive Attributes
+Upload Mode, Auto Populate Release Status, Planning Instance, Plan, Organization, Source Organization, Category Set, Category, Item, Explode Assemblies, Project, Planner, Buyer, Make/Buy, Order Type, Action, Selected for Release, Suggested Due From, Suggested Due To, Show Item Descriptive Attributes
 
 ## Oracle EBS Tables Used
 [msc_system_items](https://www.enginatics.com/library/?pg=1&find=msc_system_items&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-plan-order-upload), [msc_item_categories](https://www.enginatics.com/library/?pg=1&find=msc_item_categories&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-plan-order-upload), [msc_category_sets](https://www.enginatics.com/library/?pg=1&find=msc_category_sets&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-plan-order-upload), [msc_boms](https://www.enginatics.com/library/?pg=1&find=msc_boms&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-plan-order-upload), [msc_bom_components](https://www.enginatics.com/library/?pg=1&find=msc_bom_components&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-plan-order-upload), [msc_safety_stocks](https://www.enginatics.com/library/?pg=1&find=msc_safety_stocks&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-plan-order-upload), [msc_supplies](https://www.enginatics.com/library/?pg=1&find=msc_supplies&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-plan-order-upload), [msc_apps_instances](https://www.enginatics.com/library/?pg=1&find=msc_apps_instances&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-plan-order-upload), [msc_plans](https://www.enginatics.com/library/?pg=1&find=msc_plans&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-plan-order-upload), [msc_plan_organizations](https://www.enginatics.com/library/?pg=1&find=msc_plan_organizations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-plan-order-upload)

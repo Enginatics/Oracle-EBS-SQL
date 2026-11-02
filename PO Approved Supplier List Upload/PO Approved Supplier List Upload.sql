@@ -76,7 +76,7 @@ xxen_util.meaning(decode(pasl.using_organization_id,-1,'Y','N'),'YES_NO',0) glob
 (select pas.status from po_asl_statuses pas where pas.status_id = pasl.asl_status_id) status,
 xxen_util.meaning(decode(pasl.disable_flag,'Y','Y',null),'YES_NO',0) disabled,
 pasl.primary_vendor_item supplier_item,
-pasl.review_by_date review_by_date,
+pasl.review_by_date,
 pasl.comments,
 pasl.creation_date created,
 --
@@ -236,7 +236,7 @@ po_lines_all pla
 where
 1=1 and
 2=2 and
-pasl.owning_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+pasl.owning_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 pasl.owning_organization_id=msiv.organization_id(+) and
 pasl.item_id=msiv.inventory_item_id(+) and
 pasl.category_id=mck.category_id(+) and
@@ -288,7 +288,7 @@ xxen_util.meaning(decode(pasl.using_organization_id,-1,'Y','N'),'YES_NO',0) glob
 (select pas.status from po_asl_statuses pas where pas.status_id = pasl.asl_status_id) status,
 xxen_util.meaning(decode(pasl.disable_flag,'Y','Y',null),'YES_NO',0) disabled,
 pasl.primary_vendor_item supplier_item,
-pasl.review_by_date review_by_date,
+pasl.review_by_date,
 pasl.comments,
 pasl.creation_date created,
 --
@@ -446,7 +446,7 @@ where
 1=1 and
 3=3 and
 pasl.vendor_business_type != 'MANUFACTURER' and
-pasl.owning_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+pasl.owning_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 pasl.owning_organization_id=msiv.organization_id(+) and
 pasl.item_id=msiv.inventory_item_id(+) and
 pasl.category_id=mck.category_id(+) and
@@ -498,7 +498,7 @@ xxen_util.meaning(decode(pasl.using_organization_id,-1,'Y','N'),'YES_NO',0) glob
 (select pas.status from po_asl_statuses pas where pas.status_id = pasl.asl_status_id) status,
 xxen_util.meaning(decode(pasl.disable_flag,'Y','Y',null),'YES_NO',0) disabled,
 pasl.primary_vendor_item supplier_item,
-pasl.review_by_date review_by_date,
+pasl.review_by_date,
 pasl.comments,
 pasl.creation_date created,
 --
@@ -655,7 +655,7 @@ where
 1=1 and
 3=3 and
 pasl.vendor_business_type != 'MANUFACTURER' and
-pasl.owning_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+pasl.owning_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 pasl.owning_organization_id=msiv.organization_id(+) and
 pasl.item_id=msiv.inventory_item_id(+) and
 pasl.category_id=mck.category_id(+) and
@@ -707,7 +707,7 @@ xxen_util.meaning(decode(pasl.using_organization_id,-1,'Y','N'),'YES_NO',0) glob
 (select pas.status from po_asl_statuses pas where pas.status_id = pasl.asl_status_id) status,
 xxen_util.meaning(decode(pasl.disable_flag,'Y','Y',null),'YES_NO',0) disabled,
 pasl.primary_vendor_item supplier_item,
-pasl.review_by_date review_by_date,
+pasl.review_by_date,
 pasl.comments,
 pasl.creation_date created,
 --
@@ -865,7 +865,7 @@ where
 1=1 and
 3=3 and
 pasl.vendor_business_type != 'MANUFACTURER' and
-pasl.owning_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+pasl.owning_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 pasl.owning_organization_id=msiv.organization_id(+) and
 pasl.item_id=msiv.inventory_item_id(+) and
 pasl.category_id=mck.category_id(+) and

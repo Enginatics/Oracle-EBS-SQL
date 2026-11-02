@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'Blitz Upload Example (API without parameters) | Oracle EBS SQL Report'
-description: 'Example upload, which can be used as a template by copying (Tools>Copy Report) to create new uploads using an API without parameters. This API will be…'
+description: 'Example upload to copy (Tools>Copy Report) when creating an upload whose API processes all uploaded rows in one call, without parameters. The upload…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Blitz, Example, (API, xxen_upload_example'
 permalink: /Blitz%20Upload%20Example%20%28API%20without%20parameters%29/
 report_name: 'Blitz Upload Example (API without parameters)'
@@ -14,13 +14,16 @@ report_web_name: blitz-upload-example-api-without-parameters
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/blitz-upload-example-api-without-parameters/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api-without-parameters) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api-without-parameters).
 
 ## Overview
-Example upload, which can be used as a template by copying (Tools>Copy Report) to create new uploads using an API without parameters.
-This API will be called just once by the upload framework and all the uploaded records can be accessed within the API by selecting them from the Data View eg: select * from xxen_blitz_upload_examp_9718_u xu where xu.status_code_=xxen_upload.status_valid
+Example upload to copy (Tools>Copy Report) when creating an upload whose API processes all uploaded rows in one call, without parameters.
+
+The upload framework calls the API once. The API reads the valid rows from the upload's data view, shown in the Data View field of the setup window, and writes each row's status and message back to it. For this upload: select * from xxen_blitz_upload_examp_9718_u xu where xu.status_code_=xxen_upload.status_valid
+
+A copied upload has its own data view, so replace the view name in the copied API.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api-without-parameters) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
-Name
+Upload Mode, Name
 
 ## Oracle EBS Tables Used
 [xxen_upload_example](https://www.enginatics.com/library/?pg=1&find=xxen_upload_example&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-upload-example-api-without-parameters)

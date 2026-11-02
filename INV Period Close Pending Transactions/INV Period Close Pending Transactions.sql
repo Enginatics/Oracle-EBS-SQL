@@ -44,7 +44,7 @@ org_acct_periods oap,
 mtl_material_transactions_temp mmtt
 where
 1=1 and
-ood.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 ood.organization_id = mmtt.organization_id and
 ood.organization_id = oap.organization_id and
 trunc(nvl(mmtt.transaction_date,sysdate)) <= inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,ood.legal_entity) and
@@ -73,7 +73,7 @@ org_acct_periods oap,
 mtl_material_transactions mmt
 where
 1=1 and
-ood.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 ood.organization_id = mmt.organization_id and
 ood.organization_id = oap.organization_id and
 trunc(nvl(mmt.transaction_date, sysdate)) <= inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,ood.legal_entity) and
@@ -102,7 +102,7 @@ org_acct_periods oap,
 wip_cost_txn_interface wcti
 where
 1=1 and
-ood.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 ood.organization_id = wcti.organization_id and
 ood.organization_id = oap.organization_id and
 trunc(nvl(wcti.transaction_date, sysdate)) <= inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,ood.legal_entity)
@@ -138,7 +138,7 @@ from
   wsm_split_merge_txn_interface wsmti
   where
   1=1 and
-  ood.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+  ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
   ood.organization_id = wsmti.organization_id and
   ood.organization_id = oap.organization_id and
   trunc(nvl(wsmti.transaction_date, sysdate)) <= inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,ood.legal_entity) and
@@ -162,7 +162,7 @@ from
   wsm_lot_move_txn_interface wlmti
   where
   1=1 and
-  ood.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+  ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
   ood.organization_id = wlmti.organization_id and
   ood.organization_id = oap.organization_id and
   trunc(nvl(wlmti.transaction_date, sysdate)) <= inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,ood.legal_entity) and
@@ -186,7 +186,7 @@ from
   wsm_lot_split_merges_interface wlsmi
   where
   1=1 and
-  ood.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+  ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
   ood.organization_id = wlsmi.organization_id and
   ood.organization_id = oap.organization_id and
   trunc(nvl(wlsmi.transaction_date, sysdate)) <= inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,ood.legal_entity) and
@@ -222,7 +222,7 @@ mtl_parameters mp,
 cst_lc_adj_interface clai
 where
 1=1 and
-ood.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 ood.organization_id = clai.organization_id and
 ood.organization_id = oap.organization_id and
 trunc(nvl(clai.transaction_date, sysdate)) <= inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,ood.legal_entity) and
@@ -252,7 +252,7 @@ org_acct_periods oap,
 rcv_transactions_interface rti
 where
 1=1 and
-ood.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 ood.organization_id = rti.to_organization_id and
 ood.organization_id = oap.organization_id and
 trunc(nvl(rti.transaction_date, sysdate)) <= inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,ood.legal_entity) and
@@ -281,7 +281,7 @@ org_acct_periods oap,
 mtl_transactions_interface mti
 where
 1=1 and
-ood.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 ood.organization_id = mti.organization_id and
 ood.organization_id = oap.organization_id and
 trunc(nvl(mti.transaction_date, sysdate)) <= inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,ood.legal_entity) and
@@ -310,7 +310,7 @@ org_acct_periods oap,
 wip_move_txn_interface wmti
 where
 1=1 and
-ood.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 ood.organization_id = wmti.organization_id and
 ood.organization_id = oap.organization_id and
 trunc(nvl(wmti.transaction_date, sysdate)) <= inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,ood.legal_entity)
@@ -340,7 +340,7 @@ wip_discrete_jobs wdj,
 wip_entities we
 where
 1=1 and
-ood.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 ood.organization_id = wdj.organization_id and
 ood.organization_id = oap.organization_id and
 trunc(nvl(wdj.scheduled_completion_date, sysdate)) <= inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,ood.legal_entity) and
@@ -385,7 +385,7 @@ from
   wsh_trip_stops wts
   where
   1=1 and
-  ood.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+  ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
   ood.organization_id = wdd.organization_id and
   ood.organization_id = oap.organization_id and
   trunc(nvl(wts.actual_departure_date, sysdate)) between inv_le_timezone_pub.get_server_day_time_for_le(oap.period_start_date,ood.legal_entity) and inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,ood.legal_entity) and
@@ -422,7 +422,7 @@ from
   po_requisition_lines_all pl
   where
   1=1 and
-  ood.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+  ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
   ood.organization_id = pl.destination_organization_id and
   ood.organization_id = oap.organization_id and
   trunc(nvl(wts.actual_departure_date, sysdate)) between inv_le_timezone_pub.get_server_day_time_for_le(oap.period_start_date,ood.legal_entity) and inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,ood.legal_entity) and
@@ -466,7 +466,7 @@ from
   mtl_interorg_parameters mip
   where
   1=1 and
-  ood.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+  ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
   ood.organization_id = pl.destination_organization_id and
   ood.organization_id = oap.organization_id and
   trunc(nvl(wts.actual_departure_date, sysdate)) between inv_le_timezone_pub.get_server_day_time_for_le(oap.period_start_date,ood.legal_entity) and inv_le_timezone_pub.get_server_day_time_for_le(oap.schedule_close_date,ood.legal_entity) and

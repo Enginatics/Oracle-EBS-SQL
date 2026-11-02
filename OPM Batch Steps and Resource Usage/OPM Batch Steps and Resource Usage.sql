@@ -35,7 +35,7 @@ gme_batch_header gbh,
 org_organization_definitions ood
 where
 1=1 and
-gbh.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+gbh.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 gbs.batch_id=gbh.batch_id and
 gbs.batchstep_id=gbsr.batchstep_id(+) and
 gbh.organization_id=ood.organization_id

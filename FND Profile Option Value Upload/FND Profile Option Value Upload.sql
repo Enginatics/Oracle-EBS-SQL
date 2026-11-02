@@ -6,8 +6,8 @@
 /*************************************************************************/
 -- Report Name: FND Profile Option Value Upload
 -- Description: Upload to create, update and delete profile option values on site, application, responsibility, server, operating unit and user level, as in the System Profile Values form. Levels that the profile option definition does not allow to update are not offered.
--- The Value column shows and accepts the visible value of profile options validated by a list of values, e.g. a responsibility name instead of its id. Its list of values is derived from each profile option's SQL validation. A stored value is accepted as well. A few validations cannot be evaluated outside the profile form, e.g. because they depend on the responsibility being updated. These offer no list, save the value as entered and say so in the row message.
--- Clearing the Value of an existing row deletes the profile option value on that level.
+-- The Profile Option Value column shows and accepts the visible value of profile options validated by a list of values, e.g. a responsibility name instead of its id. Its list of values is derived from each profile option's SQL validation. A stored value is accepted as well. A few validations cannot be evaluated outside the profile form, e.g. because they depend on the responsibility being updated. These offer no list, save the value as entered and say so in the row message.
+-- Clearing the Profile Option Value of an existing row deletes the profile option value on that level.
 -- The Server column is used only for profile options with the server and responsibility hierarchy, to set a value for a responsibility on a specific server.
 -- Excel Example Output: https://www.enginatics.com/example/fnd-profile-option-value-upload/
 -- Library Link: https://www.enginatics.com/reports/fnd-profile-option-value-upload/

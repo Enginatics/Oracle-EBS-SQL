@@ -726,7 +726,7 @@ group by hcp.owner_table_id
 ) hcps
 where
 1=1 and
-(hcasa.org_id is null or hcasa.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)) and
+(hcasa.org_id is null or hcasa.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU')) and
 hp.party_id=hca.party_id and
 hca.cust_account_id=hcasa.cust_account_id(+) and
 hcasa.org_id=hou.organization_id(+) and

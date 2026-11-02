@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'CE Bank and Branch Upload | Oracle EBS SQL Report'
 description: 'CE Bank and Branch Upload ========================== Creates or updates banks and bank branches in Oracle Cash Management (CE) using the cebankpub API…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Bank, Branch, fnd_territories_vl, ce_bank_branches_v, hz_parties'
@@ -29,7 +29,7 @@ Opens an empty spreadsheet to enter new banks and branches.
 
 Create, Update
 --------------
-Returns existing bank branches. Edit fields and re-upload to update.
+Returns existing bank branches, optionally restricted by the Country and Bank Name parameters. Edit fields and re-upload to update.
 
 Required Fields
 ===============
@@ -55,12 +55,12 @@ Notes
 - Bank is matched by Country + Bank Name (+ Bank Number if provided). If no match is found, a new bank is created.
 - Branch is matched by Bank + Branch Name. If no match is found, a new branch is created within the bank.
 - Bank fields (Short Bank Name, Alternate Bank Name) are only applied on bank creation, not on update.
-- Country-specific routing number format validation is bypassed to allow loading data across all countries.
+- New banks and branches are validated against the country-specific bank and branch number formats. Updates of existing branches bypass this validation.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-bank-and-branch-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
-Upload Mode
+Upload Mode, Country, Bank Name
 
 ## Oracle EBS Tables Used
 [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-bank-and-branch-upload), [ce_bank_branches_v](https://www.enginatics.com/library/?pg=1&find=ce_bank_branches_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-bank-and-branch-upload), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-bank-and-branch-upload)

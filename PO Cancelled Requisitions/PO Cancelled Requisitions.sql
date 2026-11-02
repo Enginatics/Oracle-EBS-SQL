@@ -63,7 +63,7 @@ from
  po_document_types_all_tl t,
  po_document_types_all_b b,
  po_system_parameters_all psp1,
- mo_glob_org_access_tmp mgoat,
+ (select /*+ no_merge*/ xroa.id organization_id, haouv.name organization_name from xxen_report_org_access xroa, hr_all_organization_units_vl haouv where xroa.access_type='OU' and xroa.id=haouv.organization_id) mgoat,
  --
  financials_system_params_all fspa,
  (select prl.*

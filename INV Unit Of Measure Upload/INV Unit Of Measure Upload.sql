@@ -7,13 +7,13 @@
 -- Report Name: INV Unit Of Measure Upload
 -- Description: INV Unit Of Measure Upload
 -- ======================
--- Note: This upload can only be used in R12.2 or later.
+-- Note: This upload can only be used in R12.2.3 or later.
 -- This upload can be used to create and update Unit of Measure Classes and Units of Measures
 -- Excel Example Output: https://www.enginatics.com/example/inv-unit-of-measure-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-unit-of-measure-upload/
 -- Run Report: https://demo.enginatics.com/
 
-select /*+ push_pred(uom) */
+select
 null action_,
 null status_,
 null message_,

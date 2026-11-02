@@ -79,7 +79,7 @@ pa_tasks pt,
 hr_all_organization_units_vl haouv_exp
 where
 1=1 and
-adsa.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+adsa.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 adsa.org_id=haouv.organization_id and
 adsa.distribution_set_id=adsla.distribution_set_id(+) and
 adsla.dist_code_combination_id=gcck.code_combination_id(+) and

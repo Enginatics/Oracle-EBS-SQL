@@ -77,7 +77,7 @@ qpca.action_id=qa.action_id(+) and
 qpca.assigned_char_id=qc_assigned.char_id(+) and
 qpca.alr_action_set_id=aas.action_set_id(+) and
 qpca.alr_action_id=aa.action_id(+) and
-(qp.organization_id=0 or qp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)) and
+(qp.organization_id=0 or qp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')) and
 1=1
 union all
 select
@@ -136,7 +136,7 @@ qcat.char_action_trigger_id=qca.char_action_trigger_id(+) and
 qca.action_id=qa.action_id(+) and
 qca.alr_action_set_id=aas.action_set_id(+) and
 qca.alr_action_id=aa.action_id(+) and
-(qp.organization_id=0 or qp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)) and
+(qp.organization_id=0 or qp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')) and
 3=3
 ) x
 where

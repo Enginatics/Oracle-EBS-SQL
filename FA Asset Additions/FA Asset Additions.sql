@@ -30,6 +30,7 @@ select
   x.asset_number,
   x.asset_key,
   x.asset_description,
+  x.asset_key||' - '||x.asset_description asset_key_description,
   x.asset_category,
   x.tag_number,
   x.manufacturer_name,

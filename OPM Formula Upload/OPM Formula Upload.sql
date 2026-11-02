@@ -137,7 +137,7 @@ ffmv.formula_desc2 formula_description_2,
 ffmv.formula_class,
 (select fu.user_name from fnd_user fu where fu.user_id=ffmv.owner_id) owner,
 xxen_util.meaning(to_char(ffmv.scale_type),'SCALE_TYPE',552) header_scale_type,
-xxen_util.meaning(ffmv.auto_product_calc,'YES_NO',552) calculate_product_quantity,
+xxen_util.meaning(ffmv.auto_product_calc,'YES_NO',0) calculate_product_quantity,
 (select gsv.meaning from gmd_status_vl gsv where gsv.status_code=ffmv.formula_status) formula_status,
 xxen_util.meaning(to_char(fmd.line_type),'GMD_FORMULA_ITEM_TYPE',552) line_type,
 fmd.line_no,
@@ -151,8 +151,8 @@ xxen_util.meaning(to_char(fmd.release_type),'GMD_MATERIAL_RELEASE_TYPE',552) rel
 fmd.scrap_factor,
 decode(fmd.phantom_type,0,'Not Phantom',1,'Automatic Phantom',2,'Manual Phantom') phantom_type,
 xxen_util.meaning(to_char(fmd.rework_type),'GMD_REWORK_TYPE',552) rework_type,
-xxen_util.meaning(fmd.contribute_yield_ind,'YES_NO',552) contribute_to_yield,
-xxen_util.meaning(fmd.contribute_step_qty_ind,'YES_NO',552) contribute_to_step_quantity,
+xxen_util.meaning(fmd.contribute_yield_ind,'YES_NO',0) contribute_to_yield,
+xxen_util.meaning(fmd.contribute_step_qty_ind,'YES_NO',0) contribute_to_step_quantity,
 fmd.cost_alloc cost_allocation,
 fmd.prod_percent product_percent,
 xxen_util.meaning(fmd.by_product_type,'GMD_BY_PRODUCT_TYPE',552) by_product_type,
@@ -238,7 +238,7 @@ fmd.inventory_item_id=msiv.inventory_item_id and
 fmd.organization_id=msiv.organization_id and
 ffmv.delete_mark=0 and
 nvl(ffmv.inactive_ind,0)=0 and
-ffmv.owner_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+ffmv.owner_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 :p_upload_mode like '%'||xxen_upload.action_update
 ) x
 where

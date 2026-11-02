@@ -41,7 +41,7 @@ fnd_currencies fc,
 mtl_system_items_vl msiv
 where
 1=1 and
-mpacv.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mpacv.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 mpi.physical_inventory_id=mpacv.physical_inventory_id and
 (mpacv.count_quantity<>0 or mpacv.system_quantity<>0) and
 mpacv.organization_id=ood.organization_id and

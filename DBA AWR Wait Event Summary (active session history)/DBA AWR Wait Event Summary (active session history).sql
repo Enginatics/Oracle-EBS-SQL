@@ -12,7 +12,8 @@
 
 select
 100*dhash.seconds/xxen_util.zero_to_null(sum(dhash.seconds) over (partition by &dhash_instance_number 1)) percentage,
-dhash.seconds/dhash.total_seconds active_sessions,
+-- change to (the same helper the percentage line above already uses)
+dhash.seconds/xxen_util.zero_to_null(dhash.total_seconds) active_sessions,
 xxen_util.time(dhash.seconds) time,
 &dhash_instance_number
 dhash.seconds,

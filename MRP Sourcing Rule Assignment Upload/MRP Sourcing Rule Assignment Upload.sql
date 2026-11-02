@@ -10,9 +10,9 @@
 -- - Upload new Assignment Sets and Sourcing Rule Assignments
 -- - Update Existing Assignment Sets and Sourcing Rule Assignments
 -- Notes:
--- If an Assignment Organization is specified, then this determines the selecatable items.
+-- If an Assignment Organization is specified, then this determines the selectable items.
 -- If an Assignment Organization is not specified, then the Master Organization determines the selectable Items.
--- The selectable Assignment Organizations is not restricted by the Master Organization.
+-- The selectable Assignment Organizations are not restricted by the Master Organization.
 -- This is the same logic as used in the Sourcing Assignments form
 -- Excel Example Output: https://www.enginatics.com/example/mrp-sourcing-rule-assignment-upload/
 -- Library Link: https://www.enginatics.com/reports/mrp-sourcing-rule-assignment-upload/

@@ -5,14 +5,12 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Responsibility Upload
--- Description: Create and update Oracle E-Business Suite responsibilities, and maintain their menu/function exclusions, replicating the System Administrator Responsibilities form (FNDSCRSP).
--- Each row is one of two entity types, chosen in the Row Type column:
--- - Responsibility: creates or updates the responsibility definition (Name, Application, Key, Description, Effective Dates, Available From, Data Group, Menu, Request Group, Web Host/Agent Name). Responsibilities are identified by Application + Responsibility Key. A responsibility is created when that combination does not yet exist, otherwise it is updated. The Responsibility Key is the stable identifier and is not editable once created - to rename a responsibility change its Name, not its Key.
--- - Menu/Function Exclusion: adds (or, with Exclude = Yes, removes) a menu or function exclusion for the responsibility identified by Application + Responsibility Key. Exclusion Type selects Function or Menu; Exclusion Name selects the item to exclude. When adding a new responsibility and its exclusions in the same upload, place the Responsibility row before its exclusion rows.
--- Upload Modes:
--- - Create opens an empty template.
--- - Create, Update downloads existing responsibilities (and their exclusions) matching the Application / Responsibility filters for review and update.
--- Responsibilities are not deleted by this upload; set an Effective Date To to disable one, matching Oracle best practice.
+-- Description: Upload to create and update responsibilities and their menu and function exclusions, as in the Responsibilities form of the System Administrator responsibility.
+-- Each row is one of two row types:
+-- - Responsibility: creates or updates the responsibility definition. A responsibility is identified by Application and Responsibility Key and created when that combination does not exist. The key cannot be changed once created; to rename a responsibility, change its Responsibility Name.
+-- - Menu/Function Exclusion: adds a menu or function exclusion to the responsibility identified by Application and Responsibility Key, or removes it with Exclude Yes. Exclusion Type selects Function or Menu, Exclusion Name the item. When creating a responsibility and its exclusions in one file, place the Responsibility row first.
+-- Upload Mode Create opens an empty sheet. Create, Update downloads the responsibilities and their exclusions selected by Application and Responsibility Name; without either it downloads every responsibility of the instance.
+-- Responsibilities are not deleted: enter an Effective Date To to end one.
 -- Excel Example Output: https://www.enginatics.com/example/fnd-responsibility-upload/
 -- Library Link: https://www.enginatics.com/reports/fnd-responsibility-upload/
 -- Run Report: https://demo.enginatics.com/

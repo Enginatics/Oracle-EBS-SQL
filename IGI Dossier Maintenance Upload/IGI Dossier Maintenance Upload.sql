@@ -5,7 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: IGI Dossier Maintenance Upload
--- Description: Upload to create and maintain dossier transactions (budget transfers) for Oracle Public Sector Financials International (IGI). Supports header creation with source and destination budget lines using the seeded IGI Dossier Maintenance APIs.
+-- Description: Creates dossier transactions (budget transfers) of Oracle Public Sector Financials International (IGI) through the IGI Dossier table handlers, with status In Process. Check funds, reserve funds and approve them in the Dossier Maintenance window.
+-- Rows with the same Dossier Transaction Name, dossier type and ledger form one transaction: the first row creates the header and the source budget line, and every row adds a destination budget line. A row whose transaction already exists adds a destination line to it; the header and existing lines are not updated.
+-- The source budget amount is the total of the destination amounts and must not exceed the funds available on the source account. Funds available are the budget less encumbrance and actual balances, for the amount type of the dossier type (PTD, QTD, YTD or PJTD). The destination new balance is its funds available plus the transferred amount.
 -- Excel Example Output: https://www.enginatics.com/example/igi-dossier-maintenance-upload/
 -- Library Link: https://www.enginatics.com/reports/igi-dossier-maintenance-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -34,7 +36,8 @@ idtd.period_name dest_period,
 gcck_d.concatenated_segments dest_account,
 idtd.budget_amount dest_budget_amount,
 idtd.funds_available dest_funds_available,
-idtd.new_balance dest_new_balance
+idtd.new_balance dest_new_balance,
+to_number(null) upload_row
 from
 igi_dos_trx_headers idth,
 igi_dos_doc_types iddt,

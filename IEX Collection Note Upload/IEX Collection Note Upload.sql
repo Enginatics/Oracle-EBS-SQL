@@ -10,18 +10,18 @@
 -- The Note column is limited to 2,000 characters. The upload will reject the row if the note exceeds this.
 -- The Note Detail column is limited to 4,000 characters. Note details exceeding this will be truncated.
 -- Party Level Notes:
--- Pary Name is required
+-- Party Name is required.
 -- Party Number is required only when the Party Name is not unique.
 -- Account Level Notes:
 -- Party Name and Account Number are required.
 -- Bill To Level Notes:
--- Party Name, Account Number and Bill To Location are required .
+-- Party Name, Account Number and Bill To Location are required.
 -- Operating Unit is optional unless the same Bill To Location (code) is used across accessible Operating Units.
 -- Bill to Address is informational only.
 -- Transaction Level Notes:
 -- Party Name, Account Number, Transaction Number are required.
 -- Bill To Site and Operating Unit are only required if the same transaction number exists across different accessible Bill To Sites/Operating Units.
--- Installment is optional unless the Transaction has muliple Installments, in which case it must be specified.
+-- Installment is optional unless the Transaction has multiple Installments, in which case it must be specified.
 -- Unpaid Reason applies to Transaction level notes only. Oracle Collections holds it on the transaction's delinquency rather than on the note, so it applies to every note on that transaction.
 -- Delinquency Status shows whether the transaction is already delinquent. When it is blank, set Create Delinquency to Yes to create a delinquency with status Current, as the Collections form asks.
 -- Unpaid Reason and Create Delinquency can only be set when the note is created.
@@ -37,7 +37,7 @@ null message_,
 null modified_columns_,
 to_number(null) jtf_note_id_out,
 hp.party_name party,
-hp.party_number party_number,
+hp.party_number,
 hca.account_number,
 hcsua.location bill_to_site,
 haouv.name operating_unit,
@@ -148,5 +148,5 @@ haouv.organization_id(+)=x.org_id and
 jov.object_code(+)=x.source_object_code and
 jov.application_id(+)=decode(x.source_object_code,'PARTY',690,695) and
 ida.payment_schedule_id(+)=x.payment_schedule_id and
-(x.org_id is null or x.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)) and
+(x.org_id is null or x.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU')) and
 1=1

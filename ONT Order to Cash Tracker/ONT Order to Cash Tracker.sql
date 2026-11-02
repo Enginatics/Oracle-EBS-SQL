@@ -186,7 +186,7 @@ jtf_rs_salesreps jrs,
 jtf_rs_resource_extns_vl jrrev
 where
 1=1 and
-ooha.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+ooha.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 haouv.organization_id=ooha.org_id and
 ooha.header_id=oola.header_id and
 ooha.sold_to_org_id=hca.cust_account_id and

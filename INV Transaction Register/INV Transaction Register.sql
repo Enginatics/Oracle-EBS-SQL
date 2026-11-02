@@ -90,7 +90,7 @@ mmt.transaction_source_id,
 mmt.locator_id,
 row_number() over (partition by mmt.transaction_id order by mmt.transaction_id) trx_seq
 from
-org_access_view              oav,
+(select /*+ no_merge*/ ood.organization_id, ood.organization_code, ood.organization_name, ood.set_of_books_id, ood.chart_of_accounts_id, ood.operating_unit, ood.inventory_enabled_flag, ood.disable_date from org_organization_definitions ood where ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')) oav,
 mtl_system_items_vl          msi,
 mtl_transaction_types        mtxt,
 mtl_transaction_reasons      mtr,
@@ -128,8 +128,6 @@ mtl_unit_transactions        mut,
 ) mut2
 where 1=1
 and oav.organization_id = mmt.organization_id
-and oav.responsibility_id = fnd_global.resp_id
-and oav.resp_application_id = fnd_global.resp_appl_id
 and mmt.reason_id = mtr.reason_id (+)
 and mmt.created_by = fndu.user_id (+)
 and mmt.transaction_type_id = mtxt.transaction_type_id

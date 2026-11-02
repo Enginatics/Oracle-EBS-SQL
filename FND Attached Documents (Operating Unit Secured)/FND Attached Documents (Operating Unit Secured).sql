@@ -58,7 +58,7 @@ fdt.description,
 fddv.user_name data_type,
 decode(fd.datatype_id,5,fd.url,nvl(fl.file_name,fd.file_name)) name,
 decode(fd.datatype_id,
-5,'=HYPERLINK("'||fd.url||'","'||fd.url||'")',
+5,'HYPERLINK("'||fd.url||'","'||fd.url||'")',
 nvl2(fd.media_id,'HYPERLINK("'||fnd_gfm.construct_download_url(fnd_web_config.gfm_agent,fd.media_id)||'","'||nvl(fl.file_name,fd.file_name)||'")',null)
 ) url,
 fdn.short_name location,
@@ -136,7 +136,7 @@ decode(fd.datatype_id,1,fd.media_id)=fdst.media_id(+) and
 decode(fd.datatype_id,2,fd.media_id)=fdlt.media_id(+) and
 fd.document_id=fad.document_id and
 fad.org_id=haouv.organization_id and
-fad.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+fad.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 fad.entity_name=fdev.data_object_code(+) and
 nvl(fd.dm_node,0)=fdn.node_id(+)
 ) x

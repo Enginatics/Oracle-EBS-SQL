@@ -35,4 +35,4 @@ mtl_parameters mp
 where
 1=1 and
 mpiv.organization_id = mp.organization_id and
-mpiv.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+mpiv.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')

@@ -86,7 +86,7 @@ mtl_txn_request_lines mtrl,
 mtl_system_items_vl msiv
 where
 1=1 and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 mp.organization_id=mtrh.organization_id and
 mtrh.move_order_type=1 and
 mtrh.header_id=mtrl.header_id and

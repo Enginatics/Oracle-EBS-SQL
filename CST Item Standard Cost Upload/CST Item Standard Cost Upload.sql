@@ -14,8 +14,8 @@
 -- NOTE:
 -- You can only upload costs to cost types that are not flagged as frozen and are flagged as updateable. This upload is used for updating cost types using the standard costing method.
 -- Optionally, the upload can perform a Cost Rollup after the Item Costs have been imported. The Cost Rollup can be performed for
--- - Specific Items - a cost rollup will be done for only those items for which costs have been uploaded
--- - All Items - in this mode the upload will submit the 'Supply Chain Cost Rollup - Print Report' concurrent request to roll up all items within each organization costs are uploaded to
+-- - Specific item - a cost rollup will be done for only those items for which costs have been uploaded
+-- - All items - in this mode the upload will submit the 'Supply Chain Cost Rollup - Print Report' concurrent request to roll up all items within each organization costs are uploaded to
 -- NOTE: The Item Cost Interface only supports importing 'This Level' costs. As such, this upload does not support the direct upload of rolled up costs
 -- Parameters
 -- ==========
@@ -27,12 +27,12 @@
 -- Auto Populate Upload Columns (Default: Yes) -
 -- Applies to downloaded Item Cost Entries only. If set to Yes, the downloaded records are flagged ready for upload even if no changes have been made. If left blank, records are only flagged for upload when the user amends them. Where an Item Cost has multiple cost elements, all cost element records of that item must then be flagged for upload by amending them, as only flagged records are uploaded.
 -- Source Cost Type
--- Optionally specify the source Cost Type from which to download the current Item Costs. For the scenarios where you want to amend the current items costs for a Cost Type or want to copy the current item costs for a Cost Type to a different Target Cost Type.
+-- The Cost Type whose current Item Costs are downloaded. To amend the item costs of the Target Cost Type, select the same Cost Type here; to copy item costs, select a different one. Left blank, the download is an empty sheet for entering new item costs.
 -- Rollup Costs - set to Yes to do a cost rollup after the costs are uploaded
--- Rollup Type - Rollup specific Items or All Items
+-- Rollup Type - All items or Specific item
 -- Rollup Option - Single level rollup or Full cost rollup
 -- NOTE:
--- In All Items mode the Supply Chain Cost Rollup requests are submitted asynchronously, and the upload does not wait for them, so the item summary costs in the upload result may not yet reflect the completed rollup.
+-- In 'All items' mode the Supply Chain Cost Rollup requests are submitted asynchronously, and the upload does not wait for them, so the item summary costs in the upload result may not yet reflect the completed rollup.
 -- Organization Code - Optionally select the Organization(s) for which you want to download the Item Costs for
 -- Additional Parameters - optionally restrict the items to be downloaded.
 -- Inventory Asset? (Default: Yes)
@@ -139,7 +139,7 @@ mtl_parameters mp
 where
 1=1 and
 :p_upload_mode=:p_upload_mode and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 --
 cct_s.cost_type=:p_source_cost_type and
 cct_t.cost_type=:p_target_cost_type and

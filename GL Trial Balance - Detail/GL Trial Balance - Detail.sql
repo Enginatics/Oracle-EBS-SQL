@@ -65,10 +65,10 @@ where
 1=1 and
 gl.ledger_id=:p_ledger_id and
 gl.ledger_id=glsa.ledger_set_id(+) and
-glr.target_currency_code=:p_ledger_currency and
-gl.ledger_id=glr.source_ledger_id and
+nvl(glsa.ledger_id,gl.ledger_id)=glr.source_ledger_id and
 glr.source_ledger_id=glr.target_ledger_id and
-nvl(glsa.ledger_id,gl.ledger_id)=gb.ledger_id and
+glr.target_currency_code=:p_ledger_currency and
+glr.source_ledger_id=gb.ledger_id and
 gb.code_combination_id=gcck.code_combination_id and
 nvl(:p_entered_currency,'?')=nvl(:p_entered_currency,'?') and
 gb.period_name in (:p_period_name, decode(:p_type,'PTD', :p_period_name,'PJTD', :p_period_name,'YTD', :p_first_period_name)) and

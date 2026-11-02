@@ -9,7 +9,7 @@
 -- ========================
 -- Loads bank statements (header and lines) into Oracle Cash Management through the bank statement open interface and runs Oracle's Bank Statement Import automatically after upload.
 -- Optionally, AutoReconciliation runs in the same step to match the imported statement lines against AR receipts, AP payments and GL journal lines according to the bank account's transaction codes and matching rules, in the same way as the standard 'Bank Statement Import & AutoReconciliation' concurrent program.
--- Each row represents one statement line. Statement header information (Account Number, Statement Number, Statement Date, Currency, Control Balances) repeats on every row and the statement header is created once per statement number. Line numbers are assigned automatically per statement when left blank.
+-- Each row represents one statement line. Statement header information (Bank Account Number, Statement Number, Statement Date, Currency, Control Balances) repeats on every row and the statement header is created once per statement number. Line numbers are assigned automatically per statement when left blank.
 -- Credit and debit control totals are computed automatically from the entered lines and their transaction code types.
 -- Upload Mode
 -- ===========

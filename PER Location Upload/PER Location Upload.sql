@@ -59,7 +59,7 @@ xxen_util.meaning(case when hla.bill_to_site_flag='Y' then 'Y' end,'YES_NO',0) b
 xxen_util.meaning(case when hla.office_site_flag='Y' then 'Y' end,'YES_NO',0) office_site_flag,
 xxen_util.meaning(case when hla.in_organization_flag='Y' then 'Y' end,'YES_NO',0) in_organization_flag,
 mp.organization_code inventory_organization,
-ppf.full_name contact,
+(select max(ppf.full_name) keep (dense_rank last order by ppf.effective_start_date) from per_all_people_f ppf where hla.designated_receiver_id=ppf.person_id and ppf.effective_start_date<=sysdate) contact,
 (select ftv.name from fnd_timezones_vl ftv where ftv.timezone_code=hla.timezone_code) timezone_code,
 hla.ece_tp_location_code,
 xxen_util.display_flexfield_context(800,'HR_LOCATIONS',hla.attribute_category) loc_attribute_category,
@@ -89,7 +89,6 @@ hr_locations_all hla,
 hr_locations_all_tl hlat,
 hr_locations_all hla2,
 mtl_parameters mp,
-per_all_people_f ppf,
 per_business_groups pbg
 where
 1=1 and
@@ -98,5 +97,4 @@ hla.location_id=hlat.location_id and
 hlat.language=userenv('lang') and
 hla.ship_to_location_id=hla2.location_id(+) and
 hla.inventory_organization_id=mp.organization_id(+) and
-hla.designated_receiver_id=ppf.person_id(+) and
 hla.business_group_id=pbg.business_group_id(+)

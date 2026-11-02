@@ -76,7 +76,7 @@ select
  msiv.description item_description,
  msiv.primary_uom_code uom,
  msiv.planner_code planner,
- mfd.forecast_date forecast_date,
+ mfd.forecast_date,
  mfd.rate_end_date forecast_end_date,
  mfd.original_forecast_quantity original_quantity,
  mfd.current_forecast_quantity quantity,
@@ -106,7 +106,8 @@ select
  mfd.attribute13,
  mfd.attribute14,
  mfd.attribute15,
- mfd.transaction_id
+ mfd.transaction_id,
+ to_number(null) upload_row
 from
  mtl_parameters mp,
  mrp_forecast_designators mfds,

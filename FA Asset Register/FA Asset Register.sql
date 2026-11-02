@@ -289,6 +289,7 @@ from
  assets.asset_category,
  assets.category_desc,
  assets.asset_key,
+ assets.asset_key||' - '||assets.description asset_key_description,
  assets.asset_category_segment1,
  assets.asset_category_segment2,
  &fa_dff_cols_branch
@@ -377,6 +378,7 @@ from
  assets.asset_category,
  assets.category_desc,
  assets.asset_key,
+ assets.asset_key||' - '||assets.description asset_key_description,
  assets.asset_category_segment1,
  assets.asset_category_segment2,
  &fa_dff_cols_branch
@@ -466,6 +468,7 @@ from
  assets.asset_category,
  assets.category_desc,
  assets.asset_key,
+ assets.asset_key||' - '||assets.description asset_key_description,
  assets.asset_category_segment1,
  assets.asset_category_segment2,
  &fa_dff_cols_branch

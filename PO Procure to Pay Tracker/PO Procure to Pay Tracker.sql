@@ -240,7 +240,7 @@ mtl_system_items_vl msiv,
 mtl_categories_kfv mck
 where
 1=1 and
-pha.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+pha.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 haouv.organization_id=pha.org_id and
 pha.type_lookup_code in ('STANDARD','BLANKET','PLANNED') and
 pha.po_header_id=pla.po_header_id and
@@ -299,7 +299,7 @@ mtl_system_items_vl msiv,
 mtl_categories_kfv mck
 where
 2=2 and
-prha.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+prha.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 haouv.organization_id=prha.org_id and
 prha.type_lookup_code='PURCHASE' and
 nvl(prha.authorization_status,'INCOMPLETE') not in ('SYSTEM_SAVED','CANCELLED','REJECTED','RETURNED') and

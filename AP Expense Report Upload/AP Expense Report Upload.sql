@@ -117,7 +117,7 @@ hr_all_organization_units_vl haouv_exp
 where
 1=1 and
 aerha.source='XpenseXpress' and
-aerha.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+aerha.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 aerha.org_id=haouv.organization_id and
 aerha.employee_id=ppx.person_id(+) and
 aerha.employee_ccid=gcck_h.code_combination_id(+) and

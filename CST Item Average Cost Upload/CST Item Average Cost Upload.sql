@@ -49,16 +49,16 @@ null modified_columns_,
 to_number(null) source_line_id,
 to_number(null) source_header_id,
 :p_trx_type transaction_type,
-:p_trx_source source,
+:p_default_source source,
 x.*
 from
 (
 select
 mp.organization_code organization,
 msiv.concatenated_segments item,
-ccg.cost_group cost_group,
+ccg.cost_group,
 :p_trx_date transaction_date,
-msiv.description description,
+msiv.description,
 cql.item_cost item_average_cost,
 --
 clcdv.level_type_dsp cost_element_level,
@@ -97,7 +97,7 @@ cst_layer_cost_details_v clcdv,
 cst_cost_groups ccg
 where
 mp.organization_id = msiv.organization_id and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 mp.primary_cost_method = 2 and
 msiv.organization_id = cql.organization_id and
 msiv.inventory_item_id = cql.inventory_item_id and
@@ -127,9 +127,9 @@ union
 select
 mp.organization_code organization,
 msiv.concatenated_segments item,
-ccg.cost_group cost_group,
+ccg.cost_group,
 :p_trx_date transaction_date,
-msiv.description description,
+msiv.description,
 cic.item_cost item_average_cost,
 --
 cicdv.level_type_dsp cost_element_level,
@@ -152,7 +152,7 @@ null material_overhead_adj_account,
 null resource_adj_account,
 null outside_processing_adj_account,
 null overhead_adj_account,
-null default_adj_account,
+:p_default_adj_account default_adj_account,
 --
 null reason,
 cast(null as varchar2(240)) reference,
@@ -168,7 +168,7 @@ cst_item_cost_details_v cicdv,
 cst_cost_groups ccg
 where
 mp.organization_id = msiv.organization_id and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 mp.primary_cost_method = 2 and
 msiv.organization_id = cic.organization_id and
 msiv.inventory_item_id = cic.inventory_item_id and

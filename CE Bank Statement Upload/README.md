@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'CE Bank Statement Upload | Oracle EBS SQL Report'
 description: 'CE Bank Statement Upload ======================== Loads bank statements (header and lines) into Oracle Cash Management through the bank statement open…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Bank, Statement, ce_statement_headers_int, ce_statement_lines_interface'
@@ -20,7 +20,7 @@ Loads bank statements (header and lines) into Oracle Cash Management through the
 
 Optionally, AutoReconciliation runs in the same step to match the imported statement lines against AR receipts, AP payments and GL journal lines according to the bank account's transaction codes and matching rules, in the same way as the standard 'Bank Statement Import & AutoReconciliation' concurrent program.
 
-Each row represents one statement line. Statement header information (Account Number, Statement Number, Statement Date, Currency, Control Balances) repeats on every row and the statement header is created once per statement number. Line numbers are assigned automatically per statement when left blank.
+Each row represents one statement line. Statement header information (Bank Account Number, Statement Number, Statement Date, Currency, Control Balances) repeats on every row and the statement header is created once per statement number. Line numbers are assigned automatically per statement when left blank.
 
 Credit and debit control totals are computed automatically from the entered lines and their transaction code types.
 
@@ -43,7 +43,7 @@ Notes
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-bank-statement-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
-Upload Mode, AutoReconciliation, GL Date, Account Number, Statement Number
+Upload Mode, AutoReconciliation, GL Date, Bank Account Number, Statement Number
 
 ## Oracle EBS Tables Used
 [ce_statement_headers_int](https://www.enginatics.com/library/?pg=1&find=ce_statement_headers_int&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-bank-statement-upload), [ce_statement_lines_interface](https://www.enginatics.com/library/?pg=1&find=ce_statement_lines_interface&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ce-bank-statement-upload)

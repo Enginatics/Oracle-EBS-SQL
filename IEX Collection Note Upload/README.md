@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'IEX Collection Note Upload | Oracle EBS SQL Report'
 description: 'Creates and updates Collection Notes in Oracle Collections (IEX) - the same notes shown in the Collections work area. Each note is attached at a single…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, IEX, Collection, Note, hz_cust_accounts, hz_cust_site_uses_all, hz_cust_acct_sites_all'
@@ -14,7 +14,7 @@ report_web_name: iex-collection-note-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/iex-collection-note-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload).
 
 ## Overview
-Creates and updates Collection Notes in Oracle Collections (IEX)  - the same notes shown in the Collections work area.
+Creates and updates Collection Notes in Oracle Collections (IEX) - the same notes shown in the Collections work area.
 
 Each note is attached at a single Note Level: Customer (party), Account, Bill To, or Collections Transaction.
 
@@ -22,21 +22,21 @@ The Note column is limited to 2,000 characters. The upload will reject the row i
 The Note Detail column is limited to 4,000 characters. Note details exceeding this will be truncated.
 
 Party Level Notes:
-Pary Name is required
+Party Name is required.
 Party Number is required only when the Party Name is not unique.
 
 Account Level Notes:
 Party Name and Account Number are required.
 
 Bill To Level Notes:
-Party Name, Account Number and Bill To Location are required .
+Party Name, Account Number and Bill To Location are required.
 Operating Unit is optional unless the same Bill To Location (code) is used across accessible Operating Units.
 Bill to Address is informational only.
 
 Transaction Level Notes:
 Party Name, Account Number, Transaction Number are required.
 Bill To Site and Operating Unit are only required if the same transaction number exists across different accessible Bill To Sites/Operating Units.
-Installment is optional unless the Transaction has muliple Installments, in which case it must be specified.
+Installment is optional unless the Transaction has multiple Installments, in which case it must be specified.
 
 Unpaid Reason applies to Transaction level notes only. Oracle Collections holds it on the transaction's delinquency rather than on the note, so it applies to every note on that transaction.
 Delinquency Status shows whether the transaction is already delinquent. When it is blank, set Create Delinquency to Yes to create a delinquency with status Current, as the Collections form asks.
@@ -50,7 +50,7 @@ Only the Note Type, Note Status and descriptive flexfield attributes can be chan
 Upload Mode, Party, Party Number, Account Number, Operating Unit, Bill To Site, Transaction Number, Note Level, Note Date From, Note Date To
 
 ## Oracle EBS Tables Used
-[hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [hz_cust_site_uses_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [hz_cust_acct_sites_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [jtf_notes_vl](https://www.enginatics.com/library/?pg=1&find=jtf_notes_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [jtf_objects_vl](https://www.enginatics.com/library/?pg=1&find=jtf_objects_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [iex_delinquencies_all](https://www.enginatics.com/library/?pg=1&find=iex_delinquencies_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [mo_glob_org_access_tmp](https://www.enginatics.com/library/?pg=1&find=mo_glob_org_access_tmp&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [dual](https://www.enginatics.com/library/?pg=1&find=dual&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload)
+[hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [hz_cust_site_uses_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [hz_cust_acct_sites_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [ar_payment_schedules_all](https://www.enginatics.com/library/?pg=1&find=ar_payment_schedules_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [ra_customer_trx_all](https://www.enginatics.com/library/?pg=1&find=ra_customer_trx_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [jtf_notes_vl](https://www.enginatics.com/library/?pg=1&find=jtf_notes_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [jtf_objects_vl](https://www.enginatics.com/library/?pg=1&find=jtf_objects_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [iex_delinquencies_all](https://www.enginatics.com/library/?pg=1&find=iex_delinquencies_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [xxen_report_org_access](https://www.enginatics.com/library/?pg=1&find=xxen_report_org_access&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=iex-collection-note-upload)

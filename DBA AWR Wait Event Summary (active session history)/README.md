@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-02
 title: 'DBA AWR Wait Event Summary (active session history) | Oracle EBS SQL Report'
 description: 'Wait event and CPU usage summary from the AWR active session history. – Oracle EBS Database Administration SQL report: free SQL, parameters and tables…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, AWR, Wait, Event, dba_hist_active_sess_history'

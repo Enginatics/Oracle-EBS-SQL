@@ -5,37 +5,13 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: EAM PM Schedule Upload
--- Description: EAM Preventive Maintenance Schedule Upload
--- =========================================
--- Create or update Oracle EAM Preventive Maintenance schedule definitions, including:
--- - PM Schedule header (asset or asset group, activity, schedule name, set name, type, rescheduling point, etc.)
--- - Activity group (for Rule Based schedules: list of activities with interval multiples)
--- - Scheduling rules: Day Interval, Runtime / Meter, and List Date rules
--- - Optional Last Service info (per meter)
--- Row Model
--- =========
--- Each spreadsheet row can contain PM header values plus any populated child-object columns. The upload infers the object levels from populated column groups:
--- - Header columns identify and define the PM schedule.
--- - Act Activity columns add PM activity-group entries. If no Act Activity is entered for a new Rule Based schedule, the header Activity is used as the first activity entry.
--- - Rule columns add Day Interval, Runtime Meter, or List Date scheduling rules.
--- - LSI columns add optional last-service readings.
--- Act Last Svc Start and Act Last Svc End show the last service dates that work order completion records on the activity association. They are read-only and not uploaded.
--- The upload saves schedules, activities and rules as the Preventive Maintenance form does: a changed rule is updated in place, Delete Rule removes it, and a rule row without a rule id is added. Rule Last Service Reading is derived from the last service information on save and is read-only.
--- Rows belonging to the same PM must repeat the same Organization Code + Schedule Name + Asset + Activity and remain contiguous. The header is processed once per PM; repeated rows are used for additional activities, rules, and last-service readings.
--- Upload Modes
--- ============
--- Create - empty spreadsheet for new PM schedules.
--- Create, Update - downloads existing PM schedules for review/edit and allows adding new ones.
--- IMPORTANT on Update
--- -------------------
--- In Create, Update mode, use Update Activities / Update Rules / Update Last Service to include those child details in the downloaded template. Update Activities defaults to Yes; the other child sections are optional.
--- PM Set Name
--- ===========
--- - Reference an existing Set Name, or
--- - Enter a new Set Name together with Set Name Description / End Date / Local Flag; the upload will auto-create it via EAMSetNamePUB.
--- After Upload
--- ============
--- Schedule and run the "XMLSG - Create Preventive Maintenance Work Order" concurrent program - uploading a PM schedule alone does not generate work orders.
+-- Description: Create and update preventive maintenance schedules of assets: the schedule header, its activities, its day interval, runtime meter and list date rules, and optional last service readings per meter.
+-- A schedule spans several rows, which repeat the Organization Code, Schedule Name, Asset Number and Activity and stay together. The header is processed once per schedule; further rows add activities (Act columns), rules (Rule columns) and last service readings (Lsi columns). If no Act Activity is entered for a new Rule Based schedule, the header Activity is its first activity. Whether a schedule has the rules its type needs is checked for the whole schedule on upload.
+-- Schedules are saved as the Preventive Maintenance form saves them: a changed rule is updated in place, Delete Rule removes it, and a rule row without a rule id is added. Rule Last Service Reading is derived from the last service information on save, and Act Last Svc Start and Act Last Svc End show the dates that work order completion records; all three are read-only.
+-- Every schedule needs an Asset Number. Asset group schedule templates are not downloaded and cannot be uploaded.
+-- In Create, Update mode, Update Activities, Update Rules and Update Last Service include those rows in the download. Update Activities defaults to Yes.
+-- Set Name takes an existing set name, or a new one together with Set Name Description, End Date and Local Flag, which the upload creates.
+-- Uploading a schedule does not create work orders: run the concurrent program Generate Preventive Maintenance Work Orders afterwards.
 -- Excel Example Output: https://www.enginatics.com/example/eam-pm-schedule-upload/
 -- Library Link: https://www.enginatics.com/reports/eam-pm-schedule-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -102,7 +78,7 @@ left join eam_wo_statuses_v ewsv on ewsv.status_id=eps.generate_wo_status
 where
 nvl(eps.tmpl_flag,'N')='N' and
 mp.eam_enabled_flag='Y' and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')
 )
 select
 null action_,

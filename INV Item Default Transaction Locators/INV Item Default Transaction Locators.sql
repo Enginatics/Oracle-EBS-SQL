@@ -32,7 +32,7 @@ mtl_system_items_vl msiv,
 mtl_item_locations_kfv milk
 where
 1=1 and
-mp.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_code in (select ood.organization_code from org_organization_definitions ood where ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')) and
 haouv.organization_id=mild.organization_id and
 mp.organization_id=mild.organization_id and
 mild.inventory_item_id=msiv.inventory_item_id and

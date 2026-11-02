@@ -77,7 +77,7 @@ hz_parties hp
 &show_dist_from
 where
 1=1 and
-haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+haouv.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 haouv.organization_id=rila.org_id and
 rila.interface_line_id=riea.interface_line_id(+) and
 rila.cust_trx_type_id=rctta.cust_trx_type_id(+) and

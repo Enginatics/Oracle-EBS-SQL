@@ -45,10 +45,11 @@ xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE13'
 xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE14',gdr.rowid,gdr.attribute14) gl_daily_rate_attribute14,
 xxen_util.display_flexfield_value(101,'GL_DAILY_RATES',gdr.context,'ATTRIBUTE15',gdr.rowid,gdr.attribute15) gl_daily_rate_attribute15,
 fu.user_name created_by,
-gdr.creation_date creation_date,
+gdr.creation_date,
 null batch_number,
 xxen_util.meaning('I','GL_CRM_DR_MODE_FLAG',101) mode_flag,
-xxen_util.meaning('N','YES_NO',0) launch_rate_change
+xxen_util.meaning('N','YES_NO',0) launch_rate_change,
+to_number(null) upload_row
 from
 gl_daily_rates gdr,
 gl_daily_conversion_types gdct,
@@ -56,6 +57,5 @@ fnd_user fu
 where
 1=1 and
 :p_upload_mode like '%' || xxen_upload.action_update and
-nvl(:p_user_conv_type,'?') = nvl(:p_user_conv_type,'?') and
 gdr.conversion_type = gdct.conversion_type and
 gdr.created_by = fu.user_id (+)

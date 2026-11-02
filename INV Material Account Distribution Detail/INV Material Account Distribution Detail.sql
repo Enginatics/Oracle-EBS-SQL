@@ -197,7 +197,7 @@ where
 &account_from_where
 &account_to_where
 nvl(:p_coa_id,-1)=nvl(:p_coa_id,-1) and
-mta.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mta.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 mta.transaction_id=mmt.transaction_id and
 milk.inventory_location_id(+)=mmt.locator_id and
 milk.organization_id(+)=mmt.organization_id and

@@ -195,7 +195,7 @@ cic.cost_type_id=cct.cost_type_id
 ) cic
 where
 1=1 and
-ood.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+ood.organization_code in (select ood.organization_code from org_organization_definitions ood where ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')) and
 ood.organization_id=moqd.organization_id and
 msiv.inventory_item_status_code=misv.inventory_item_status_code(+) and
 moqd.organization_id=msiv.organization_id and

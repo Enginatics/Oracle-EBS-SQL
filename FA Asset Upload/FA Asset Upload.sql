@@ -5,10 +5,10 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FA Asset Upload
--- Description: Upload to create, update, and retire fixed assets using FA Public APIs.
--- New assets are created via faadditionpub.doaddition. Existing assets are updated via faassetdescpub.updatedesc, fareclasspub.doreclass, and faadjustmentpub.doadjustment.
--- Asset retirements are processed via faretirementpub.doretirement; after uploading retirements, run the Calculate Gains and Losses program to finalize them and post the gain/loss.
--- Use the Record Type column to select Addition or Retirement processing. Fully retired assets are excluded from the list unless Include Retired Assets is set to Yes.
+-- Description: Create, update and retire fixed assets.
+-- A row with Record Type Addition creates an asset or updates an existing one: its description, category, financial and depreciation values, and its assignment. A change of expense account, location or employee is a transfer of the asset's active distribution; it is refused for an asset with more than one distribution.
+-- A row with Record Type Retirement retires an asset fully or partially, by cost or by units. After uploading retirements, run Calculate Gains and Losses to complete them and post the gain or loss.
+-- Fully retired assets are excluded from the download unless Include Retired Assets is set to Yes.
 -- Excel Example Output: https://www.enginatics.com/example/fa-asset-upload/
 -- Library Link: https://www.enginatics.com/reports/fa-asset-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -110,7 +110,8 @@ null sold_to,
 null reference_num,
 null trade_in_asset_number,
 null transaction_name,
-null retire_status
+null retire_status,
+to_number(null) upload_row
 from
 fa_additions_vl fav,
 fa_books fb,
@@ -133,7 +134,6 @@ per_all_people_f papf
 where
 1=1 and
 :p_upload_mode like '%' || xxen_upload.action_update and
-nvl(:p_create_empty_file,'N')<>'Y' and
 fav.asset_id=fb.asset_id and
 fb.date_ineffective is null and
 (nvl(:p_include_retired_assets,'N')='Y' or fb.period_counter_fully_retired is null) and
@@ -258,7 +258,8 @@ fr.sold_to,
 fr.reference_num,
 (select fab2.asset_number from fa_additions_b fab2 where fab2.asset_id=fr.trade_in_asset_id) trade_in_asset_number,
 fth.transaction_name,
-fr.status retire_status
+(select fl0.meaning from fa_lookups fl0 where fl0.lookup_type='RETIREMENT STATUS' and fl0.lookup_code=fr.status) retire_status,
+to_number(null) upload_row
 from
 fa_additions_vl fav,
 fa_retirements fr,
@@ -278,7 +279,6 @@ fa_additions_b fab_g
 where
 1=1 and
 :p_upload_mode like '%' || xxen_upload.action_update and
-nvl(:p_create_empty_file,'N')<>'Y' and
 fav.asset_id=fr.asset_id and
 fr.book_type_code=fb.book_type_code and
 fb.transaction_header_id_out=fr.transaction_header_id_in and

@@ -82,7 +82,7 @@ csi_transactions ct,
 csi_txn_types ctt
 where
 1=1 and
-(cii.last_vld_organization_id is null or msiv.eam_item_type is null or cii.last_vld_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)) and
+(cii.last_vld_organization_id is null or msiv.eam_item_type is null or cii.last_vld_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')) and
 ccr.counter_id=ccv.counter_id and
 ccr.instance_id=cii.instance_id(+) and
 cii.inventory_item_id=msiv.inventory_item_id(+) and

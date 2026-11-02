@@ -134,7 +134,7 @@ where
 ) and
 haouv.name = nvl(:p_operating_unit,haouv.name) and
 nvl(:p_pm_product_code,'?') = nvl(:p_pm_product_code,'?') and
-haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+haouv.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 haouv.organization_id = ppa.org_id and
 ppa.project_id = pbv.project_id and
 (pbv.budget_type_code is not null or pbv.fin_plan_type_id is not null and nvl(pbv.wp_version_flag,'N')='N' and pbv.ci_id is null and pbv.version_type<>'ORG_FORECAST' and (pbv.budget_type_code is not null or pbv.budget_status_code='B' or pbv.current_working_flag='Y')) and

@@ -7,15 +7,15 @@
 -- Report Name: PA Project Upload
 -- Description: PA Project Upload
 -- ===================
--- Create and update Projects in Oracle Projects using the paprojectpub API.
+-- Create and update Projects in Oracle Projects.
 -- Create Mode:
 -- - Select a Template to populate default values (project type, organization, billing setup, etc.)
 -- - Template-specific required fields (customer, organization, completion date, etc.) are validated in Excel before upload
--- - Project Manager can differ from the template PM — the template PM is replaced post-creation
--- - PM Product Code determines which external PM system owns the project (default: Primavera). Do NOT use Microsoft Project — it blocks date updates due to Oracle bug 12954344.
+-- - Project Manager can differ from the template PM - the template PM is replaced post-creation
+-- - PM Product Code determines which external PM system owns the project (default: Primavera). Do NOT use Microsoft Project - it blocks date updates due to Oracle bug 12954344.
 -- Update Mode:
 -- - Use "Create, Update" upload mode to download existing projects, modify fields, and re-upload
--- - Only changed fields are updated — unchanged fields are preserved
+-- - Only changed fields are updated - unchanged fields are preserved
 -- - Project Manager changes: the current active PM is end-dated and the new PM is assigned from today
 -- - If no active PM exists (all end-dated), the new PM is simply assigned
 -- - Start Date and Completion Date can be changed, cleared, or added
@@ -195,7 +195,7 @@ ppa.template_flag='N' and
 ppa.project_status_code=pps.project_status_code and
 pps.status_type='PROJECT' and
 ppa.org_id=haouv.organization_id and
-haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+haouv.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 ppa.carrying_out_organization_id=haouv2.organization_id and
 ppa.non_labor_bill_rate_org_id=haouv4.organization_id(+) and
 ppa.distribution_rule=pdr.distribution_rule(+) and

@@ -5,28 +5,10 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Menu Entry Upload
--- Description: Upload to create, update and delete menu entries in FND Menus.
--- Useful for adding entries to existing menus, e.g. during Supply Chain Hub installation.
--- Upload Modes
--- ============
--- Create
--- ------
--- Opens an empty spreadsheet where the user can enter new menu entries.
--- Create, Update
--- --------------
--- Downloads existing menu entries matching the Menu Name filter for review and update.
--- New rows can be added to create additional entries in the same upload.
--- Fields
--- ======
--- - User Menu Name: Display-only. Shows the translatable menu name.
--- - Menu Name: Required. The internal menu name (e.g. INVNAVIGATE).
--- - Entry Sequence: The sequence number for the entry within the menu. Auto-assigned if not provided for new entries.
--- - Prompt: The display text shown in the menu for this entry.
--- - Entry Description: Optional description of the menu entry.
--- - Sub Menu: The sub-menu to navigate to. Either Sub Menu or Function Name must be specified.
--- - Function Name: The form function to launch. Either Sub Menu or Function Name must be specified.
--- - Grant Flag: Y (default) = entry is grantable via security, N = not grantable.
--- - Delete Record: Set to Y to delete an existing menu entry.
+-- Description: Upload to create, update and delete the entries of existing menus, as in the Menus form.
+-- Upload Mode Create opens an empty sheet for new entries. Create, Update downloads the entries of the menus selected by the parameters; new rows can be added to the same file.
+-- User Menu Name and Menu Name select the menu and default each other. An entry is identified by the menu and its Entry Sequence, which defaults to the next multiple of ten above the highest sequence of the menu. Changing the Entry Sequence of a downloaded row creates a new entry and keeps the old one; delete the old entry with Delete Record Yes.
+-- Either Sub Menu or Function Name is required. A blank Grant Flag makes the entry not grantable.
 -- Excel Example Output: https://www.enginatics.com/example/fnd-menu-entry-upload/
 -- Library Link: https://www.enginatics.com/reports/fnd-menu-entry-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -46,7 +28,7 @@ fmet.prompt,
 fmv2.user_menu_name sub_menu,
 fffv.user_function_name function_name,
 fmet.description entry_description,
-xxen_util.meaning(fme.grant_flag,'YES_NO',0) grant_flag,
+xxen_util.yes(fme.grant_flag) grant_flag,
 to_char(null) delete_record,
 row_number() over (order by fmv.menu_name, fme.entry_sequence) upload_row
 from

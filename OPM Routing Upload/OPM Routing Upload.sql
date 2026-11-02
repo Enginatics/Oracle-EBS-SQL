@@ -5,25 +5,11 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Routing Upload
--- Description: OPM Routing Upload
--- ==================
--- Create or update Oracle Process Manufacturing (OPM / GMD) Routings via the public API GMDROUTINGSPUB / GMDROUTINGSTEPSPUB.
--- Row model
--- =========
--- One spreadsheet row per routing STEP. The header columns (Organization Code, Routing, Routing Version, Description, Class, UOM, dates, owner, header attributes) repeat on every step of the same routing. Each step carries its Step No, Operation (No + Version), Step Quantity, Release Type, and step attributes. Rows of the same routing (Organization Code + Routing + Routing Version) must be contiguous. Every routing must have at least one step.
--- Step dependencies (optional)
--- ============================
--- To make a step depend on a predecessor step, fill Depends On Step No (and optionally Standard / Minimum / Maximum Delay, Transfer Percent, Rework Code, Chargeable) on that step's row. For a step with more than one predecessor, add extra rows that repeat the Step No, leave Operation blank, and give a different Depends On Step No. Dependency Type is always Finish-to-Start.
--- Operations must already exist
--- =============================
--- Operations are referenced, not created - the Operation (No + Version) must already exist in the routing's organization, effective for the routing's dates.
--- Upload modes
--- ============
--- Create - empty template for new routings.
--- Create, Update - downloads existing routings in the chosen organization for review/edit and allows adding new ones.
--- Update limitations (public API)
--- ===============================
--- On update, the OPM public API only allows changing a routing's Status, Routing Class, Routing UOM, Fixed Process Loss UOM, Owner and Organization at the header level; Description, Quantity, Process Loss, effective dates and the step-dependency flags are set at create time only. Steps can be added and their quantity / release type / yield updated.
+-- Description: Creates and updates Oracle Process Manufacturing routings with their steps and step dependencies.
+-- One row per routing step. The header columns (Organization Code, Routing, Routing Version, description, class, UOM, dates, owner, header attributes) repeat on every step of the routing; keep the rows of one routing together. Every routing needs at least one step.
+-- Step dependencies: to make a step depend on a predecessor, fill Depends On Step No (and optionally Standard, Minimum and Maximum Delay, Transfer Percent, Rework Code, Chargeable) on that step's row. For a step with more than one predecessor, add rows that repeat the Step No, leave Operation blank and give another Depends On Step No. The dependency type is always Finish-to-Start. Existing dependencies are not downloaded.
+-- Operations are referenced, not created: the Operation and Operation Version must exist in the routing's organization, effective for the routing's dates.
+-- On update, Routing Class, Routing UOM, Fixed Process Loss UOM and Owner can change at header level; Description, Quantity, Process Loss, Status, the effective dates and the step dependency flags are used only when a routing is created. Steps can be added and deleted, and their Step Quantity, Release Type and Minimum Transfer Quantity changed.
 -- Excel Example Output: https://www.enginatics.com/example/opm-routing-upload/
 -- Library Link: https://www.enginatics.com/reports/opm-routing-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -238,7 +224,7 @@ grv.routing_id=frd.routing_id and
 frd.oprn_id=gov.oprn_id and
 grv.owner_organization_id=mp.organization_id and
 grv.delete_mark=0 and
-grv.owner_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+grv.owner_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 :p_upload_mode like '%'||xxen_upload.action_update
 ) x
 where

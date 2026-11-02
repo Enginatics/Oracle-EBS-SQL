@@ -33,7 +33,7 @@
 -- - Insert new Cost Information Only: uploading an association that already exists raises an error
 -- Auto Populate Upload Columns (Default: Yes) -
 -- Applies to downloaded associations only. If set to Yes, the downloaded records are flagged ready for upload even if no changes have been made. If left blank, records are only flagged for upload when the user amends them.
--- Source Cost Type - Optionally specify the Cost Type from which to download the current Resource Overhead Associations, to copy them to a different Target Cost Type. New associations can be entered as additional rows in the generated Excel.
+-- Source Cost Type - The Cost Type whose Resource Overhead Associations are downloaded. To amend the associations of the Target Cost Type, select the same Cost Type here; to copy associations, select a different one. Left blank, the download is an empty sheet for entering new associations. New associations can also be entered as additional rows below downloaded ones.
 -- Rollup Costs - set to Yes to do a cost rollup after the associations are imported
 -- Rollup Type - All items or Specific item
 -- Rollup Option - Single level rollup or Full cost rollup
@@ -93,7 +93,7 @@ bom_resources br_o
 where
 1=1 and
 :p_upload_mode=:p_upload_mode and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 mp.cost_organization_id=mp.organization_id and
 nvl(mp.process_enabled_flag,'N')<>'Y' and
 cct_s.cost_type=:p_source_cost_type and

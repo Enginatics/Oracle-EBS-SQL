@@ -99,8 +99,8 @@ csh.vendor_site_id=povs.vendor_site_id and
 csi.po_header_id=poh.po_header_id(+) and
 nvl(csi.item_purge_status,'ACTIVE')<>'PURGED' and
 (
-csi.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) or
-not exists (select null from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+csi.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') or
+not exists (select null from xxen_report_org_access xroa where xroa.access_type='INV')
 ) and
 1=1
 order by

@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-02
 title: 'FA Asset Upload | Oracle EBS SQL Report'
-description: 'Upload to create, update, and retire fixed assets using FA Public APIs. New assets are created via faadditionpub.doaddition. Existing assets are updated…'
+description: 'Create, update and retire fixed assets. A row with Record Type Addition creates an asset or updates an existing one: its description, category, financial…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Asset, fa_lookups, fa_deprn_periods, fa_additions_vl'
 permalink: /FA%20Asset%20Upload/
 report_name: 'FA Asset Upload'
@@ -14,10 +14,13 @@ report_web_name: fa-asset-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/fa-asset-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-upload).
 
 ## Overview
-Upload to create, update, and retire fixed assets using FA Public APIs.
-New assets are created via fa_addition_pub.do_addition. Existing assets are updated via fa_asset_desc_pub.update_desc, fa_reclass_pub.do_reclass, and fa_adjustment_pub.do_adjustment.
-Asset retirements are processed via fa_retirement_pub.do_retirement; after uploading retirements, run the Calculate Gains and Losses program to finalize them and post the gain/loss.
-Use the Record Type column to select Addition or Retirement processing. Fully retired assets are excluded from the list unless Include Retired Assets is set to Yes.
+Create, update and retire fixed assets.
+
+A row with Record Type Addition creates an asset or updates an existing one: its description, category, financial and depreciation values, and its assignment. A change of expense account, location or employee is a transfer of the asset's active distribution; it is refused for an asset with more than one distribution.
+
+A row with Record Type Retirement retires an asset fully or partially, by cost or by units. After uploading retirements, run Calculate Gains and Losses to complete them and post the gain or loss.
+
+Fully retired assets are excluded from the download unless Include Retired Assets is set to Yes.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
@@ -31,7 +34,7 @@ Upload Mode, Book, Asset Number, Category, From Category, To Category, Asset Typ
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-upload)
 
 ## Related Reports
-[FA Asset Book Details](/FA%20Asset%20Book%20Details/ "FA Asset Book Details Oracle EBS SQL Report"), [FA Fixed Assets Book](/FA%20Fixed%20Assets%20Book/ "FA Fixed Assets Book Oracle EBS SQL Report"), [FA Asset Register](/FA%20Asset%20Register/ "FA Asset Register Oracle EBS SQL Report"), [FA Asset Additions](/FA%20Asset%20Additions/ "FA Asset Additions Oracle EBS SQL Report"), [FA Asset Summary (Germany)](/FA%20Asset%20Summary%20%28Germany%29/ "FA Asset Summary (Germany) Oracle EBS SQL Report"), [FA Asset Transfers](/FA%20Asset%20Transfers/ "FA Asset Transfers Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [FA Cost Adjustments](/FA%20Cost%20Adjustments/ "FA Cost Adjustments Oracle EBS SQL Report"), [FA Additions By Source](/FA%20Additions%20By%20Source/ "FA Additions By Source Oracle EBS SQL Report")
+[FA Asset Book Details](/FA%20Asset%20Book%20Details/ "FA Asset Book Details Oracle EBS SQL Report"), [FA Fixed Assets Book](/FA%20Fixed%20Assets%20Book/ "FA Fixed Assets Book Oracle EBS SQL Report"), [FA Asset Register](/FA%20Asset%20Register/ "FA Asset Register Oracle EBS SQL Report"), [FA Asset Additions](/FA%20Asset%20Additions/ "FA Asset Additions Oracle EBS SQL Report"), [FA Asset Summary (Germany)](/FA%20Asset%20Summary%20%28Germany%29/ "FA Asset Summary (Germany) Oracle EBS SQL Report"), [FA Asset Transfers](/FA%20Asset%20Transfers/ "FA Asset Transfers Oracle EBS SQL Report"), [FA Cost Adjustments](/FA%20Cost%20Adjustments/ "FA Cost Adjustments Oracle EBS SQL Report"), [FA Asset Retirements](/FA%20Asset%20Retirements/ "FA Asset Retirements Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/FA%20Asset%20Upload/FA%20Asset%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fa-asset-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

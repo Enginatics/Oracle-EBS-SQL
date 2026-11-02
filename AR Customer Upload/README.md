@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-02
 title: 'AR Customer Upload | Oracle EBS SQL Report'
 description: 'AR Customer Upload This upload can be used to create and/or update Customer Accounts, Customer Sites and/or Customer Site Uses. Additionally, the upload…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Customer, hz_parties, hz_contact_points, hz_party_sites'
@@ -52,9 +52,9 @@ Contact Status
 ============
 Determines the status of the contacts to be downloaded. By default, only active contacts will be downloaded. But his can be changed to download all contacts, or inactive contacts only.
 
-Default Operating Unit and Default Profile Class
-======================================
-For creation of new Customers/Customer Sites, the Operating Unit and Profile Class to be used can be defaulted automatically if specified by these parameters
+Operating Unit and Profile Class
+===========================
+For the creation of new Customers/Customer Sites, these parameters also default the operating unit and profile class of the new rows. With Operating Unit blank, new rows default the user's default operating unit.
 
 Default <entity> Assign. Level
 ========================

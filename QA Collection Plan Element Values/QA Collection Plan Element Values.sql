@@ -57,7 +57,7 @@ qpc.plan_id=qpcvl.plan_id and
 qpc.char_id=qpcvl.char_id and
 qpcvl.char_id=qcvl.char_id(+) and
 qpcvl.short_code=qcvl.short_code(+) and
-(qp.organization_id=0 or qp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)) and
+(qp.organization_id=0 or qp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')) and
 1=1
 union all
 select
@@ -96,7 +96,7 @@ qp.plan_id=qpc.plan_id and
 qpc.char_id=qc.char_id and
 qpc.char_id=qcvl.char_id and
 not exists (select null from qa_plan_char_value_lookups qpcvl where qpc.plan_id=qpcvl.plan_id and qcvl.char_id=qpcvl.char_id and qcvl.short_code=qpcvl.short_code) and
-(qp.organization_id=0 or qp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)) and
+(qp.organization_id=0 or qp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')) and
 3=3
 ) x
 where

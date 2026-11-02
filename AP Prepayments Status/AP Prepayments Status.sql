@@ -131,7 +131,7 @@ where
 1=1 and
 aia.cancelled_date is null and
 (aia.invoice_type_lookup_code='PREPAYMENT' and 2=2 or aia.invoice_type_lookup_code<>'PREPAYMENT' and aia.payment_status_flag in ('N','P') and 3=3) and
-aia.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+aia.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 aia.vendor_id=aps.vendor_id and
 aia.vendor_site_id=assa.vendor_site_id(+) and
 aia.set_of_books_id=gl.ledger_id and

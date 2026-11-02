@@ -13,7 +13,7 @@
 -- - Encumbrance Journals
 -- Submit for Approval
 -- ---------------------------
--- Imported Journals requiring approval can be submitted for approval after import if they are eligble.
+-- Imported Journals requiring approval can be submitted for approval after import if they are eligible.
 -- Submit Journal Post
 -- ---------------------------
 -- Imported Journals can be submitted for immediate posting after import if they are eligible.

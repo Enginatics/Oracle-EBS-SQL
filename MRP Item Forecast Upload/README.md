@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'MRP Item Forecast Upload | Oracle EBS SQL Report'
 description: 'MRP Item Forecast Upload ================================ - Create New Item Forecast Entries. - Update Existing Item Forecast Entries. - Delete Existing…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, MRP, Item, Forecast, pa_projects_all, pjm_seiban_numbers, pa_tasks'

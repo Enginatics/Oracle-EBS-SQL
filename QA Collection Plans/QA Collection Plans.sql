@@ -51,7 +51,7 @@ where
 qp.organization_id=mp.organization_id(+) and
 qp.view_name=uv_results.view_name(+) and
 qp.import_view_name=uv_import.view_name(+) and
-(qp.organization_id=0 or qp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)) and
+(qp.organization_id=0 or qp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')) and
 1=1
 order by
 mp.organization_code,

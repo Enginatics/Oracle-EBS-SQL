@@ -89,7 +89,7 @@ mtl_system_items_vl msiv
 where
 1=1 and
 aqha.max_version_flag='Y' and
-aqha.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+aqha.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 aqha.org_id=haouv.organization_id and
 aqha.quote_status_id=aqsv.quote_status_id and
 aqsv.update_allowed_flag='Y' and

@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-02
 title: 'Oracle EBS Order Management Reports | 14 SQL reports'
 description: '14 free Oracle E-Business Suite Order Management SQL reports for Excel: ONT Audit History, ONT Blanket Sales Agreements, ONT Cancelled Orders, ONT…'
-keywords: 'Oracle EBS Order Management reports, Oracle Order Management SQL, Oracle E-Business Suite, Blitz Report, hr_all_organization_units_vl, oe_order_lines_all, oe_transaction_types_tl, dual, oe_order_headers_all'
+keywords: 'Oracle EBS Order Management reports, Oracle Order Management SQL, Oracle E-Business Suite, Blitz Report, hr_all_organization_units_vl, oe_order_lines_all, oe_transaction_types_tl, oe_order_headers_all, hz_cust_accounts'
 permalink: /modules/order-management/
 module: 'Order Management'
 module_page: true
@@ -11,7 +11,7 @@ module_page: true
 
 # Oracle EBS Order Management Reports
 
-14 ready-to-run SQL reports for **Oracle E-Business Suite Order Management**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Order Management tables in these reports are `hr_all_organization_units_vl`, `oe_order_lines_all`, `oe_transaction_types_tl`, `dual`, `oe_order_headers_all`, `mo_glob_org_access_tmp`.
+14 ready-to-run SQL reports for **Oracle E-Business Suite Order Management**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Order Management tables in these reports are `hr_all_organization_units_vl`, `oe_order_lines_all`, `oe_transaction_types_tl`, `oe_order_headers_all`, `hz_cust_accounts`, `hz_parties`.
 
 > **Run any of these reports in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=module-order-management) – your first 30 reports are free.
 

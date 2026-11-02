@@ -359,7 +359,7 @@ select /*+ push_pred(bom_subst) */
  bom.assembly_description,
  bom.bill_comment,
  bom.alternate_bom,
- bom.bill_implementation_date bill_implementation_date,
+ bom.bill_implementation_date,
  bom.bill_implemented_flag,
  bom.common_bill_flag,
  bom.effectivity_control,
@@ -389,8 +389,8 @@ select /*+ push_pred(bom_subst) */
  bom.component_quantity,
  bom.inverse_quantity,
  bom.date_effective_from date_effective_from_old,
- bom.date_effective_from date_effective_from,
- bom.date_effective_to date_effective_to,
+ bom.date_effective_from,
+ bom.date_effective_to,
  bom.end_item_unit_number_from end_item_unit_number_from_old,
  bom.end_item_unit_number_from,
  bom.end_item_unit_number_to,
@@ -404,7 +404,7 @@ select /*+ push_pred(bom_subst) */
  bom.supply_subinventory,
  bom.supply_locator,
  bom.component_implemented_flag,
- bom.component_implementation_date component_implementation_date,
+ bom.component_implementation_date,
  bom.component_attribute_category,
  bom.bom_comp_attribute1,
  bom.bom_comp_attribute2,
@@ -451,7 +451,8 @@ select /*+ push_pred(bom_subst) */
  bom.component_sequence_id,
  bom.component_item_id,
  bom_subst.substitute_component_id,
- to_char(null) row_id
+ to_char(null) row_id,
+ to_number(null) upload_row
 from
  bom,
  bom_subst

@@ -119,7 +119,7 @@ where
 1=1 and
 gl.ledger_id=ood.set_of_books_id and
 haouv.organization_id=ood.operating_unit and
-mmt.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mmt.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 ood.organization_id=mmt.organization_id and
 mmt.transaction_type_id=mtt.transaction_type_id and
 mmt.transaction_source_type_id=mtst.transaction_source_type_id(+) and

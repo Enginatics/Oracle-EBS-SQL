@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'EAM Failure Sets Upload | Oracle EBS SQL Report'
-description: 'EAM Failure Sets Upload ======================= Creates and updates Oracle EAM (Enterprise Asset Management) Failure Sets, along with their Asset-Group…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, EAM, Failure, Sets, eam_failure_sets, eam_failure_set_associations, mtl_system_items_b_kfv'
+description: 'Create and update EAM failure sets with their asset group and rebuildable item associations and their failure, cause and resolution code combinations. One…'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, EAM, Failure, Sets, eam_failure_sets, mtl_system_items_b_kfv, eam_failure_set_associations'
 permalink: /EAM%20Failure%20Sets%20Upload/
 report_name: 'EAM Failure Sets Upload'
 report_web_name: eam-failure-sets-upload
@@ -14,31 +14,13 @@ report_web_name: eam-failure-sets-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/eam-failure-sets-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-sets-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-sets-upload).
 
 ## Overview
-EAM Failure Sets Upload
-=======================
-Creates and updates Oracle EAM (Enterprise Asset Management) Failure Sets, along with their Asset-Group Item Associations and Failure/Cause/Resolution Combinations.
+Create and update EAM failure sets with their asset group and rebuildable item associations and their failure, cause and resolution code combinations. One row is one SET, ASSOCIATION or COMBINATION, and the rows of a set share its Set Name.
 
-One Set Name can own many child rows (Associations and Combinations). A SET row defines the header explicitly. For Create rows, the upload also creates the missing failure set header automatically from the first ASSOCIATION or COMBINATION row for that Set Name.
+A new ASSOCIATION or COMBINATION row creates its failure set when no set of that name exists, from the row's Set Description and Set Effective End Date.
 
-Row Type
---------
-- SET: Creates or updates the failure set header (set_name, description, effective_end_date).
-- ASSOCIATION: Links the set to an asset-group / rebuildable item. The item must have EAM_ITEM_TYPE in (1,3) and exist in the master item organization. On Create, this row can also create the failure set header if it does not exist yet.
-- COMBINATION: Adds a valid Failure / Cause / Resolution code triple to the set. The individual codes must already exist in EAM Failure Codes setup (use the EAM Failure Codes Upload). On Create, this row can also create the failure set header if it does not exist yet.
+The associated item is an asset group or rebuildable item of a master organization. The codes of a combination must exist (EAM Failure Codes Upload).
 
-Upload Mode
-===========
-- Create: opens an empty template. Enter a SET row per new failure set, or enter the first ASSOCIATION / COMBINATION row directly; the upload will create the missing header before processing the child row.
-- Create, Update: downloads existing sets / associations / combinations for review or update.
-
-Delete
-======
-- SET rows cannot be deleted directly (Oracle API does not ship Delete_FailureSet). End-date the set instead by setting Set Effective End Date.
-- ASSOCIATION and COMBINATION rows can be deleted by setting Delete to Yes.
-
-Dates
-=====
-Blanking Effective End Date on an update reactivates the ended record.
+A failure set cannot be deleted; end-date it with Set Effective End Date, and clear the date to reactivate it. Delete Record ends an association or deletes a combination.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-sets-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
@@ -46,7 +28,7 @@ Blanking Effective End Date on an update reactivates the ended record.
 Upload Mode, Set Name
 
 ## Oracle EBS Tables Used
-[eam_failure_sets](https://www.enginatics.com/library/?pg=1&find=eam_failure_sets&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-sets-upload), [eam_failure_set_associations](https://www.enginatics.com/library/?pg=1&find=eam_failure_set_associations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-sets-upload), [mtl_system_items_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-sets-upload), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-sets-upload), [eam_failure_combinations](https://www.enginatics.com/library/?pg=1&find=eam_failure_combinations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-sets-upload)
+[eam_failure_sets](https://www.enginatics.com/library/?pg=1&find=eam_failure_sets&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-sets-upload), [mtl_system_items_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-sets-upload), [eam_failure_set_associations](https://www.enginatics.com/library/?pg=1&find=eam_failure_set_associations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-sets-upload), [eam_failure_combinations](https://www.enginatics.com/library/?pg=1&find=eam_failure_combinations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-sets-upload)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-sets-upload), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-sets-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-sets-upload)

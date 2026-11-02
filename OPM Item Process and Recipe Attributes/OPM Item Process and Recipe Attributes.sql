@@ -32,7 +32,7 @@ mtl_system_items_vl msiv,
 org_organization_definitions ood
 where
 1=1 and
-msiv.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+msiv.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 msiv.organization_id=ood.organization_id and
 (msiv.recipe_enabled_flag='Y' or msiv.process_execution_enabled_flag='Y' or msiv.process_quality_enabled_flag='Y' or msiv.process_costing_enabled_flag='Y')
 order by

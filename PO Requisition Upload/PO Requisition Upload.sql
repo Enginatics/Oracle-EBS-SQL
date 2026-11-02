@@ -6,6 +6,7 @@
 /*************************************************************************/
 -- Report Name: PO Requisition Upload
 -- Description: Upload to create and update requisitions.
+-- New rows always create new requisitions through Requisition Import: lines cannot be added to an existing requisition, and requisitions and lines are not deleted or cancelled.
 -- In the generated Excel, the user can amend the following columns for an existing requisition.
 -- - Header Description
 -- - Quantity
@@ -171,7 +172,8 @@ null attachment_title_,
 null attachment_description_,
 null attachment_type_,
 null attachment_content_,
-null attachment_file_id_
+null attachment_file_id_,
+to_number(null) upload_row
 from
 po_requisition_headers_all prha,
 po_requisition_lines_all prla,
@@ -192,8 +194,7 @@ po_lookup_codes plc1,
 po_lookup_codes plc2,
 hr_locations_all_tl hlat,
 po_line_types_tl pltt,
-po_document_types_all_tl podt,
-po_document_types_all_b podb
+po_document_types_all_vl pdtav
 where
 1=1 and
 :p_group_by=:p_group_by and
@@ -206,13 +207,9 @@ plc1.lookup_code = prla.source_type_code and
 plc1.lookup_type = 'REQUISITION SOURCE TYPE' and
 plc2.lookup_code = prla.destination_type_code and
 plc2.lookup_type = 'DESTINATION TYPE' and
-podb.document_type_code = 'REQUISITION' and
-podb.document_subtype = prha.type_lookup_code and
-podb.document_type_code = podt.document_type_code and
-podb.document_subtype = podt.document_subtype and
-podt.language = userenv ('LANG') and
-podt.org_id = podb.org_id and
-podb.org_id = prha.org_id and
+pdtav.document_type_code='REQUISITION' and
+pdtav.document_subtype=prha.type_lookup_code and
+pdtav.org_id=prha.org_id and
 papf2.person_id = prla.to_person_id and
 trunc (sysdate) between papf2.effective_start_date and papf2.effective_end_date and
 papf3.person_id = prha.preparer_id and

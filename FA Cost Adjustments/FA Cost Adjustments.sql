@@ -28,6 +28,7 @@ select
   x.cost_center,
   x.asset_number,
   x.asset_description,
+  x.asset_key,
   x.category category,
   x.period,
   sum(decode(x.unit_sum,x.units,x.old_cost1+x.old_cost-x.old_cost_rsum,x.old_cost1)) old_cost,
@@ -47,6 +48,7 @@ from
       fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg','SQLGL','GL#',gcc.chart_of_accounts_id,null,gcc.code_combination_id,'FA_COST_CTR','Y','VALUE') cost_center,
       fa.asset_number asset_number,
       fa.description  asset_description,
+      fakk.concatenated_segments asset_key,
       fnd_flex_xml_publisher_apis.process_kff_combination_1('cat_flex_all_seg', 'OFA', 'CAT#', fsc.category_flex_structure, NULL, fc.category_id, 'ALL', 'Y', 'VALUE') category,
       fdp.period_name period,
       round((fb_old.cost * nvl(fdh.units_assigned,fah.units)/fah.units), fcu.precision) old_cost1,
@@ -65,6 +67,7 @@ from
       fnd_currencies          fcu,
       fa_asset_history        fah,
       fa_additions            fa,
+      fa_asset_keywords_kfv   fakk,
       fa_categories           fc,
       fa_category_books       fcb,
       &lp_fa_books            fb_old,
@@ -88,6 +91,7 @@ from
       fb_new.transaction_header_id_in = fth.transaction_header_id and
       fb_new.book_type_code = fth.book_type_code and
       fa.asset_id = fth.asset_id and
+      fa.asset_key_ccid = fakk.code_combination_id (+) and
       fl.lookup_type = 'ASSET TYPE' and
       fcb.category_id = fah.category_id and
       fcb.book_type_code = fth.book_type_code and
@@ -114,6 +118,7 @@ group by
   x.asset_account,
   x.asset_number,
   x.asset_description,
+  x.asset_key,
   x.category,
   x.period,
   x.transaction_number,
@@ -133,6 +138,8 @@ select
   ft.cost_center,
   ft.asset_number,
   ft.asset_description,
+  ft.asset_key,
+  ft.asset_key||' - '||ft.asset_description asset_key_description,
   ft.category category,
   ft.period,
   case when 1 = row_number() over (partition by ft.transaction_number order by ft.transaction_number)

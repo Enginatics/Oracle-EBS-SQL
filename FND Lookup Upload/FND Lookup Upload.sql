@@ -27,7 +27,7 @@ null status_,
 null message_,
 null request_id_,
 null modified_columns_,
-:p_mode mode_,
+:p_upload_mode mode_,
 fltv.lookup_type,
 fav1.application_name view_application,
 fltv.meaning type_meaning,
@@ -66,7 +66,7 @@ fnd_lookup_values_vl flvv,
 fnd_application_vl fav1,
 fnd_application_vl fav2
 where
-:p_mode in ('C,U','U') and
+:p_upload_mode in ('C,U','U') and
 nvl(:p_create_empty_file,'N')<>'Y' and
 fav1.application_name=:view_application and
 1=1 and

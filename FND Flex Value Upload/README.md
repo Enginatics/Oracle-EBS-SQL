@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'FND Flex Value Upload | Oracle EBS SQL Report'
-description: 'Upload to create or update flex values for Independent, Dependent, Translatable Independent, and Translatable Dependent value sets. Supports: - Value…'
+description: 'Upload to create and update the values of independent, dependent, translatable independent and translatable dependent value sets, as in the Segment Values…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, FND, Flex, Value, fnd_flex_values, fnd_flex_value_sets, fnd_flex_values_tl'
 permalink: /FND%20Flex%20Value%20Upload/
 report_name: 'FND Flex Value Upload'
@@ -14,20 +14,15 @@ report_web_name: fnd-flex-value-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/fnd-flex-value-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-value-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-value-upload).
 
 ## Overview
-Upload to create or update flex values for Independent, Dependent, Translatable Independent, and Translatable Dependent value sets.
+Upload to create and update the values of independent, dependent, translatable independent and translatable dependent value sets, as in the Segment Values form.
 
-Supports:
-- Value creation and update (auto-detects via fnd_flex_values_pkg.load_row upsert)
-- Enabled flag, start/end dates
-- Summary flag (parent/child designation)
-- Rollup group assignment for parent values
-- Compiled value attributes (qualifier values for KFF segments, e.g. GL Account Type, Allow Posting)
-- Hierarchy level
-- Attribute sort order
-- DFF attributes (ATTRIBUTE1..50)
-- Translatable value meaning and description (for Translatable Independent/Dependent value sets)
+A row updates the value when it exists in the value set, for a dependent value set under its Independent Value, and creates it otherwise.
 
-Note: After uploading parent values with hierarchy changes, run the 'Compile Value Hierarchy' concurrent program from the Value Sets form to update the compiled hierarchy.
+Parent and Rollup Group can only be set for values of independent value sets. Child Range Low and Child Range High add a child range to a parent value; Delete Range Yes removes it.
+
+Compiled Value Attributes holds the segment qualifier values, for example Allow Budgeting, Allow Posting and the account type, one per line. A new value without them gets the qualifiers' default values; a blank cell keeps the stored values of an existing one.
+
+After changing parent values or child ranges, submit the concurrent program Compile value set hierarchies for the value set, as the Segment Values form does when it saves.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-flex-value-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 

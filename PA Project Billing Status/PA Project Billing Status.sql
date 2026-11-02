@@ -38,7 +38,7 @@ where
 ppa.project_type=ppta.project_type and
 ppa.org_id=ppta.org_id and
 ppa.org_id=haouv.organization_id and
-haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+haouv.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU')
 order by
 haouv.name,
 ppa.segment1

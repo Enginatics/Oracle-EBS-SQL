@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-02
 title: 'Oracle EBS Oracle Landed Cost Management Reports | 6 SQL reports'
 description: '6 free Oracle E-Business Suite Oracle Landed Cost Management SQL reports for Excel: INL Duty and Tariff Analysis, INL Landed Cost Adjustments, INL Landed…'
-keywords: 'Oracle EBS Oracle Landed Cost Management reports, Oracle Oracle Landed Cost Management SQL, Oracle E-Business Suite, Blitz Report, inl_ship_headers_all, inl_ship_lines_all, org_access_view, hr_all_organization_units_vl, mtl_parameters'
+keywords: 'Oracle EBS Oracle Landed Cost Management reports, Oracle Oracle Landed Cost Management SQL, Oracle E-Business Suite, Blitz Report, inl_ship_headers_all, inl_ship_lines_all, xxen_report_org_access, hr_all_organization_units_vl, mtl_parameters'
 permalink: /modules/oracle-landed-cost-management/
 module: 'Oracle Landed Cost Management'
 module_page: true
@@ -11,7 +11,7 @@ module_page: true
 
 # Oracle EBS Oracle Landed Cost Management Reports
 
-6 ready-to-run SQL reports for **Oracle E-Business Suite Oracle Landed Cost Management**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Oracle Landed Cost Management tables in these reports are `inl_ship_headers_all`, `inl_ship_lines_all`, `org_access_view`, `hr_all_organization_units_vl`, `mtl_parameters`, `org_organization_definitions`.
+6 ready-to-run SQL reports for **Oracle E-Business Suite Oracle Landed Cost Management**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Oracle Landed Cost Management tables in these reports are `inl_ship_headers_all`, `inl_ship_lines_all`, `xxen_report_org_access`, `hr_all_organization_units_vl`, `mtl_parameters`, `org_organization_definitions`.
 
 > **Run any of these reports in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=module-oracle-landed-cost-management) – your first 30 reports are free.
 

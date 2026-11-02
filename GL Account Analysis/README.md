@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'GL Account Analysis | Oracle EBS SQL Report'
 description: 'Detail GL transaction report with one line per transaction including all segments and subledger data, with amounts in both transaction currency and ledger…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, General Ledger, Enginatics, Account, Analysis, fnd_flex_value_norm_hierarchy, gl_code_combinations_kfv, xla_event_types_tl'

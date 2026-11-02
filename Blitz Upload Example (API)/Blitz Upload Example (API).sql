@@ -17,7 +17,8 @@ null message_,
 null modified_columns_,
 xue.id,
 xue.name,
-xue.date_of_birth
+xue.date_of_birth,
+to_number(null) upload_row
 from
 xxen_upload_example xue
 where

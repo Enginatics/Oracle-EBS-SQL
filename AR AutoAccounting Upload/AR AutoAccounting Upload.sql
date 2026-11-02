@@ -68,7 +68,7 @@ ra_account_default_segments rads,
 fnd_id_flex_segments_vl fifsv
 where
 1=1 and
-rad.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+rad.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 rad.org_id=hou.organization_id and
 rad.org_id=aspa.org_id and
 aspa.set_of_books_id=gl.ledger_id and

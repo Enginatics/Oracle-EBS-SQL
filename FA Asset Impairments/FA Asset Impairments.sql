@@ -155,6 +155,7 @@ select
  (select flt.meaning from fa_lookups_tl flt where flt.lookup_type = 'IMPAIRMENT_CLASSIFICATION' and flt.lookup_code = fii.impair_class and flt.language = userenv('LANG')) class,
  fav.asset_number asset,
  fav.description asset_desc,
+ fakk.concatenated_segments asset_key,
  fii.goodwill_asset_flag,
  (select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id = fii.impair_loss_acct) loss_account,
  fii.reason,
@@ -196,7 +197,8 @@ from
  fa_itf_impairments fii,
  fa_cash_gen_units fcgu,
  fa_deprn_periods fdp,
- fa_additions_vl fav
+ fa_additions_vl fav,
+ fa_asset_keywords_kfv fakk
 where
  2=2 and
  fii.cash_generating_unit_id = fcgu.cash_generating_unit_id (+) and
@@ -204,6 +206,7 @@ where
  fii.period_counter = fdp.period_counter (+) and
  fii.book_type_code = fdp.book_type_code (+) and
  fii.asset_id = fav.asset_id (+) and
+ fav.asset_key_ccid = fakk.code_combination_id (+) and
  fii.book_type_code = :p_book_type_code
 union all
 select
@@ -217,6 +220,7 @@ select
  (select flt.meaning from fa_lookups_tl flt where flt.lookup_type = 'IMPAIRMENT_CLASSIFICATION' and flt.lookup_code = fii.impair_class and flt.language = userenv('LANG')) class,
  fav.asset_number asset,
  fav.description asset_desc,
+ fakk.concatenated_segments asset_key,
  fii.goodwill_asset_flag,
  (select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id = fii.impair_loss_acct) loss_account,
  fii.reason,
@@ -258,7 +262,8 @@ from
  fa_mc_itf_impairments fii,
  fa_cash_gen_units fcgu,
  fa_deprn_periods fdp,
- fa_additions_vl fav
+ fa_additions_vl fav,
+ fa_asset_keywords_kfv fakk
 where
  2=2 and
  fii.cash_generating_unit_id = fcgu.cash_generating_unit_id (+) and
@@ -266,6 +271,7 @@ where
  fii.period_counter = fdp.period_counter (+) and
  fii.book_type_code = fdp.book_type_code (+) and
  fii.asset_id = fav.asset_id (+) and
+ fav.asset_key_ccid = fakk.code_combination_id (+) and
  fii.book_type_code = :p_book_type_code and
  fii.set_of_books_id = :p_set_of_books_id
 )
@@ -325,6 +331,8 @@ select
  fii.class                  impairment_class,
  fii.asset                  asset_number,
  fii.asset_desc             asset_desc,
+ fii.asset_key,
+ fii.asset_key||' - '||fii.asset_desc asset_key_description,
  fii.goodwill_asset_flag,
  fii.loss_account           asset_loss_account,
  fii.reason                 impairment_reason,

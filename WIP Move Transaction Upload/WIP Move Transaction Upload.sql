@@ -116,7 +116,7 @@ bom_standard_operations bso,
 bom_departments bd,
 table(xxen_util.rowgen(3)) rowgen
 where
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 mp.organization_id=wdj.organization_id and
 wdj.status_type in (3,4) and
 wdj.serialization_start_op is null and
@@ -193,7 +193,7 @@ bom_standard_operations bso,
 bom_departments bd,
 table(xxen_util.rowgen(3)) rowgen
 where
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 mp.organization_id=wrs.organization_id and
 wrs.status_type in (3,4) and
 wrs.line_id=wl.line_id and

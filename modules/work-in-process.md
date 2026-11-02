@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-02
 title: 'Oracle EBS Work in Process Reports | 11 SQL reports'
 description: '11 free Oracle E-Business Suite Work in Process SQL reports for Excel: WIP Account Distribution, WIP Discrete Job Shortage, WIP Entities, WIP Entities…'
 keywords: 'Oracle EBS Work in Process reports, Oracle Work in Process SQL, Oracle E-Business Suite, Blitz Report, wip_entities, mtl_system_items_vl, wip_discrete_jobs, wip_lines, bom_departments'
@@ -11,7 +11,7 @@ module_page: true
 
 # Oracle EBS Work in Process Reports
 
-11 ready-to-run SQL reports for **Oracle E-Business Suite Work in Process**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Work in Process tables in these reports are `wip_entities`, `mtl_system_items_vl`, `wip_discrete_jobs`, `wip_lines`, `bom_departments`, `org_access_view`.
+11 ready-to-run SQL reports for **Oracle E-Business Suite Work in Process**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Work in Process tables in these reports are `wip_entities`, `mtl_system_items_vl`, `wip_discrete_jobs`, `wip_lines`, `bom_departments`, `mtl_parameters`.
 
 > **Run any of these reports in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=module-work-in-process) – your first 30 reports are free.
 

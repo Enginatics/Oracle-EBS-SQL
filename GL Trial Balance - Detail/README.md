@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'GL Trial Balance - Detail | Oracle EBS SQL Report'
 description: 'Imported from Concurrent Program Description: Detail Trial Balance (XML) Application: General Ledger Source: Trial Balance - Detail (XML) Short Name…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, General Ledger, Enginatics, R12 only, Trial, Balance, Detail, gl_ledgers, gl_ledger_set_assignments, gl_ledger_relationships'

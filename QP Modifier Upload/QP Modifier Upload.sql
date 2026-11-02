@@ -74,8 +74,8 @@ from
 select
 --
 -- Modifier List Header
-qslhv.pte_code pte_code,
-qslhv.source_system_code source_system_code,
+qslhv.pte_code,
+qslhv.source_system_code,
 xxen_util.meaning(qslhv.list_type_code,'LIST_TYPE_CODE',661) list_type,
 qslhv.orig_system_header_ref list_orig_sys_ref,
 qslhv.name list_number,
@@ -253,7 +253,7 @@ qqv.qualifier_grouping_no qualifier_grouping_number,
 qp_util.get_context('QP_ATTR_DEFNS_QUALIFIER',qqv.qualifier_context) qualifier_context,
 qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_QUALIFIER',qqv.qualifier_context,qqv.qualifier_attribute) qualifier_attribute,
 xxen_util.meaning(decode(qqv.qualify_hier_descendents_flag,'Y','Y',null),'YES_NO',0) qualifier_applies_party_hier,
-qqv.qualifier_precedence qualifier_precedence,
+qqv.qualifier_precedence,
 qqv.comparision_operator_code qualifier_operator,
 rtrim(replace(
  qp_util.get_attribute_value
@@ -333,7 +333,7 @@ to_number(null) buy_line_id,
 to_number(null) get_line_id,
 to_number(null) pricing_attribute_id,
 to_number(null) excluder_id,
-qqv.qualifier_id qualifier_id,
+qqv.qualifier_id,
 to_number(null) limit_id,
 to_number(null) limit_attribute_id,
 'List Qualifier' row_type,
@@ -387,8 +387,8 @@ union
 select
 --
 -- Modifier List Header
-qslhv.pte_code pte_code,
-qslhv.source_system_code source_system_code,
+qslhv.pte_code,
+qslhv.source_system_code,
 xxen_util.meaning(qslhv.list_type_code,'LIST_TYPE_CODE',661) list_type,
 qslhv.orig_system_header_ref list_orig_sys_ref,
 qslhv.name list_number,
@@ -736,8 +736,8 @@ union
 select
 --
 -- Modifier List Header
-qslhv.pte_code pte_code,
-qslhv.source_system_code source_system_code,
+qslhv.pte_code,
+qslhv.source_system_code,
 xxen_util.meaning(qslhv.list_type_code,'LIST_TYPE_CODE',661) list_type,
 qslhv.orig_system_header_ref list_orig_sys_ref,
 qslhv.name list_number,
@@ -806,9 +806,9 @@ qmsv.product_uom_code line_product_uom,
 qmsv.pricing_attr_value_from line_value_from,
 qmsv.pricing_attr_value_to line_value_to,
 -- Discounts/Charges
-qmsv.charge_name charge_name,
+qmsv.charge_name,
 xxen_util.meaning(decode(qmsv.include_on_returns_flag,'Y','Y',null),'YES_NO',0) include_on_returns,
-qmsv.formula formula,
+qmsv.formula,
 qmsv.arithmetic_operator_type application_method,
 qmsv.operand value,
 --- Promotion Upgrade
@@ -1026,8 +1026,8 @@ union
 select
 --
 -- Modifier List Header
-qslhv.pte_code pte_code,
-qslhv.source_system_code source_system_code,
+qslhv.pte_code,
+qslhv.source_system_code,
 xxen_util.meaning(qslhv.list_type_code,'LIST_TYPE_CODE',661) list_type,
 qslhv.orig_system_header_ref list_orig_sys_ref,
 qslhv.name list_number,
@@ -1096,9 +1096,9 @@ qmsv.product_uom_code line_product_uom,
 qmsv.pricing_attr_value_from line_value_from,
 qmsv.pricing_attr_value_to line_value_to,
 -- Discounts/Charges
-qmsv.charge_name charge_name,
+qmsv.charge_name,
 xxen_util.meaning(decode(qmsv.include_on_returns_flag,'Y','Y',null),'YES_NO',0) include_on_returns,
-qmsv.formula formula,
+qmsv.formula,
 qmsv.arithmetic_operator_type application_method,
 qmsv.operand value,
 --- Promotion Upgrade
@@ -1316,8 +1316,8 @@ union
 select
 --
 -- Modifier List Header
-qslhv.pte_code pte_code,
-qslhv.source_system_code source_system_code,
+qslhv.pte_code,
+qslhv.source_system_code,
 xxen_util.meaning(qslhv.list_type_code,'LIST_TYPE_CODE',661) list_type,
 qslhv.orig_system_header_ref list_orig_sys_ref,
 qslhv.name list_number,
@@ -1386,9 +1386,9 @@ qmsv.product_uom_code line_product_uom,
 qmsv.pricing_attr_value_from line_value_from,
 qmsv.pricing_attr_value_to line_value_to,
 -- Discounts/Charges
-qmsv.charge_name charge_name,
+qmsv.charge_name,
 xxen_util.meaning(decode(qmsv.include_on_returns_flag,'Y','Y',null),'YES_NO',0) include_on_returns,
-qmsv.formula formula,
+qmsv.formula,
 qmsv.arithmetic_operator_type application_method,
 qmsv.operand value,
 --- Promotion Upgrade
@@ -1606,8 +1606,8 @@ union
 select
 --
 -- Modifier List Header
-qslhv.pte_code pte_code,
-qslhv.source_system_code source_system_code,
+qslhv.pte_code,
+qslhv.source_system_code,
 xxen_util.meaning(qslhv.list_type_code,'LIST_TYPE_CODE',661) list_type,
 qslhv.orig_system_header_ref list_orig_sys_ref,
 qslhv.name list_number,
@@ -1682,9 +1682,9 @@ qmsv.product_uom_code line_product_uom,
 qmsv.pricing_attr_value_from line_value_from,
 qmsv.pricing_attr_value_to line_value_to,
 -- Discounts/Charges
-qmsv.charge_name charge_name,
+qmsv.charge_name,
 xxen_util.meaning(decode(qmsv.include_on_returns_flag,'Y','Y',null),'YES_NO',0) include_on_returns,
-qmsv.formula formula,
+qmsv.formula,
 qmsv.arithmetic_operator_type application_method,
 qmsv.operand value,
 --- Promotion Upgrade
@@ -1881,7 +1881,7 @@ qmsv.list_line_id modifier_line_id,
 to_number(null) price_break_line_id,
 to_number(null) buy_line_id,
 to_number(null) get_line_id,
-qpa.pricing_attribute_id pricing_attribute_id,
+qpa.pricing_attribute_id,
 qpa.pricing_attribute_id excluder_id,
 to_number(null) qualifier_id,
 to_number(null) limit_id,
@@ -1950,8 +1950,8 @@ union
 select
 --
 -- Modifier List Header
-qslhv.pte_code pte_code,
-qslhv.source_system_code source_system_code,
+qslhv.pte_code,
+qslhv.source_system_code,
 xxen_util.meaning(qslhv.list_type_code,'LIST_TYPE_CODE',661) list_type,
 qslhv.orig_system_header_ref list_orig_sys_ref,
 qslhv.name list_number,
@@ -2020,9 +2020,9 @@ qmsv.product_uom_code line_product_uom,
 qmsv.pricing_attr_value_from line_value_from,
 qmsv.pricing_attr_value_to line_value_to,
 -- Discounts/Charges
-qmsv.charge_name charge_name,
+qmsv.charge_name,
 xxen_util.meaning(decode(qmsv.include_on_returns_flag,'Y','Y',null),'YES_NO',0) include_on_returns,
-qmsv.formula formula,
+qmsv.formula,
 qmsv.arithmetic_operator_type application_method,
 qmsv.operand value,
 --- Promotion Upgrade
@@ -2135,7 +2135,7 @@ qqv.qualifier_grouping_no qualifier_grouping_number,
 qp_util.get_context('QP_ATTR_DEFNS_QUALIFIER',qqv.qualifier_context) qualifier_context,
 qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_QUALIFIER',qqv.qualifier_context,qqv.qualifier_attribute) qualifier_attribute,
 xxen_util.meaning(decode(qqv.qualify_hier_descendents_flag,'Y','Y',null),'YES_NO',0) qualifier_applies_party_hier,
-qqv.qualifier_precedence qualifier_precedence,
+qqv.qualifier_precedence,
 qqv.comparision_operator_code qualifier_operator,
 rtrim(replace(
  qp_util.get_attribute_value
@@ -2215,7 +2215,7 @@ to_number(null) buy_line_id,
 to_number(null) get_line_id,
 to_number(null) pricing_attribute_id,
 to_number(null) excluder_id,
-qqv.qualifier_id qualifier_id,
+qqv.qualifier_id,
 to_number(null) limit_id,
 to_number(null) limit_attribute_id,
 'Line Qualifier' row_type,
@@ -2262,8 +2262,8 @@ union
 select
 --
 -- Modifier List Header
-qslhv.pte_code pte_code,
-qslhv.source_system_code source_system_code,
+qslhv.pte_code,
+qslhv.source_system_code,
 xxen_util.meaning(qslhv.list_type_code,'LIST_TYPE_CODE',661) list_type,
 qslhv.orig_system_header_ref list_orig_sys_ref,
 qslhv.name list_number,
@@ -2332,9 +2332,9 @@ qmsv.product_uom_code line_product_uom,
 qmsv.pricing_attr_value_from line_value_from,
 qmsv.pricing_attr_value_to line_value_to,
 -- Discounts/Charges
-qmsv.charge_name charge_name,
+qmsv.charge_name,
 xxen_util.meaning(decode(qmsv.include_on_returns_flag,'Y','Y',null),'YES_NO',0) include_on_returns,
-qmsv.formula formula,
+qmsv.formula,
 qmsv.arithmetic_operator_type application_method,
 qmsv.operand value,
 --- Promotion Upgrade

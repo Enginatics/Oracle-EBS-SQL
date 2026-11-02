@@ -101,7 +101,7 @@ hr_operating_units hou
 where
 1=1 and
 rt.transaction_type in ('RECEIVE','DELIVER','CORRECT','RETURN TO VENDOR','RETURN TO RECEIVING') and
-rt.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+rt.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 rt.po_line_id=rl.po_line_id and
 rt.organization_id=rl.organization_id and
 rt.parent_transaction_id=rt_par.transaction_id(+) and
@@ -116,7 +116,7 @@ pla.item_id=msiv.inventory_item_id(+) and
 rt.organization_id=msiv.organization_id(+) and
 rt.organization_id=mp.organization_id and
 pha.org_id=hou.organization_id and
-pha.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+pha.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU')
 group by
 hou.name,
 mp.organization_code,

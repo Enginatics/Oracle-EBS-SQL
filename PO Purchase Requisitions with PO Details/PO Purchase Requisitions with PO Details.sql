@@ -7,6 +7,8 @@
 -- Report Name: PO Purchase Requisitions with PO Details
 -- Description: Purchase Requisitions Status with PO Details Report.
 -- Lists purchase requisition headers, lines and distributions together with the purchase order they were converted into, including requisition and PO approval dates, the Converted To PO indicator and the PO total amount.
+-- Set the Show Possible Split Shipments parameter to Yes to additionally list PO shipments that the buyer may have split off a requisition shipment after creating the PO, for example to deliver the remaining quantity on a later promised date. Oracle keeps no requisition reference on such a shipment, so the link is inferred: when a requisition shipment orders less than the requisition lines it was created from, every shipment without a requisition on the same PO line and release is listed against each of these requisition lines, at distribution level against the last distribution, and marked in the Possible Split Shipment column.
+-- As the link is inferred, a shipment the buyer added for another reason is listed too, and a shipment on a PO line with several short requisition shipments is listed against each of them, so PO quantities summed across requisition lines can be overstated. Such rows follow the row of the requisition's own shipment and leave the requisition quantities and amounts blank, so these can be summed. PO Quantity Ordered Total, shown on the requisition's own shipment row, adds up all shipments listed against the requisition line, and the requisition's received and delivered quantities exclude the split shipments, as in Oracle.
 -- Set the Show Invoice and Payment Details parameter to Yes to additionally return the supplier invoices and payments matched to each purchase order shipment: invoice numbers, invoice date, invoiced amount, invoice amount paid, payment status, payment numbers, payment date and payment method. These columns are omitted by default because they add an Accounts Payable lookup to every row.
 -- Excel Example Output: https://www.enginatics.com/example/po-purchase-requisitions-with-po-details/
 -- Library Link: https://www.enginatics.com/reports/po-purchase-requisitions-with-po-details/
@@ -28,6 +30,8 @@ prha.agent_return_flag agent_return_flag,
 xxen_util.meaning(prha.closed_code,'DOCUMENT STATE',201) req_closure_status,
 prla.line_num line_number,
 trunc(prla.creation_date) line_creation_date,
+xxen_util.user_name(prla.last_updated_by) line_last_updated_by,
+prla.last_update_date line_last_update_date,
 xxen_util.meaning(prla.source_type_code,'REQUISITION SOURCE TYPE',201) line_source_type,
 xxen_util.meaning(prla.purchase_basis,'PURCHASE BASIS',201) line_type,
 xxen_util.meaning(prla.order_type_lookup_code,'ORDER TYPE',201) line_order_type,
@@ -71,6 +75,8 @@ pah.cancelled_by,
 prla.requisition_header_id,
 prla.requisition_line_id,
 prla.line_location_id,
+nvl(y.line_location_id,prla.line_location_id) po_line_location_id,
+y.possible_split_shipment,
 prha.attribute_category req_hdr_dff_cat,
 prha.rowid req_hdr_rowid,
 prla.attribute_category req_line_dff_cat,
@@ -83,6 +89,29 @@ from
 po_requisition_headers_all prha,
 po_requisition_lines_all prla,
 po_requisition_lines_all prla2, 
+(
+--PO shipments without a requisition on the PO line and release of a requisition shipment ordering less than its requisition lines
+select
+plla.line_location_id req_line_location_id,
+plla2.line_location_id,
+decode(plla2.line_location_id,plla.line_location_id,null,'Y') possible_split_shipment
+from
+po_line_locations_all plla,
+po_line_locations_all plla2
+where
+:show_possible_split_shipments='Y' and
+plla.quantity<(
+select /*+ push_subq */
+sum(decode(prla3.unit_meas_lookup_code,plla.unit_meas_lookup_code,prla3.quantity,inv_convert.inv_um_convert(prla3.item_id,null,prla3.quantity,null,null,prla3.unit_meas_lookup_code,plla.unit_meas_lookup_code)))
+from
+po_requisition_lines_all prla3
+where
+plla.line_location_id=prla3.line_location_id
+) and
+plla.po_line_id=plla2.po_line_id and
+nvl(plla.po_release_id,-1)=nvl(plla2.po_release_id,-1) and
+(plla2.line_location_id=plla.line_location_id or not exists (select null from po_requisition_lines_all prla4 where plla2.line_location_id=prla4.line_location_id))
+) y,
 &req_dist_tables
 financials_system_params_all fspa,
 gl_ledgers gl,
@@ -121,6 +150,7 @@ prla.to_person_id=ppx2.person_id and
 prla.deliver_to_location_id=hrl.location_id(+) and
 prla.deliver_to_location_id=hzl.location_id(+) and
 prla.parent_req_line_id=prla2.requisition_line_id(+) and
+prla.line_location_id=y.req_line_location_id(+) and
 prla.item_id=msiv.inventory_item_id(+) and
 nvl(prla.destination_organization_id,fspa.inventory_organization_id)=nvl(msiv.organization_id,fspa.inventory_organization_id) and
 prha.requisition_header_id=pah.requisition_header_id(+)
@@ -134,6 +164,7 @@ assa.vendor_site_code po_vendor_site,
 (select ftv.territory_short_name from fnd_territories_vl ftv where ftv.territory_code=assa.country) po_vendor_country,
 pha.segment1 po_number,
 pra.release_num po_release_num,
+(select ppx.full_name from per_people_x ppx where nvl(pra.agent_id,pha.agent_id)=ppx.person_id) buyer_name,
 xxen_util.meaning(pha.authorization_status , 'DOCUMENT STATE', 201) po_auth_status,
 xxen_util.meaning(pra.authorization_status , 'DOCUMENT STATE', 201) po_release_auth_status,
 xxen_util.meaning(pha.closed_code,'DOCUMENT STATE',201) po_header_closure_status,
@@ -272,6 +303,8 @@ req.line_source_type,
 req.line_type,
 req.line_order_type,
 req.line_creation_date,
+req.line_last_updated_by,
+req.line_last_update_date,
 req.item,
 req.item_revision,
 req.user_item_type,
@@ -302,12 +335,14 @@ req.parent_req_line_number,
 &req_dff_cols_disp
 &item_dff_cols_disp
 xxen_util.yes(nvl2(req.line_location_id,'Y',null)) converted_to_po,
+&split_shipment_columns
 po.po_vendor_name,
 po.po_vendor_number,
 po.po_vendor_site,
 po.po_vendor_country,
 po.po_number,
 po.po_release_num,
+po.buyer_name,
 po.po_auth_status,
 po.po_release_auth_status,
 po.po_header_closure_status,
@@ -347,9 +382,12 @@ po
 where
 3=3 and
 &req_to_po_dist_joins
-req.line_location_id=po.line_location_id(+)
+req.po_line_location_id=po.line_location_id(+)
 order by 
 req.operating_unit,
 req.creation_date,
 req.requisition_number,
-req.line_number
+req.line_number,
+req.possible_split_shipment nulls first,
+po.po_shipment_number
+&dist_order_by

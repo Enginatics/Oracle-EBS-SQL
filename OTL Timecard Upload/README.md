@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'OTL Timecard Upload | Oracle EBS SQL Report'
-description: 'OTL Timecard Upload =================== Create, update and delete Oracle Time and Labor (OTL / HXC) timecards via the public TimeStore deposit API…'
+description: 'OTL Timecard Upload =================== Create, update and delete Oracle Time and Labor (OTL / HXC) timecards through the Oracle Time and Labor deposit…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, OTL, Timecard, hxc_transaction_details, hxc_transactions, hxc_timecard_summary'
 permalink: /OTL%20Timecard%20Upload/
 report_name: 'OTL Timecard Upload'
@@ -16,11 +16,11 @@ report_web_name: otl-timecard-upload
 ## Overview
 OTL Timecard Upload
 ===================
-Create, update and delete Oracle Time and Labor (OTL / HXC) timecards via the public TimeStore deposit API hxc_timestore_deposit, as an Excel-based alternative to self-service time entry.
+Create, update and delete Oracle Time and Labor (OTL / HXC) timecards through the Oracle Time and Labor deposit API, as an Excel-based alternative to self-service time entry.
 
 Row model
 =========
-One spreadsheet row per timecard line and day: Employee, Date, classification and Hours. Rows are grouped into timecards by employee and the OTL timecard period (e.g. the weekly period from the employee's OTL preferences) containing the Date. Rows of the same employee and period must be contiguous and are deposited together as one timecard. The Period Starting column fills automatically once Employee and Date are entered.
+One spreadsheet row per timecard line and day: Employee, Date Worked, classification and Hours. Rows are grouped into timecards by employee and the OTL timecard period (e.g. the weekly period from the employee's OTL preferences) containing the Date Worked, and deposited together as one timecard. The upload sorts the rows by employee and date, so the rows of a timecard need not be next to each other in the sheet. The Period Starting column fills automatically once Employee and Date Worked are entered.
 
 Classification
 ==============
@@ -30,7 +30,7 @@ Run the upload under a responsibility whose operating unit context matches the p
 
 Save and submit
 ===============
-Leave Submit blank to save the timecard in Working status. Set Submit to Yes on any row of a timecard to submit it for approval (the OTL approval workflow starts, e.g. HR supervisor approval). Updating a timecard that is already Submitted or Approved re-submits it for approval automatically.
+Leave Submit Timecard blank to save the timecard in Working status. Set Submit Timecard to Yes on any row of a timecard to submit it for approval (the OTL approval workflow starts, e.g. HR supervisor approval). Updating a timecard that is already Submitted or Approved re-submits it for approval automatically.
 
 Updates and deletes
 ===================

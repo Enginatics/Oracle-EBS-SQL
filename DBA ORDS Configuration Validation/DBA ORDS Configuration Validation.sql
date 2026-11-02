@@ -104,6 +104,7 @@ select 'installed_languages' from dual union all
 select 'login' from dual union all
 select 'lov_catalogue' from dual union all
 select 'report_batch' from dual union all
+select 'report_file' from dual union all
 select 'report_columns' from dual union all
 select 'report_list' from dual union all
 select 'report_metadata' from dual union all

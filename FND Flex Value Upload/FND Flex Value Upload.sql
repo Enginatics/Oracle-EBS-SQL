@@ -5,18 +5,11 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: FND Flex Value Upload
--- Description: Upload to create or update flex values for Independent, Dependent, Translatable Independent, and Translatable Dependent value sets.
--- Supports:
--- - Value creation and update (auto-detects via fndflexvaluespkg.loadrow upsert)
--- - Enabled flag, start/end dates
--- - Summary flag (parent/child designation)
--- - Rollup group assignment for parent values
--- - Compiled value attributes (qualifier values for KFF segments, e.g. GL Account Type, Allow Posting)
--- - Hierarchy level
--- - Attribute sort order
--- - DFF attributes (ATTRIBUTE1..50)
--- - Translatable value meaning and description (for Translatable Independent/Dependent value sets)
--- Note: After uploading parent values with hierarchy changes, run the 'Compile Value Hierarchy' concurrent program from the Value Sets form to update the compiled hierarchy.
+-- Description: Upload to create and update the values of independent, dependent, translatable independent and translatable dependent value sets, as in the Segment Values form.
+-- A row updates the value when it exists in the value set, for a dependent value set under its Independent Value, and creates it otherwise.
+-- Parent and Rollup Group can only be set for values of independent value sets. Child Range Low and Child Range High add a child range to a parent value; Delete Range Yes removes it.
+-- Compiled Value Attributes holds the segment qualifier values, for example Allow Budgeting, Allow Posting and the account type, one per line. A new value without them gets the qualifiers' default values; a blank cell keeps the stored values of an existing one.
+-- After changing parent values or child ranges, submit the concurrent program Compile value set hierarchies for the value set, as the Segment Values form does when it saves.
 -- Excel Example Output: https://www.enginatics.com/example/fnd-flex-value-upload/
 -- Library Link: https://www.enginatics.com/reports/fnd-flex-value-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -104,9 +97,7 @@ fnd_flex_values_tl ffvt,
 fnd_flex_hierarchies_vl ffhv,
 fnd_flex_value_norm_hierarchy ffvnh
 where
-:p_upload_mode like '%'||xxen_upload.action_update and
 1=1 and
-ffvs.flex_value_set_name=:p_flex_value_set_name and
 ffvs.parent_flex_value_set_id=ffvs0.flex_value_set_id(+) and
 ffvs.flex_value_set_id=ffv.flex_value_set_id and
 ffv.flex_value_id=ffvt.flex_value_id and

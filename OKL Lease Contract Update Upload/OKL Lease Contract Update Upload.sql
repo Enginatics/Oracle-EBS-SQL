@@ -8,7 +8,7 @@
 -- Description: Changes the bill to customer account and bill to site of Lease Management contracts through the Oracle public API oklcontractpub.updatecontractheader - the Bill To of the Lease Contract header.
 -- One row per contract. Enter the Bill To Customer Account, the Bill To Site, or both; everything else on the row is context and is read only. A site that does not belong to the Bill To Customer Account on the row is rejected, so change both together when the account changes too.
 -- A bill to change does not require a rebook: it was verified against Booked, Evergreen, Passed and Incomplete contracts. Rebook remains necessary for the financial terms this upload does not touch.
--- Run it under a Lease Management responsibility. Under an unrelated responsibility Oracle refuses the update with its own privilege message.
+-- Run it under a Lease Management responsibility.
 -- Excel Example Output: https://www.enginatics.com/example/okl-lease-contract-update-upload/
 -- Library Link: https://www.enginatics.com/reports/okl-lease-contract-update-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -45,7 +45,7 @@ hz_locations hl
 where
 1=1 and
 okhab.scs_code='LEASE' and
-okhab.authoring_org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+okhab.authoring_org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 okhab.id=okh.id and
 okhab.authoring_org_id=haouv.organization_id and
 okhab.sts_code=osv.code and

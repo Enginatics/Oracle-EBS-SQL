@@ -62,7 +62,7 @@ from
  per_all_people_f papf2,
  per_all_people_f papf3,
  po_system_parameters_all psp,
- mo_glob_org_access_tmp mgoat,
+ (select /*+ no_merge*/ xroa.id organization_id, haouv.name organization_name from xxen_report_org_access xroa, hr_all_organization_units_vl haouv where xroa.access_type='OU' and xroa.id=haouv.organization_id) mgoat,
  fnd_lookup_values_vl flvv,
  --
  financials_system_params_all fspa,
@@ -151,7 +151,7 @@ from
  per_all_people_f papf2,
  per_all_people_f papf3,
  po_system_parameters_all psp,
- mo_glob_org_access_tmp mgoat,
+ (select /*+ no_merge*/ xroa.id organization_id, haouv.name organization_name from xxen_report_org_access xroa, hr_all_organization_units_vl haouv where xroa.access_type='OU' and xroa.id=haouv.organization_id) mgoat,
  fnd_lookup_values_vl flvv,
  --
  financials_system_params_all fspa,

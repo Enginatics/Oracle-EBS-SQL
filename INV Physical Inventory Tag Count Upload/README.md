@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'INV Physical Inventory Tag Count Upload | Oracle EBS SQL Report'
 description: 'INV Physical Inventory Tag Count Upload ================================= This upload enables the user to upload counts against the Physical Inventory…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, INV, Physical, Inventory, Tag, mtl_physical_subinventories, gl_code_combinations_kfv, per_all_people_f'
@@ -28,7 +28,7 @@ For clients on R12.2.3 or later
 - the upload also supports the voiding/unvoiding of existing tags as well
 
 Note:
-There is currently a bug in the R12.2.3+ API that will reject the creation/update of tags for items which do not require Locators in Subinvnetories where the Locator Control is set to 'Check Item Level'. The API is only checking the Locator control level at the subinventory level, and if it is not set to 'Locators not required' will reject any tags for items where no locator is specified. For this reason, if the physical inventory being uploaded includes any subinventories with Locator Control set to 'Check Item Level', the upload will revert to using the older API.
+There is currently a bug in the R12.2.3+ API that will reject the creation/update of tags for items which do not require Locators in Subinventories where the Locator Control is set to 'Check Item Level'. The API is only checking the Locator control level at the subinventory level, and if it is not set to 'Locators not required' will reject any tags for items where no locator is specified. For this reason, if the physical inventory being uploaded includes any subinventories with Locator Control set to 'Check Item Level', the upload will revert to using the older API.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-physical-inventory-tag-count-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 

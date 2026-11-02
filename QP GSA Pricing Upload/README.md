@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'QP GSA Pricing Upload | Oracle EBS SQL Report'
-description: 'This upload supports the creation and update of GSA Pricing Setup in Oracle Advanced Pricing. The upload supports creation/update/deletion of the…'
+description: 'This upload supports the creation and update of GSA Pricing Setup in Oracle Advanced Pricing. The upload supports the creation and update of the following…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, GSA, Pricing, qp_secu_list_headers_vl, qp_qualifiers_v, qp_modifier_summary_v'
 permalink: /QP%20GSA%20Pricing%20Upload/
 report_name: 'QP GSA Pricing Upload'
@@ -16,10 +16,10 @@ report_web_name: qp-gsa-pricing-upload
 ## Overview
 This upload supports the creation and update of GSA Pricing Setup in Oracle Advanced Pricing.
 
-The upload supports creation/update/deletion of the following entities within a GSA Pricing List:
+The upload supports the creation and update of the following entities within a GSA Pricing List:
 
 - GSA Lists (created as a Modifier List)
-- GSA List Qualifiers (created as a Modifier List Qualifier)
+- GSA List Qualifiers (created as a Modifier List Qualifier), which can also be deleted
 - GSA List Lines (created as Modifier Lines)
 
 Notes:

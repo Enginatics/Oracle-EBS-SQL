@@ -5,7 +5,10 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PN Billing/Payment Term Upload
--- Description: Property Management - Billing and Payment Terms Upload
+-- Description: Create, update or copy the billing and payment terms of Property Manager leases.
+-- Lease Class selects revenue (billing) or expense (payment) leases, and Final Draft Status final or draft leases. A new row adds a term to the lease named in its Lease Name or Lease Number, of the lease class and approval status of these parameters.
+-- Upload Mode Create, Update downloads the terms of the selected leases for update and allows new terms to be added. Create opens an empty sheet. Copy downloads the selected terms as new rows, to create copies of them, with their start, end and target dates moved by the Copy: Date Increment Type (Days, Months or Years) and Copy: Date Increment Units parameters.
+-- The Revenue Class Template and the Expense Class Template show the columns of their lease class.
 -- Excel Example Output: https://www.enginatics.com/example/pn-billing-payment-term-upload/
 -- Library Link: https://www.enginatics.com/reports/pn-billing-payment-term-upload/
 -- Run Report: https://demo.enginatics.com/

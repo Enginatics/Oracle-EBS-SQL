@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'IGI Dossier Maintenance Upload | Oracle EBS SQL Report'
-description: 'Upload to create and maintain dossier transactions (budget transfers) for Oracle Public Sector Financials International (IGI). Supports header creation…'
+description: 'Creates dossier transactions (budget transfers) of Oracle Public Sector Financials International (IGI) through the IGI Dossier table handlers, with status…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, IGI, Dossier, Maintenance, igi_dos_trx_headers, igi_dos_doc_types, gl_ledgers'
 permalink: /IGI%20Dossier%20Maintenance%20Upload/
 report_name: 'IGI Dossier Maintenance Upload'
@@ -14,7 +14,11 @@ report_web_name: igi-dossier-maintenance-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/igi-dossier-maintenance-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=igi-dossier-maintenance-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=igi-dossier-maintenance-upload).
 
 ## Overview
-Upload to create and maintain dossier transactions (budget transfers) for Oracle Public Sector Financials International (IGI). Supports header creation with source and destination budget lines using the seeded IGI Dossier Maintenance APIs.
+Creates dossier transactions (budget transfers) of Oracle Public Sector Financials International (IGI) through the IGI Dossier table handlers, with status In Process. Check funds, reserve funds and approve them in the Dossier Maintenance window.
+
+Rows with the same Dossier Transaction Name, dossier type and ledger form one transaction: the first row creates the header and the source budget line, and every row adds a destination budget line. A row whose transaction already exists adds a destination line to it; the header and existing lines are not updated.
+
+The source budget amount is the total of the destination amounts and must not exceed the funds available on the source account. Funds available are the budget less encumbrance and actual balances, for the amount type of the dossier type (PTD, QTD, YTD or PJTD). The destination new balance is its funds available plus the transferred amount.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=igi-dossier-maintenance-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 

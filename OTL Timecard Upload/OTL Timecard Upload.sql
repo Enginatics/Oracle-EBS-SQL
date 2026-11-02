@@ -7,17 +7,17 @@
 -- Report Name: OTL Timecard Upload
 -- Description: OTL Timecard Upload
 -- ===================
--- Create, update and delete Oracle Time and Labor (OTL / HXC) timecards via the public TimeStore deposit API hxctimestoredeposit, as an Excel-based alternative to self-service time entry.
+-- Create, update and delete Oracle Time and Labor (OTL / HXC) timecards through the Oracle Time and Labor deposit API, as an Excel-based alternative to self-service time entry.
 -- Row model
 -- =========
--- One spreadsheet row per timecard line and day: Employee, Date, classification and Hours. Rows are grouped into timecards by employee and the OTL timecard period (e.g. the weekly period from the employee's OTL preferences) containing the Date. Rows of the same employee and period must be contiguous and are deposited together as one timecard. The Period Starting column fills automatically once Employee and Date are entered.
+-- One spreadsheet row per timecard line and day: Employee, Date Worked, classification and Hours. Rows are grouped into timecards by employee and the OTL timecard period (e.g. the weekly period from the employee's OTL preferences) containing the Date Worked, and deposited together as one timecard. The upload sorts the rows by employee and date, so the rows of a timecard need not be next to each other in the sheet. The Period Starting column fills automatically once Employee and Date Worked are entered.
 -- Classification
 -- ==============
 -- Each line is classified either for Projects (Project, Task and Expenditure Type - straight time) or for Payroll (Hours Type = payroll element). The deposit derives the employee's application set, approval style and security context from the OTL preferences, exactly like self-service time entry.
 -- Run the upload under a responsibility whose operating unit context matches the projects being charged (e.g. the OTL or Projects responsibility the employees use) - the deposit validates the project, task, expenditure type and expenditure organization under the session's operating unit, exactly like self-service time entry.
 -- Save and submit
 -- ===============
--- Leave Submit blank to save the timecard in Working status. Set Submit to Yes on any row of a timecard to submit it for approval (the OTL approval workflow starts, e.g. HR supervisor approval). Updating a timecard that is already Submitted or Approved re-submits it for approval automatically.
+-- Leave Submit Timecard blank to save the timecard in Working status. Set Submit Timecard to Yes on any row of a timecard to submit it for approval (the OTL approval workflow starts, e.g. HR supervisor approval). Updating a timecard that is already Submitted or Approved re-submits it for approval automatically.
 -- Updates and deletes
 -- ===================
 -- Downloaded lines carry hidden building block ids and are updated through the OTL deposit API, which creates a new timecard version and re-routes approval. Set Delete Line to Yes to remove a line; deleting all lines of a timecard deletes the whole timecard. Timecards already transferred to a recipient application (Projects, Payroll/BEE or Purchasing) are protected and cannot be modified by the upload.

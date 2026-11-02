@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'BOM Bill of Materials Upload | Oracle EBS SQL Report'
 description: 'Report: BOM Bill of Materials Upload Description: This upload can be used to create and/or update existing standard BOMs, including - BOM Header - BOM…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, BOM, Bill, Materials, bom_bill_of_materials, bom_inventory_components, mtl_parameters'

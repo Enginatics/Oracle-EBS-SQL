@@ -7,16 +7,16 @@
 -- Report Name: MRP Master Schedule Upload
 -- Description: MRP Master Schedule Upload
 -- ==========================
--- - Create new MDS/MPS schedule entries.
--- - Create and Update existing schedule entries.
--- Each row stages one schedule entry into the MRP schedule interface (mrpscheduleinterface, processstatus=2) for an existing schedule designator (MDS or MPS). The staged entries are loaded into the master schedule (mrpscheduledates) asynchronously by the customer's MRP Planning Manager.
+-- - Create new master demand schedule (MDS) and master production schedule (MPS) entries.
+-- - Download existing schedule entries, change them and submit them again.
+-- Each row submits one schedule entry to the Oracle master schedule interface for an existing schedule name. The MRP Planning Manager, which must be running, loads the submitted entries into the master schedule when it next processes the interface, so the upload result reports an entry as submitted, not as loaded. An entry the Planning Manager rejects is not reported in the upload result: check the schedule entries in Oracle after the Planning Manager has run.
 -- Upload Modes
 -- ============
--- Create - opens an empty spreadsheet to enter new schedule entries against any accessible schedule designator.
--- Create and Update - downloads existing schedule entries for the selected schedule designators and lets the user add new entries and re-stage modifications. Existing entries are matched on the hidden Transaction Id.
+-- Create - opens an empty spreadsheet to enter new schedule entries against any accessible schedule name.
+-- Create and Update - downloads existing schedule entries for the selected schedules and lets the user add new entries and submit changed ones again. Existing entries are matched on the hidden Transaction Id.
 -- Prerequisites
 -- =============
--- - Schedule designators (Master Demand Schedule / Master Production Schedule) must be defined.
+-- - The master demand or master production schedule names must be defined.
 -- Excel Example Output: https://www.enginatics.com/example/mrp-master-schedule-upload/
 -- Library Link: https://www.enginatics.com/reports/mrp-master-schedule-upload/
 -- Run Report: https://demo.enginatics.com/

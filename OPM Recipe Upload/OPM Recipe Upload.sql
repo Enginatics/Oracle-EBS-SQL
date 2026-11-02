@@ -5,7 +5,16 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OPM Recipe Upload
--- Description: 
+-- Description: Creates and updates Oracle Process Manufacturing recipes and their details. Every row carries a Row Type, and the recipe key (Organization Code, Recipe, Recipe Version) repeats on all rows of a recipe; keep the rows of one recipe together.
+-- Recipe: the header with formula, routing, recipe type, process loss, yield and owner. A new recipe needs this row and is created in status New.
+-- Validity Rule: a validity rule for a product, with its use, organization, quantities and dates.
+-- Routing Step: the recipe's own step quantity and yield for a routing step.
+-- Step Material: the association of a formula line with a routing step, with transfer quantity and delays.
+-- Process Loss: the process loss of the recipe in an organization.
+-- Customer: a customer the recipe is used for.
+-- Org Operation: the activity factor of an operation activity in an organization.
+-- Org Resource: the usage, process quantity, capacities and process parameters of an operation resource in an organization.
+-- Each template shows the columns of one row type.
 -- Excel Example Output: https://www.enginatics.com/example/opm-recipe-upload/
 -- Library Link: https://www.enginatics.com/reports/opm-recipe-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -166,7 +175,7 @@ grcv.fixed_process_loss,
 grcv.fixed_process_loss_uom,
 grcv.recipe_yield,
 xxen_util.meaning(decode(grcv.contiguous_ind,1,'Y','N'),'YES_NO',0) contiguous,
-xxen_util.meaning(grcv.enhanced_pi_ind,'YES_NO',552) enhanced_process_instructions,
+xxen_util.meaning(grcv.enhanced_pi_ind,'YES_NO',0) enhanced_process_instructions,
 xxen_util.meaning(decode(grcv.calculate_step_quantity,1,'Y','N'),'YES_NO',0) calculate_step_quantity,
 (select fu.user_name from fnd_user fu where fu.user_id=grcv.owner_id) owner,
 xxen_util.display_flexfield_context(552,'GMD_RECIPES_FLEX',grcv.attribute_category) ha_attribute_category,
@@ -287,7 +296,7 @@ mtl_parameters mp
 where
 grcv.owner_organization_id=mp.organization_id and
 grcv.delete_mark=0 and
-grcv.owner_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+grcv.owner_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 :p_upload_mode like '%'||xxen_upload.action_update
 union all
 select
@@ -432,7 +441,7 @@ grcv.recipe_id=grvr.recipe_id and
 grcv.owner_organization_id=mp.organization_id and
 nvl(grvr.delete_mark,0)=0 and
 grcv.delete_mark=0 and
-grcv.owner_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+grcv.owner_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 :p_upload_mode like '%'||xxen_upload.action_update
 union all
 select
@@ -579,7 +588,7 @@ grrs.recipe_id(+)=grcv.recipe_id and
 grrs.routingstep_id(+)=frd.routingstep_id and
 grcv.owner_organization_id=mp.organization_id and
 grcv.delete_mark=0 and
-grcv.owner_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+grcv.owner_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 :p_upload_mode like '%'||xxen_upload.action_update
 union all
 select
@@ -723,7 +732,7 @@ where
 grcv.recipe_id=grsm.recipe_id and
 grcv.owner_organization_id=mp.organization_id and
 grcv.delete_mark=0 and
-grcv.owner_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+grcv.owner_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 :p_upload_mode like '%'||xxen_upload.action_update
 union all
 select
@@ -867,7 +876,7 @@ where
 grcv.recipe_id=grpl.recipe_id and
 grcv.owner_organization_id=mp.organization_id and
 grcv.delete_mark=0 and
-grcv.owner_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+grcv.owner_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 :p_upload_mode like '%'||xxen_upload.action_update
 union all
 select
@@ -1011,7 +1020,7 @@ where
 grcv.recipe_id=grc.recipe_id and
 grcv.owner_organization_id=mp.organization_id and
 grcv.delete_mark=0 and
-grcv.owner_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+grcv.owner_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 :p_upload_mode like '%'||xxen_upload.action_update
 union all
 select
@@ -1159,7 +1168,7 @@ groa.routingstep_id=frd.routingstep_id(+) and
 groa.oprn_line_id=goa.oprn_line_id(+) and
 grcv.owner_organization_id=mp.organization_id and
 grcv.delete_mark=0 and
-grcv.owner_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+grcv.owner_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 :p_upload_mode like '%'||xxen_upload.action_update
 union all
 select
@@ -1307,7 +1316,7 @@ gror.routingstep_id=frd.routingstep_id(+) and
 gror.oprn_line_id=goa.oprn_line_id(+) and
 grcv.owner_organization_id=mp.organization_id and
 grcv.delete_mark=0 and
-grcv.owner_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+grcv.owner_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 :p_upload_mode like '%'||xxen_upload.action_update
 ) x
 where

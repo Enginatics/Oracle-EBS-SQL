@@ -26,6 +26,8 @@ select
   x.rsv_account       reserve_account,
   x.asset_number      asset_number,
   x.asset_desc        asset_description,
+  x.asset_key,
+  x.asset_key||' - '||x.asset_desc asset_key_description,
   x.start_date        date_placed_in_service,
   x.method            depreciation_method,
   x.d_life            "Life Yr.Mo",
@@ -50,6 +52,7 @@ select
   frlg.deprn_reserve_acct rsv_account,
   fa.asset_number,
   fa.description asset_desc,
+  fakk.concatenated_segments asset_key,
   frlg.date_placed_in_service start_date,
   frlg.method_code method,
   frlg.life life,
@@ -78,6 +81,7 @@ from
   fa_book_controls     fbc,
   fa_reserve_ledger_gt frlg,
   fa_additions         fa,
+  fa_asset_keywords_kfv fakk,
   gl_code_combinations gcc,
   fa_fiscal_year       ffy
 where
@@ -85,6 +89,7 @@ where
   fc.currency_code            = gl.currency_code and
   fbc.book_type_code          = :p_book and
   fa.asset_id                 = frlg.asset_id and
+  fa.asset_key_ccid            = fakk.code_combination_id (+) and
   gcc.code_combination_id     = frlg.dh_ccid and
   ffy.fiscal_year_name        = fbc.fiscal_year_name and
   frlg.date_placed_in_service between ffy.start_date and ffy.end_date and
@@ -102,6 +107,7 @@ group by
   frlg.deprn_reserve_acct,
   fa.asset_number,
   fa.description,
+  fakk.concatenated_segments,
   frlg.date_placed_in_service,
   frlg.method_code,
   frlg.life,

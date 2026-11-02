@@ -56,7 +56,7 @@ where
  p.project_id = pi.project_id and
  p.project_id = iv.project_id (+) and
  pi.org_id = haouv.organization_id and
- haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+ haouv.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
  p.project_id in
   (select
     p.project_id

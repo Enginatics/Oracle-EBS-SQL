@@ -7,7 +7,7 @@
 -- Report Name: INV Unit Of Measure Conversion Upload
 -- Description: INV Unit Of Measure Conversion Upload
 -- =============================
--- In R12.2 and later:
+-- In R12.2.3 and later:
 -- This upload enables the user to
 -- - upload new unit of measure conversions
 -- - update existing unit of measure conversions.

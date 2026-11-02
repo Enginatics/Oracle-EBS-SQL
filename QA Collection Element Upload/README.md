@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'QA Collection Element Upload | Oracle EBS SQL Report'
-description: 'Upload to create, update, or delete Quality Collection Elements (QACHARS). This upload manages user-defined collection elements including: - Element name…'
+description: 'Upload to create, update and delete user-defined Quality collection elements. The upload maintains the element name, type, datatype, prompt, display…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Collection, Element, qa_chars, mtl_units_of_measure'
 permalink: /QA%20Collection%20Element%20Upload/
 report_name: 'QA Collection Element Upload'
@@ -14,16 +14,13 @@ report_web_name: qa-collection-element-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/qa-collection-element-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-collection-element-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-collection-element-upload).
 
 ## Overview
-Upload to create, update, or delete Quality Collection Elements (QA_CHARS).
+Upload to create, update and delete user-defined Quality collection elements.
 
-This upload manages user-defined collection elements including:
-- Element name, type, datatype, prompt, display length
-- Mandatory/Enabled flags
-- UOM, default value, data entry hint, SQL validation string
-- Sequence configuration (for Sequence datatype elements)
+The upload maintains the element name, type, datatype, prompt, display length, mandatory and enabled flags, UOM, default value, data entry hint, SQL validation string and the sequence settings of Sequence elements. Predefined elements are not downloaded and cannot be changed.
 
-Note: Specification limits, values, and actions are not managed by this upload.
-Datatype cannot be changed after initial creation.
+Specification limits, values and actions are not maintained by this upload. Delete Record removes the element together with its values and actions, and is refused while the element is used in a collection plan.
+
+The datatype cannot be changed after the element is created.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-collection-element-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 

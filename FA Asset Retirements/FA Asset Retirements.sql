@@ -27,6 +27,8 @@ select
   x.cost_center,
   x.asset_number,
   x.asset_desciption,
+  fakk.concatenated_segments asset_key,
+  fakk.concatenated_segments||' - '||x.asset_desciption asset_key_description,
   x.date_placed_in_service,
   x.date_retired,
   x.period,
@@ -242,7 +244,12 @@ from
      fr.status,
      fr.proceeds_of_sale,
      fr.cost_of_removal
-  ) x
+  ) x,
+  fa_additions_b fab,
+  fa_asset_keywords_kfv fakk
+where
+  x.asset_id=fab.asset_id and
+  fab.asset_key_ccid=fakk.code_combination_id(+)
 order by
   x.company_name,
   x.ledger,

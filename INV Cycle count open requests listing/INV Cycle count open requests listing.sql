@@ -58,7 +58,7 @@ wms_license_plate_numbers wlpn1,
 wms_license_plate_numbers wlpn2
 where
 1=1 and
-ood.organization_code in (select oav.organization_code from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+ood.organization_code in (select ood.organization_code from org_organization_definitions ood where ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')) and
 mif.organization_id=ood.organization_id and
 mcch.organization_id=ood.organization_id and
 mcce.organization_id=ood.organization_id and

@@ -117,7 +117,7 @@ where
  2=2 and
  :p_from_line is null and
  :p_to_line is null and
- mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+ mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
  dj.organization_id = mp.organization_id and
  oog.organization_id = mp.organization_id and
  dj.wip_entity_id = we.wip_entity_id and
@@ -208,7 +208,7 @@ from
 where
  1=1 and
  3=3 and
- mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+ mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
  we.organization_id = mp.organization_id and
  we.entity_type = 2 and
  we.wip_entity_id = pod.wip_entity_id and

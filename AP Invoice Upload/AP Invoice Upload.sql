@@ -5,7 +5,11 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: AP Invoice Upload
--- Description: AP Invoice Upload
+-- Description: Creates Payables invoices through Payables Open Interface Import. Rows with the same Operating Unit, Supplier, Supplier Site and Invoice Number form one invoice, and an error on any of its rows keeps the whole invoice out of the import.
+-- To split a line across several distributions, enter it on several rows with the same Line Number and line details, each with its own Distribution Line Number and Distribution Account, and either a Distribution Percent on every row, adding up to 100, or a Distribution Amount on every row, adding up to the Line Amount. A rounding difference goes to the largest distribution, as with distribution sets. The distributions are created after the import and before invoice validation, as the Invoices window enters them.
+-- A line matched to a purchase order or receipt, using a Distribution Set or prorated cannot be split, and a project line only while profile PA: Allow Override of PA Distributions in AP/PO is Yes.
+-- The result shows one row per distribution, including the distributions Payables creates for a line from a Distribution Set or a purchase order.
+-- To add lines to an existing invoice, use the template Add Lines to Existing Invoice, which sets Add to Existing Invoice to Yes on each row; Yes is accepted only when the invoice exists. The lines are added as in the Invoices window, and Invoice Amount on these rows is the amount added to the invoice, including the tax of the added lines, the same on every row of the invoice; the result shows the invoice's new Invoice Amount. The other invoice columns identify the invoice and are not changed. The invoice must be unpaid, and its Invoice Amount changeable in the Invoices window. Item, Freight and Miscellaneous lines can be added, without a purchase order or receipt match, proration or India Localization taxes, and a Line Number already on the invoice is rejected.
 -- Excel Example Output: https://www.enginatics.com/example/ap-invoice-upload/
 -- Library Link: https://www.enginatics.com/reports/ap-invoice-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -38,6 +42,7 @@ assa.vendor_site_code   supplier_site,
 xxen_util.meaning(aia.invoice_type_lookup_code,'INVOICE TYPE',200) invoice_type,
 (select fdsc.name from fnd_doc_sequence_categories fdsc where fdsc.application_id = 200 and fdsc.table_name in ('AP_INVOICES','AP_INVOICES_ALL') and fdsc.code = aia.doc_category_code) document_category,
 aia.invoice_num         invoice_number,
+null add_to_existing_invoice,
 aia.description         invoice_description,
 (select pha.segment1 from po_headers_all pha where pha.po_header_id = nvl(aia.po_header_id,aia.quick_po_header_id)) invoice_po_number,
 aia.invoice_date,
@@ -82,6 +87,7 @@ aila.unit_price,
 --
 aila.line_group_number line_prorate_group,
 xxen_util.meaning(aila.prorate_across_all_items,'YES_NO',0) prorate_flag,
+aida.distribution_line_number,
 --
 (select
   fsfa.alias_name
@@ -97,6 +103,8 @@ xxen_util.meaning(aila.prorate_across_all_items,'YES_NO',0) prorate_flag,
   rownum <= 1
 ) distribution_account_alias,
 gcck.concatenated_segments distribution_account,
+to_number(null) distribution_percent,
+aida.amount distribution_amount,
 (select adsa.distribution_set_name from ap_distribution_sets_all adsa where adsa.distribution_set_id = aila.distribution_set_id and adsa.org_id = aila.org_id) distribution_set,
 --
 (select hecv.full_name || ' (' || hecv.employee_num || ')' from hr_employees_current_v hecv where hecv.employee_id = aila.requester_id) requester,
@@ -229,11 +237,11 @@ aila.income_tax_region,
 ) product_category,
 -- tax line only columns
 aila.tax_regime_code tax_regime,
-aila.tax tax,
+aila.tax,
 aila.tax_status_code tax_status,
 aila.tax_jurisdiction_code tax_jurisdiction,
 aila.tax_rate_code tax_rate_name,
-aila.tax_rate tax_rate,
+aila.tax_rate,
 --
 aila.assessable_value,
 (select aag.name from ap_awt_groups aag where aag.group_id = aila.awt_group_id) line_invoice_awt_group,
@@ -314,7 +322,8 @@ null attachment_title_,
 null attachment_description_,
 null attachment_type_,
 null attachment_content_,
-null attachment_file_id_
+null attachment_file_id_,
+to_number(null) upload_row
 &il_columns
 from
 ap_invoices_all aia,
@@ -346,6 +355,5 @@ nvl(:p_tax_inclusive_flag,'?') = nvl(:p_tax_inclusive_flag,'?') and
 nvl(:p_calulate_tax_flag,'?') = nvl(:p_calulate_tax_flag,'?') and
 nvl(:p_gl_date,sysdate) = nvl(:p_gl_date,sysdate) and
 nvl(:p_submit_validation,'N') = nvl(:p_submit_validation,'N') and
-nvl(:p_default_taxation_country,'XX') = nvl(:p_default_taxation_country,'XX') and
 nvl(:p_dflt_line_amount,'N') = nvl(:p_dflt_line_amount,'N') and
 1=0

@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'QP Qualifier Group Upload | Oracle EBS SQL Report'
 description: 'This upload supports the creation and update of Qualifier Groups in Oracle Advanced Pricing.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Qualifier, Group, qp_qualifier_rules, qp_qualifiers_v'

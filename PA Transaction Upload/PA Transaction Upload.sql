@@ -7,12 +7,10 @@
 -- Report Name: PA Transaction Upload
 -- Description: PA Transaction Upload
 -- ===================
--- This upload can be used to upload transactions from external cost collection systems into Oracle Projects.
--- Transaction Import creates pre-approved expenditure items from transaction data entered in external cost collection systems.
--- If the 'Operating Unit' and/or 'Transaction Source' parameters are specified, then the upload excel will be restricted to the specified Operating Unit and/or Transaction Source.
--- If the 'Batch Name' parameter is specified, this will default as the Batch Name in the upload Excel.
--- If the 'All Negative Expend Unmatched' parameter is set to Yes, then all negative transations then the 'Unmatched Negative Txn Flag' column will automatically default to Yes against any negative transactions entered into upload Excel.
--- If the 'Reverse in Future Period' parameter is set to Yes, then the 'Accrual Flag' column will default to Yes against every transaction entered in the upload Excel
+-- Uploads transactions from external cost collection systems into Oracle Projects. Transaction Import creates pre-approved expenditure items from the transaction data.
+-- The upload opens an empty sheet. The Operating Unit, Transaction Source and Batch Name parameters default the columns of the same name on new rows, and Expenditure Ending Date the Expnd Ending Date column, moved to the end of the operating unit's expenditure week.
+-- If the 'All Negative Expend Unmatched' parameter is set to Yes, the 'Negative Txn Flag' column defaults to Yes on every row with a negative quantity.
+-- If the 'Reverse in Future Period' parameter is set to Yes, the 'Accrual Flag' column defaults to Yes on every row.
 -- Excel Example Output: https://www.enginatics.com/example/pa-transaction-upload/
 -- Library Link: https://www.enginatics.com/reports/pa-transaction-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -29,29 +27,29 @@ haouv.name operating_unit,
 (select pts.user_transaction_source from pa_transaction_sources pts where pts.transaction_source = ptia.transaction_source) transaction_source,
 xxen_pa_upload.get_system_linkage_meaning(ptia.system_linkage) expnd_type_class, 
 ptia.expenditure_ending_date expnd_ending_date,
-ptia.batch_name batch_name,
+ptia.batch_name,
 ptia.orig_transaction_reference original_transaction_ref,
 --
-ptia.organization_name organization_name,
+ptia.organization_name,
 null employee_name,
-ptia.employee_number employee_number,
+ptia.employee_number,
 ptia.person_business_group_name business_group,
-ptia.person_type person_type,
+ptia.person_type,
 ptia.override_to_organization_name override_to_organization,
 --
 ptia.expenditure_item_date expnd_item_date,
-ptia.project_number project_number,
+ptia.project_number,
 null project_name,
-ptia.task_number task_number,
+ptia.task_number,
 null task_name,
 ptia.expenditure_type expnd_type,
 --
-ptia.non_labor_resource non_labor_resource, --usages
+ptia.non_labor_resource, --usages
 ptia.non_labor_resource_org_name non_labor_org, --usages
-ptia.assignment_name assignment_name, -- timecards
-ptia.work_type_name work_type_name,
+ptia.assignment_name, -- timecards
+ptia.work_type_name,
 --
-ptia.quantity quantity,
+ptia.quantity,
 --
 ptia.denom_currency_code currency,
 ptia.denom_raw_cost raw_cost,
@@ -81,14 +79,14 @@ ptia.unmatched_negative_txn_flag negative_txn_flag,
 xxen_util.meaning(ptia.accrual_flag,'YES_NO',0) accrual_flag,
 xxen_util.meaning(ptia.billable_flag,'YES_NO',0) billable_flag,
 --
-ptia.gl_date gl_date,
+ptia.gl_date,
 (select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id = ptia.dr_code_combination_id) debit_acct,
 (select gcck.concatenated_segments from gl_code_combinations_kfv gcck where gcck.code_combination_id = ptia.cr_code_combination_id) credit_acct,
 --
-ptia.vendor_number vendor_number,
-ptia.po_number po_number,
+ptia.vendor_number,
+ptia.po_number,
 ptia.po_line_num po_line_number,
-ptia.po_price_type po_price_type,
+ptia.po_price_type,
 --
 ptia.expenditure_comment,
 --
@@ -102,7 +100,7 @@ ptia.cdl_system_reference3 cdl_system_ref3,
 ptia.cdl_system_reference4 cdl_system_ref4,
 ptia.cdl_system_reference5 cdl_system_ref5,
 --
-ptia.attribute_category attribute_category,
+ptia.attribute_category,
 ptia.attribute1 pa_expnd_attribute1,
 ptia.attribute2 pa_expnd_attribute2,
 ptia.attribute3 pa_expnd_attribute3,
@@ -114,12 +112,12 @@ ptia.attribute8 pa_expnd_attribute8,
 ptia.attribute9 pa_expnd_attribute9,
 ptia.attribute10 pa_expnd_attribute10,
 --
-xxen_util.meaning(nvl(:p_submit_import,'Y'),'YES_NO',0) import_transactions
+xxen_util.meaning(nvl(:p_submit_import,'Y'),'YES_NO',0) import_transactions,
+to_number(null) upload_row
 from
 pa_transaction_interface_all ptia,
 hr_all_organization_units_vl haouv
 where
-1=1 and
 ptia.org_id = haouv.organization_id and
 :p_upload_mode like '%' || xxen_upload.action_update and
 haouv.name = nvl(:p_operating_unit,haouv.name) and

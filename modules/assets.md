@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-02
 title: 'Oracle EBS Assets Reports | 22 SQL reports'
 description: '22 free Oracle E-Business Suite Assets SQL reports for Excel: FA Additions By Source, FA Asset Additions, FA Asset Book Details, FA Asset Cost, FA Asset…'
-keywords: 'Oracle EBS Assets reports, Oracle Assets SQL, Oracle E-Business Suite, Blitz Report, gl_code_combinations, fa_additions, fa_system_controls, fa_distribution_history, fa_lookups'
+keywords: 'Oracle EBS Assets reports, Oracle Assets SQL, Oracle E-Business Suite, Blitz Report, fa_asset_keywords_kfv, gl_code_combinations, fa_additions, fa_system_controls, fa_distribution_history'
 permalink: /modules/assets/
 module: 'Assets'
 module_page: true
@@ -11,7 +11,7 @@ module_page: true
 
 # Oracle EBS Assets Reports
 
-22 ready-to-run SQL reports for **Oracle E-Business Suite Assets**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Assets tables in these reports are `gl_code_combinations`, `fa_additions`, `fa_system_controls`, `fa_distribution_history`, `fa_lookups`, `fa_deprn_periods`.
+22 ready-to-run SQL reports for **Oracle E-Business Suite Assets**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Assets tables in these reports are `fa_asset_keywords_kfv`, `gl_code_combinations`, `fa_additions`, `fa_system_controls`, `fa_distribution_history`, `fa_lookups`.
 
 > **Run any of these reports in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=module-assets) – your first 30 reports are free.
 

@@ -52,7 +52,7 @@ xxen_util.meaning(case when not (fcr.phase_code='C' and fcr.status_code='C') the
 decode(fcr.phase_code,'P',decode(fcr.hold_flag,'Y','H',decode(sign(fcr.requested_start_date-sysdate),1,'P',fcr.status_code)),'R',decode(fcr.hold_flag,'Y','S',decode(fcr.status_code,'Q', 'B','I', 'B',fcr.status_code)),fcr.status_code)
 end,'CP_STATUS_CODE',0)
 ),
-nvl2(xrr.completion_date,null,nvl2(gs.run_id,'Running - Online','Error'))),
+nvl2(xrr.completion_date,null,nvl2(gs.run_id,'Running - Online',case when xrr.request_id is null and xrr.start_date is null then 'Not started' else 'Error' end))),
 'Completed') status,
 nvl(xrr.start_date,xrr.creation_date) start_date,
 xrr.completion_date completion_date,

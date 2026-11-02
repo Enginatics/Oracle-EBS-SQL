@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'Blitz Report Access Upload | Oracle EBS SQL Report'
-description: 'Upload to update value for profile option ''Blitz Report Access'' at user or responsibility level. Someone having this upload assigned, can maintain the…'
+description: 'Upload to maintain the values of profile option Blitz Report Access at user and responsibility level. Users of this upload can set the access of other…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Blitz, Report, Access, fnd_profile_options_vl, fnd_profile_option_values, fnd_user'
 permalink: /Blitz%20Report%20Access%20Upload/
 report_name: 'Blitz Report Access Upload'
@@ -14,16 +14,16 @@ report_web_name: blitz-report-access-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/blitz-report-access-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-access-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-access-upload).
 
 ## Overview
-Upload to update value for profile option 'Blitz Report Access' at user or responsibility level.
+Upload to maintain the values of profile option Blitz Report Access at user and responsibility level.
 
-Someone having this upload assigned, can maintain the profile option values for other users or responsibilities up to their own access level.
-He could, for example, set the value to 'User' for other users, but not to anything higher, such as 'Developer'.
-Someone with Developer access could set the value for other users and developers, but not to the highest level 'System'.
+Users of this upload can set the access of other users and responsibilities up to their own access level. With User Admin access, for example, the value can be set to User or User Admin, but not to Developer or System.
+
+Clearing Access on a downloaded row deletes the profile option value at that level, so the value of the next level applies.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-access-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
-Level, Value
+Upload Mode, Level, Value
 
 ## Oracle EBS Tables Used
 [fnd_profile_options_vl](https://www.enginatics.com/library/?pg=1&find=fnd_profile_options_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-access-upload), [fnd_profile_option_values](https://www.enginatics.com/library/?pg=1&find=fnd_profile_option_values&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-access-upload), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-access-upload), [fnd_responsibility_vl](https://www.enginatics.com/library/?pg=1&find=fnd_responsibility_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-access-upload), [fnd_application_vl](https://www.enginatics.com/library/?pg=1&find=fnd_application_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-access-upload)

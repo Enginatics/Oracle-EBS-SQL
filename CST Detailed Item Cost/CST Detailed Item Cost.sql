@@ -68,7 +68,7 @@ mtl_item_status_vl misv,
 bom_resources br
 where
 1=1 and
-cic.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+cic.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 gl.currency_code=fc.currency_code and
 fc.enabled_flag='Y' and
 gl.ledger_id=ood.set_of_books_id and

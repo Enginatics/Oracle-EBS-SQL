@@ -9,7 +9,7 @@
 -- ================================
 -- - Upload New Safety Stock Entries.
 -- - Update Existing Safety Stock Entries.
--- - Delete Existing Saffety Stock Entries (Delete by setting the 'Delete This Entry' = Yes).
+-- - Delete Existing Safety Stock Entries (Delete by setting the 'Delete This Entry' = Yes).
 -- Upload Modes
 -- ============
 -- Create
@@ -19,7 +19,7 @@
 -- -----------------
 -- Create new Safety Stock entries and/or modify existing Safety Stock entries.
 -- Allows the user to
--- - download existing Safety Stock entiries based on the selection criteria specified in the report parameters.
+-- - download existing Safety Stock entries based on the selection criteria specified in the report parameters.
 -- - modify (update/delete) the downloaded Safety Stock entries
 -- - create new Safety Stock entries
 -- Note:
@@ -60,7 +60,8 @@ msiv.planner_code planner,
  moq.inventory_item_id = mss.inventory_item_id
  having 
  sum(moq.transaction_quantity) != 0
-) onhand
+) onhand,
+to_number(null) upload_row
 from
 mtl_safety_stocks mss,
 mtl_parameters mp,

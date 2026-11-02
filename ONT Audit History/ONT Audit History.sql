@@ -65,7 +65,7 @@ oe_audit_attr_desc_v oaadv
 where
 1=1 and
 oaadv.org_id=haouv.organization_id and
-oaadv.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+oaadv.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU')
 order by
 oaadv.hist_creation_date desc,
 oaadv.entity_id

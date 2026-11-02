@@ -99,7 +99,7 @@ gor.oprn_line_id=goa.oprn_line_id
 ) aa
 where
 1=1 and
-ood.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+ood.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 grv.owner_organization_id=ood.organization_id and
 grv.recipe_id=grvr.recipe_id and
 grvr.organization_id=ood.organization_id and

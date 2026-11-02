@@ -168,7 +168,7 @@ pha.authorization_status='APPROVED' and
 nvl(plla.cancel_flag,'N')='N' and
 nvl(plla.closed_code,'OPEN') in ('OPEN','CLOSED FOR INVOICE') and
 plla.quantity-nvl(plla.quantity_received,0)-nvl(plla.quantity_cancelled,0)>0 and
-plla.ship_to_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+plla.ship_to_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 pha.po_header_id=pla.po_header_id and
 pla.po_line_id=plla.po_line_id and
 pha.org_id=haouv.organization_id and

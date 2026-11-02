@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-02
 title: 'PER Person Extra Information Upload | Oracle EBS SQL Report'
 description: 'Upload to create and update Person Extra Information Types (EITs) within Oracle HRMS - the People form > Others > Extra Information > Extra Person…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, PER, Person, Extra, Information, per_business_groups, per_all_people_f, per_people_extra_info'
@@ -18,13 +18,13 @@ Upload to create and update Person Extra Information Types (EITs) within Oracle 
 
 Scope:
 - Generic upload covering all person extra information types. The Information Type parameter/column lists every enabled context of the Extra Person Info DDF flexfield (titled Extra Person Information), which holds the registered EIT types.
-- The segment values are loaded as raw Information 1..30 columns (pei_information1..30), matching the order of the information type's flexfield segments.
+- The segment values are entered in the columns Pei Information1 to Pei Information30. Each segment of an information type is held in the column that its flexfield definition assigns to it, which need not follow the order of the segments; the list of each column shows the values of that segment for the row's Information Type.
 - Create new person extra information records and update existing ones (auto-detected by the hidden Person Extra Information ID downloaded in Create, Update mode).
 
 Notes:
 - A person can hold multiple records of the same information type (e.g. one per year), so existing rows are matched by the hidden Person Extra Information ID, not by person and type.
 - The information type must be eligible for the person; ineligible types are rejected by the API.
-- For information type segments validated against a value set, enter the stored value the segment expects.
+- For segments validated against a value set, the columns show and accept the displayed value, which the upload validates and converts to the stored value.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-person-extra-information-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 

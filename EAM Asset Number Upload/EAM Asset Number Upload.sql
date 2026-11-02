@@ -40,7 +40,7 @@ decode(meanv.fa_sync_flag,'Y',xxen_util.meaning('Y','YES_NO',0)) fa_synchronized
 meanv.active_start_date,
 meanv.active_end_date,
 xxen_util.meaning(to_char(meanv.eam_item_type),'MTL_EAM_ASSET_TYPE',700) asset_type,
-meanv.current_status_meaning asset_status,
+cis.name asset_status,
 meanv.current_location current_location_address,
 meanv.parent_instance_number parent_asset_number,
 meanv.parent_serial_number parent_asset_serial_number,
@@ -78,6 +78,11 @@ xxen_util.display_flexfield_value(542,'Item Instance Flex Field',meanv.context,'
 xxen_util.display_flexfield_value(542,'Item Instance Flex Field',meanv.context,'ATTRIBUTE30',meanv.row_id,meanv.attribute30) attribute30,
 to_number(null) upload_row
 from
-mtl_eam_asset_numbers_all_v meanv
+mtl_eam_asset_numbers_all_v meanv,
+csi_item_instances cii,
+csi_instance_statuses cis
 where
+meanv.current_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+meanv.maintenance_object_id=cii.instance_id and
+cii.instance_status_id=cis.instance_status_id and
 1=1

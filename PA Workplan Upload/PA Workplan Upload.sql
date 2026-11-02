@@ -52,7 +52,7 @@ pa_resource_classes_vl prcv
 where
 1=1 and
 :p_upload_mode like '%'||xxen_upload.action_update and
-haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+haouv.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 haouv.organization_id=ppa.org_id and
 nvl(ppa.template_flag,'N')='N' and
 ppa.project_id=pbv.project_id and

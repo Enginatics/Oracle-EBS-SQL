@@ -25,7 +25,7 @@ org_organization_definitions ood,
 org_acct_periods oap
 where
 1=1 and
-oap.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+oap.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 gl.ledger_id=ood.set_of_books_id and
 ood.organization_id=oap.organization_id and
 oap.open_flag='N' and

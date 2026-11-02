@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'Oracle EBS Projects Reports | 18 SQL reports'
 description: '18 free Oracle E-Business Suite Projects SQL reports for Excel: PA Capital Project Summary with Asset Detail, PA Cost Audit, PA Employee Activity By…'
-keywords: 'Oracle EBS Projects reports, Oracle Projects SQL, Oracle E-Business Suite, Blitz Report, hr_all_organization_units_vl, pa_projects_all, mo_glob_org_access_tmp, dual, pa_tasks'
+keywords: 'Oracle EBS Projects reports, Oracle Projects SQL, Oracle E-Business Suite, Blitz Report, hr_all_organization_units_vl, pa_projects_all, xxen_report_org_access, pa_tasks, per_people_x'
 permalink: /modules/projects/
 module: 'Projects'
 module_page: true
@@ -11,7 +11,7 @@ module_page: true
 
 # Oracle EBS Projects Reports
 
-18 ready-to-run SQL reports for **Oracle E-Business Suite Projects**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Projects tables in these reports are `hr_all_organization_units_vl`, `pa_projects_all`, `mo_glob_org_access_tmp`, `dual`, `pa_tasks`, `per_people_x`.
+18 ready-to-run SQL reports for **Oracle E-Business Suite Projects**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Projects tables in these reports are `hr_all_organization_units_vl`, `pa_projects_all`, `xxen_report_org_access`, `pa_tasks`, `per_people_x`, `pa_project_statuses`.
 
 > **Run any of these reports in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=module-projects) – your first 30 reports are free.
 

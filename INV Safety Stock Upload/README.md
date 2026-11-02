@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'INV Safety Stock Upload | Oracle EBS SQL Report'
 description: 'INV Safety Stock Upload ================================ - Upload New Safety Stock Entries. - Update Existing Safety Stock Entries. - Delete Existing…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, INV, Safety, Stock, mtl_onhand_quantities, mtl_safety_stocks, mtl_parameters'
@@ -18,7 +18,7 @@ INV Safety Stock Upload
 ================================
 - Upload New Safety Stock Entries.
 - Update Existing Safety Stock Entries.
-- Delete Existing Saffety Stock Entries (Delete by setting the 'Delete This Entry' = Yes).
+- Delete Existing Safety Stock Entries (Delete by setting the 'Delete This Entry' = Yes).
 
 Upload Modes
 ============
@@ -32,7 +32,7 @@ Create or Update
 Create new Safety Stock entries and/or modify existing Safety Stock entries.
 
 Allows the user to 
-- download existing Safety Stock entiries based on the selection criteria specified in the report parameters.
+- download existing Safety Stock entries based on the selection criteria specified in the report parameters.
 - modify (update/delete) the downloaded Safety Stock entries
 - create new Safety Stock entries
 

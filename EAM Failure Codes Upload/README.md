@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-02
 title: 'EAM Failure Codes Upload | Oracle EBS SQL Report'
-description: 'Create, update, and delete EAM failure codes, cause codes, and resolution codes. Upload Mode =========== Create ------ Opens an empty spreadsheet to…'
+description: 'Create, update and delete EAM failure codes, cause codes and resolution codes. Codes are global, not specific to an organization, and a code is unique…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, EAM, Failure, Codes, eam_failure_codes, eam_cause_codes, eam_resolution_codes'
 permalink: /EAM%20Failure%20Codes%20Upload/
 report_name: 'EAM Failure Codes Upload'
@@ -14,35 +14,11 @@ report_web_name: eam-failure-codes-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/eam-failure-codes-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-codes-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-codes-upload).
 
 ## Overview
-Create, update, and delete EAM failure codes, cause codes, and resolution codes.
+Create, update and delete EAM failure codes, cause codes and resolution codes. Codes are global, not specific to an organization, and a code is unique within its Code Type.
 
-Upload Mode
-===========
+Effective End Date end-dates a code. Clearing it reactivates an end-dated code.
 
-Create
-------
-Opens an empty spreadsheet to define new codes.
-
-Create, Update
---------------
-Downloads existing codes for review and modification, and allows adding new rows.
-
-Code Type
-=========
-Determines which of the three code tables is affected:
-- Failure Code   (stored in eam_failure_codes)
-- Cause Code     (stored in eam_cause_codes)
-- Resolution Code (stored in eam_resolution_codes)
-
-Codes are global - not scoped to any operating unit.
-
-Fields
-======
-- Code Type: Required. Failure Code, Cause Code, or Resolution Code.
-- Code: Required. Unique within its code type.
-- Description: Optional.
-- Effective End Date: Optional. Blank to keep the code active; set to reactivate an end-dated code.
-- Delete Record: Optional. Set to Yes to delete an existing code.
+Delete Record deletes an existing code.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-codes-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 

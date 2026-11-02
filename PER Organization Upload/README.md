@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'PER Organization Upload | Oracle EBS SQL Report'
 description: 'Upload to create and update organizations, organization classifications, and organization information types within Oracle HRMS. Scope: - Create new…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, PER, Organization, hr_all_organization_units, hr_all_organization_units_tl, per_business_groups'
@@ -26,7 +26,7 @@ Scope:
 
 Constraints:
 - Organizations can only be created/updated within the Business Group associated with the current responsibility
-- Business Group creation is not supported - use the Define Organizations form
+- Business Group creation is not supported - use the Define Organization form
 - The following organization information types cannot be updated via the API once created: Business Group Information, Canada Employer Identification. These can be created but not subsequently modified by this upload
 - Only supports the creation and update of the single-row DFF and multi-row DFF information types. 
 - Organization information segments that reference self-referencing data may require a two-step upload: first create the info type, then update the self-referencing attribute in a second pass

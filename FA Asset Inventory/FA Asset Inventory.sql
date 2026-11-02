@@ -22,6 +22,8 @@ select
 ,x.owner
 ,x.d_location1 location
 ,x.asset "Asset - Description"
+,x.asset_key
+,x.asset_key_description
 ,x.units
 ,x.serial serial_number
 ,x.tag tag_number
@@ -48,7 +50,9 @@ select
  decode(ad.asset_type,'CIP', 'C', 'EXPENSED','E','')        asset_type,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_comp_code', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') d_comp_code1,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') d_cost_ctr1,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', fsc.location_flex_structure, null, loc.location_id, 'ALL', 'Y', 'VALUE') d_location1
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', fsc.location_flex_structure, null, loc.location_id, 'ALL', 'Y', 'VALUE') d_location1,
+ fakk.concatenated_segments asset_key,
+ fakk.concatenated_segments||' - '||ad.description asset_key_description
 from
     (
      select
@@ -69,6 +73,7 @@ from
     fa_deprn_detail         dd,
     per_people_f            emp,
     fa_additions            ad,
+    fa_asset_keywords_kfv   fakk,
     fa_locations            loc,
     gl_code_combinations    cc,
     fa_books                books,
@@ -82,6 +87,7 @@ where
     nvl(:p_start_cc,  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE'))  and
     nvl(:p_end_cc ,  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE')) and
     dh.asset_id            = ad.asset_id            and
+    ad.asset_key_ccid      = fakk.code_combination_id(+) and
     dh.location_id         = loc.location_id        and
     dh.code_combination_id = cc.code_combination_id and
     dh.date_ineffective is null and
@@ -109,6 +115,8 @@ group by
    emp.full_name,
    fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', fsc.location_flex_structure, null, loc.location_id, 'ALL', 'Y', 'VALUE'),
    ad.asset_number || ' - ' || ad.description,
+   ad.description,
+   fakk.concatenated_segments,
    dh.units_assigned,
    ad.serial_number,
    ad.tag_number,
@@ -150,7 +158,9 @@ select
  decode(ad.asset_type,'CIP', 'C', 'EXPENSED','E','')        asset_type,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_comp_code', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'GL_BALANCING', 'Y', 'VALUE') d_comp_code1,
  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE') d_cost_ctr1,
- fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', fsc.location_flex_structure, null, loc.location_id, 'ALL', 'Y', 'VALUE') d_location1
+ fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', fsc.location_flex_structure, null, loc.location_id, 'ALL', 'Y', 'VALUE') d_location1,
+ fakk.concatenated_segments asset_key,
+ fakk.concatenated_segments||' - '||ad.description asset_key_description
 from
     (
      select
@@ -170,6 +180,7 @@ from
     ) fsc,
     per_people_f            emp,
     fa_additions            ad,
+    fa_asset_keywords_kfv   fakk,
     fa_locations            loc,
     gl_code_combinations    cc,
     fa_books                books,
@@ -185,6 +196,7 @@ where
     nvl(:p_start_cc,  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE'))  and
     nvl(:p_end_cc ,  fnd_flex_xml_publisher_apis.process_kff_combination_1('d_cost_ctr', 'SQLGL', 'GL#', cc.chart_of_accounts_id, null, cc.code_combination_id, 'FA_COST_CTR', 'Y', 'VALUE')) and
   dh.asset_id            = ad.asset_id            and
+    ad.asset_key_ccid      = fakk.code_combination_id(+) and
   dh.location_id         = loc.location_id        and
   dh.code_combination_id = cc.code_combination_id and
   dh.date_ineffective is null and
@@ -213,6 +225,8 @@ where
      emp.full_name,
      fnd_flex_xml_publisher_apis.process_kff_combination_1('d_location', 'OFA', 'LOC#', fsc.location_flex_structure, null, loc.location_id, 'ALL', 'Y', 'VALUE'),
    ad.asset_number || ' - ' || ad.description,
+   ad.description,
+   fakk.concatenated_segments,
      decode(lu.lookup_code,'ADDITION COST',decode(adj.source_type_code
                                                  ,'TRANSFER',decode(adj.debit_credit_flag,'DR',1,-1)*dh.units_assigned
                                                  ,'RETIREMENT',decode(adj.debit_credit_flag,'DR',1,-1)*dh.units_assigned

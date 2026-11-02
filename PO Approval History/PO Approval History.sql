@@ -71,7 +71,7 @@ decode(pah.object_type_code,'PO',pah.object_id,'PA',pah.object_id)=pha.po_header
 decode(pah.object_type_code,'RELEASE',pah.object_id)=pra.po_release_id(+) and
 pra.po_header_id=pha_rel.po_header_id(+) and
 decode(pah.object_type_code,'REQUISITION',pah.object_id)=prha.requisition_header_id(+) and
-coalesce(pha.org_id,pra.org_id,prha.org_id) in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+coalesce(pha.org_id,pra.org_id,prha.org_id) in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 coalesce(pha.org_id,pra.org_id,prha.org_id)=haouv.organization_id
 ) x
 where

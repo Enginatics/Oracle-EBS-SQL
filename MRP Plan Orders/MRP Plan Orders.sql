@@ -141,14 +141,14 @@ mrp_orders_sc_v mosv,
 ) mwdo
 where
 1=1 and
-(mosv.compile_designator,mosv.organization_id) in
+(mosv.compile_designator,mosv.plan_organization_id,mosv.organization_id) in
 (select
- mpsv.compile_designator,mpsv.organization_id
+ mpsv.compile_designator,mpsv.organization_id,mpsv.planned_organization
  from
  mrp_plans_sc_v mpsv
  where
  2=2 and
- mpsv.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+ mpsv.planned_organization in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
  nvl(mpsv.disable_date,sysdate)>=sysdate and
  mpsv.data_completion_date is not null and
  nvl(mpsv.plan_type,mpsv.curr_plan_type) in (1,2,3,4)

@@ -12,7 +12,7 @@
 -- - WMS=No + (non-Standard cost method OR the subinventory has on-hand/transaction history): the Cost Group is fixed (existing value on Update, organization default on Create) and the accounts follow it.
 -- All account LOVs restrict to enabled detail (non-summary) GL accounts in the organization's chart of accounts. The Cost Group LOV likewise restricts to selectable Cost Groups per the rules above.
 -- Material Status changes require Oracle's electronic signature workflow when ERES is enabled — those changes must be made via the Subinventories form to preserve the e-signature audit trail.
--- There is no Delete option — Subinventories can only be inactivated (set Inactive On to a past date).
+-- There is no Delete option. A subinventory is inactivated by setting its Inactive On date, which must be today or later when changed.
 -- Excel Example Output: https://www.enginatics.com/example/inv-subinventory-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-subinventory-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -108,7 +108,7 @@ where
 1=1 and
 msi.secondary_inventory_name<>'AX_INTRANS' and
 mp.organization_id=msi.organization_id and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 mmsv.status_id(+)=msi.status_id and
 cg.cost_group_id(+)=msi.default_cost_group_id and
 mmsv_loc.status_id(+)=msi.default_loc_status_id and

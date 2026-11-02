@@ -5,7 +5,7 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: OKS Contract Termination Upload
--- Description: Terminates service contracts (full termination), terminates individual contract lines and sublines (partial termination), and deletes lines from Entered contracts - the Terminate action of the Service Contracts Authoring form (okcterminatepub / okccontractpub).
+-- Description: Terminates service contracts (full termination), terminates individual contract lines and sublines (partial termination), and deletes lines from Entered contracts - the Terminate action of the Service Contracts Authoring form.
 -- Set Terminate Contract to Yes on any row of the contract for a full termination, Terminate Line to Yes to terminate that row's line or subline, or Delete Line to Yes to delete the line (Entered contracts only). Termination Date and Termination Reason are required for terminations.
 -- A termination cannot be undone by this upload - statuses, credits, billing schedules and history are produced by the Oracle termination engine exactly as from the form.
 -- Excel Example Output: https://www.enginatics.com/example/oks-contract-termination-upload/
@@ -62,7 +62,7 @@ okc_statuses_v osv_l
 where
 1=1 and
 okhab.scs_code='SERVICE' and
-okhab.authoring_org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+okhab.authoring_org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 okhab.authoring_org_id=haouv.organization_id and
 okhab.sts_code=osv.code and
 okhab.id=oklb.dnz_chr_id and

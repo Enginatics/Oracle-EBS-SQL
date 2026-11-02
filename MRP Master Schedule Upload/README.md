@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'MRP Master Schedule Upload | Oracle EBS SQL Report'
-description: 'MRP Master Schedule Upload ========================== - Create new MDS/MPS schedule entries. - Create and Update existing schedule entries. Each row…'
+description: 'MRP Master Schedule Upload ========================== - Create new master demand schedule (MDS) and master production schedule (MPS) entries. - Download…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, MRP, Master, Schedule, mtl_parameters, mrp_schedule_designators, mrp_schedule_dates'
 permalink: /MRP%20Master%20Schedule%20Upload/
 report_name: 'MRP Master Schedule Upload'
@@ -16,19 +16,19 @@ report_web_name: mrp-master-schedule-upload
 ## Overview
 MRP Master Schedule Upload
 ==========================
-- Create new MDS/MPS schedule entries.
-- Create and Update existing schedule entries.
+- Create new master demand schedule (MDS) and master production schedule (MPS) entries.
+- Download existing schedule entries, change them and submit them again.
 
-Each row stages one schedule entry into the MRP schedule interface (mrp_schedule_interface, process_status=2) for an existing schedule designator (MDS or MPS). The staged entries are loaded into the master schedule (mrp_schedule_dates) asynchronously by the customer's MRP Planning Manager.
+Each row submits one schedule entry to the Oracle master schedule interface for an existing schedule name. The MRP Planning Manager, which must be running, loads the submitted entries into the master schedule when it next processes the interface, so the upload result reports an entry as submitted, not as loaded. An entry the Planning Manager rejects is not reported in the upload result: check the schedule entries in Oracle after the Planning Manager has run.
 
 Upload Modes
 ============
-Create - opens an empty spreadsheet to enter new schedule entries against any accessible schedule designator.
-Create and Update - downloads existing schedule entries for the selected schedule designators and lets the user add new entries and re-stage modifications. Existing entries are matched on the hidden Transaction Id.
+Create - opens an empty spreadsheet to enter new schedule entries against any accessible schedule name.
+Create and Update - downloads existing schedule entries for the selected schedules and lets the user add new entries and submit changed ones again. Existing entries are matched on the hidden Transaction Id.
 
 Prerequisites
 =============
-- Schedule designators (Master Demand Schedule / Master Production Schedule) must be defined.
+- The master demand or master production schedule names must be defined.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=mrp-master-schedule-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 

@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'PN Billing/Payment Term Upload | Oracle EBS SQL Report'
-description: 'Property Management - Billing and Payment Terms Upload – Oracle E-Business Suite SQL report: free SQL, parameters and tables used.'
+description: 'Create, update or copy the billing and payment terms of Property Manager leases. Lease Class selects revenue (billing) or expense (payment) leases, and…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Billing/Payment, Term, ap_suppliers, po_headers_all, ra_terms_vl'
 permalink: /PN%20Billing-Payment%20Term%20Upload/
 report_name: 'PN Billing/Payment Term Upload'
@@ -14,7 +14,13 @@ report_web_name: pn-billing-payment-term-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/pn-billing-payment-term-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload).
 
 ## Overview
-Property Management - Billing and Payment Terms Upload
+Create, update or copy the billing and payment terms of Property Manager leases.
+
+Lease Class selects revenue (billing) or expense (payment) leases, and Final Draft Status final or draft leases. A new row adds a term to the lease named in its Lease Name or Lease Number, of the lease class and approval status of these parameters.
+
+Upload Mode Create, Update downloads the terms of the selected leases for update and allows new terms to be added. Create opens an empty sheet. Copy downloads the selected terms as new rows, to create copies of them, with their start, end and target dates moved by the Copy: Date Increment Type (Days, Months or Years) and Copy: Date Increment Units parameters.
+
+The Revenue Class Template and the Expense Class Template show the columns of their lease class.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=pn-billing-payment-term-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 

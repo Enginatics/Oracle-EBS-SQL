@@ -8,7 +8,8 @@
 -- Description: Item user-defined attribute (UDA) values upload for Oracle Product Information Management (PIM / Advanced Product Catalog).
 -- Creates, updates and deletes item user-defined attribute values (attribute groups defined in the item catalog) at the item, item organization and item revision data levels through the Oracle EGO user attributes API. Each upload row carries one attribute value; the rows of one attribute group row instance (same item, data level, attribute group and row number) are processed together.
 -- For multi-row attribute groups, enter a Row Number to group the attribute values belonging to one row and include the group's unique key attributes on every row. Set Delete Row to Yes to delete a complete attribute group row.
--- Enter date attribute values in format DD-MON-YYYY, and enter a UOM for numeric attributes that have a unit of measure class. Users need PIM edit privileges on the items (for example through an item owner role); the upload enforces the same item and attribute group security as the PIM pages.
+-- Enter date attribute values in format DD-MON-YYYY, and enter a UOM for numeric attributes that have a unit of measure class.
+-- The upload enforces the item and attribute group security of the PIM pages. Users need the edit privilege on the items (for example through an item owner role) and, for an attribute group that has its own edit privilege, a role on the item that grants that privilege, which an item owner role does not always include.
 -- Only attribute groups associated to item catalog categories are included. The seeded Detailed Description and Images item features are not user-defined attribute groups and are excluded, and supplier association data levels (item supplier, item supplier site, item supplier site organization) are not supported.
 -- Excel Example Output: https://www.enginatics.com/example/inv-item-user-defined-attribute-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-item-user-defined-attribute-upload/
@@ -59,7 +60,7 @@ ego_attrs_v eav
 where
 1=1 and
 emsieb.organization_id=mp.organization_id and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 emsieb.inventory_item_id=msiv.inventory_item_id and
 emsieb.organization_id=msiv.organization_id and
 emsieb.data_level_id=edlv.data_level_id and

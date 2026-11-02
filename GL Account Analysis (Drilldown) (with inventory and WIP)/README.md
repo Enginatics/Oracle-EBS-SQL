@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'GL Account Analysis (Drilldown) (with inventory and WIP) | Oracle EBS SQL Report'
 description: 'This report is used by the GL Financial Statement and Drilldown report, to show Subledger details. Detail GL transaction report with one line per…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Account, Analysis, (Drilldown), (with, gl_code_combinations_kfv, xla_event_types_tl, gl_daily_conversion_types'

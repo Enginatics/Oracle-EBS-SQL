@@ -525,7 +525,7 @@ where
 nvl(:p_create_empty_file,'N')!='Y' and
 nvl(:p_coa_id,-1)=nvl(:p_coa_id,-1) and
 nvl(:p_num_import_workers,1)=nvl(:p_num_import_workers,1) and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.responsibility_id=fnd_global.resp_id and oav.resp_application_id=fnd_global.resp_appl_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 msiv.organization_id=mp.organization_id and
 msiv.organization_id=mic.organization_id(+) and
 msiv.inventory_item_id=mic.inventory_item_id(+) and

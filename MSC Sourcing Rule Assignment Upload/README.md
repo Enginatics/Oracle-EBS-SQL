@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'MSC Sourcing Rule Assignment Upload | Oracle EBS SQL Report'
 description: 'MSC Sourcing Rule Assignment Upload ============================= - Upload new Assignment Sets and Sourcing Rule Assignments - Update Existing Assignment…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, MSC, Sourcing, Rule, Assignment, msc_assignment_sets, msc_sr_assignments_v, msc_sourcing_rules'
@@ -20,9 +20,9 @@ MSC Sourcing Rule Assignment Upload
 - Update Existing Assignment Sets and Sourcing Rule Assignments
 
 Notes:
-If an Assignment Organization is specified, then this determines the selecatable items. 
+If an Assignment Organization is specified, then this determines the selectable items. 
 If an Assignment Organization is not specified, then the Master Organization determines the selectable Items.
-The selectable Assignment Organizations is not restricted by the Master Organization. 
+The selectable Assignment Organizations are not restricted by the Master Organization. 
 This is the same logic as used in the Sourcing Assignments form
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=msc-sourcing-rule-assignment-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).

@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'AP Invoice Upload | Oracle EBS SQL Report'
-description: 'AP Invoice Upload – Oracle E-Business Suite SQL report: free SQL, parameters and tables used.'
+description: 'Creates Payables invoices through Payables Open Interface Import. Rows with the same Operating Unit, Supplier, Supplier Site and Invoice Number form one…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Invoice, dual, fnd_doc_sequence_categories, ap_invoices_all'
 permalink: /AP%20Invoice%20Upload/
 report_name: 'AP Invoice Upload'
@@ -14,7 +14,15 @@ report_web_name: ap-invoice-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/ap-invoice-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoice-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoice-upload).
 
 ## Overview
-AP Invoice Upload
+Creates Payables invoices through Payables Open Interface Import. Rows with the same Operating Unit, Supplier, Supplier Site and Invoice Number form one invoice, and an error on any of its rows keeps the whole invoice out of the import.
+
+To split a line across several distributions, enter it on several rows with the same Line Number and line details, each with its own Distribution Line Number and Distribution Account, and either a Distribution Percent on every row, adding up to 100, or a Distribution Amount on every row, adding up to the Line Amount. A rounding difference goes to the largest distribution, as with distribution sets. The distributions are created after the import and before invoice validation, as the Invoices window enters them.
+
+A line matched to a purchase order or receipt, using a Distribution Set or prorated cannot be split, and a project line only while profile PA: Allow Override of PA Distributions in AP/PO is Yes.
+
+The result shows one row per distribution, including the distributions Payables creates for a line from a Distribution Set or a purchase order.
+
+To add lines to an existing invoice, use the template Add Lines to Existing Invoice, which sets Add to Existing Invoice to Yes on each row; Yes is accepted only when the invoice exists. The lines are added as in the Invoices window, and Invoice Amount on these rows is the amount added to the invoice, including the tax of the added lines, the same on every row of the invoice; the result shows the invoice's new Invoice Amount. The other invoice columns identify the invoice and are not changed. The invoice must be unpaid, and its Invoice Amount changeable in the Invoices window. Item, Freight and Miscellaneous lines can be added, without a purchase order or receipt match, proration or India Localization taxes, and a Line Number already on the invoice is rejected.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoice-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
@@ -27,6 +35,8 @@ Operating Unit, Invoice Source, Batch Name, GL Date, Submit Invoice Validation, 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoice-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoice-upload)
 
+## Related Reports
+[AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [IBY Payment Process Request Details](/IBY%20Payment%20Process%20Request%20Details/ "IBY Payment Process Request Details Oracle EBS SQL Report"), [AP Supplier Upload](/AP%20Supplier%20Upload/ "AP Supplier Upload Oracle EBS SQL Report"), [AP Accounted Invoice Aging](/AP%20Accounted%20Invoice%20Aging/ "AP Accounted Invoice Aging Oracle EBS SQL Report"), [AP Invoice Payments](/AP%20Invoice%20Payments/ "AP Invoice Payments Oracle EBS SQL Report"), [AP Invoice Payments 11g](/AP%20Invoice%20Payments%2011g/ "AP Invoice Payments 11g Oracle EBS SQL Report"), [AR Customer Upload](/AR%20Customer%20Upload/ "AR Customer Upload Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AP%20Invoice%20Upload/AP%20Invoice%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ap-invoice-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

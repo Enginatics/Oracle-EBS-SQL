@@ -8,8 +8,8 @@
 -- Description: This upload can be used to create and/or update Suppliers, Supplier Sites, Supplier Bank Accounts, and Supplier Contacts
 -- Upload Mode Update only allows changes to existing Suppliers, Sites, Contacts and Bank Accounts. A row that would create any of them is rejected, including a bank or bank branch.
 -- Add Existing Bank Acct assigns a bank account the supplier already owns to another level, as the Add button on the supplier Banking Details page does. The account is assigned exactly as it stands, so the bank, branch and bank account columns are left blank on that row.
--- The bank and branch columns are enterable. On a row that already has a bank account assignment they move the account to the bank and branch named, creating them if they do not exist; they no longer rename the bank or branch, which would have changed it for every supplier using it. Bank and branch names are maintained in the CE Bank and Branch Upload.
--- Bank Acct Name and Bank Acct Currency are no longer mandatory, matching Oracle, which allows a bank account without them.
+-- The bank and branch columns are enterable. On a row that already has a bank account assignment, a changed bank or branch needs Bank Branch Change: Move to another Bank/Branch points the account at the bank and branch named, creating them if they do not exist; Rename this Bank/Branch changes the bank and branch the account is on, and so for every supplier using them. Bank Branch Type, BIC and the alternate names can only be changed by renaming. Banks and branches can also be maintained in the CE Bank and Branch Upload.
+-- Bank Acct Name and Bank Acct Currency are optional, as in Oracle, which allows a bank account without them.
 -- Set Update Unpaid Invoices to Yes on a bank account row whose assignment end date has been reached to move the supplier's unpaid invoices to the next bank account that applies to them, ordered by assignment level and priority. This is what the Supplier page offers when a bank account assignment is end dated.
 -- Invoices already selected for payment keep the end dated bank account. An invoice for which no other bank account applies is left without one, and its remit-to bank account has to be entered manually.
 -- Tax registrations are maintained one per row in the Vend Tax Reg columns for the supplier and the Site Tax Reg columns for the supplier site, and a new one can be entered on a downloaded row that has none. A site registration belongs to the address, so it is shared by every supplier site on that address. A registration is ended with Effective To; its Tax Regime Code, Type and Number cannot be changed.
@@ -105,7 +105,7 @@ xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRI
 xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE14',aps.rowid,aps.attribute14) vendor_attribute14,
 xxen_util.display_flexfield_value(201,'PO_VENDORS',aps.attribute_category,'ATTRIBUTE15',aps.rowid,aps.attribute15) vendor_attribute15,
 -- ## Vendor Purchasing Options
-aps.min_order_amount min_order_amount,
+aps.min_order_amount,
 xxen_util.meaning(aps.hold_flag,'YES_NO',0) purchasing_hold_flag,
 aps.purchasing_hold_reason,
 xxen_util.meaning(aps.create_debit_memo_flag,'YES_NO',0) create_dm_for_rts,
@@ -206,21 +206,21 @@ aps.tax_verification_date tax_reporting_verif_date,
 xxen_util.meaning(nvl(iepa0.exclusive_payment_flag,:p_default_pay_document_alone),'YES_NO',0) pay_each_document_alone,
 xxen_util.meaning(iepa0.bank_charge_bearer,'IBY_BANK_CHARGE_BEARER',0) bank_charge_bearer,
 (select iprv.meaning from iby_payment_reasons_vl iprv where iprv.payment_reason_code = iepa0.payment_reason_code) payment_reason,
-iepa0.payment_reason_comments payment_reason_comments,
+iepa0.payment_reason_comments,
 (select ifv.format_name from iby_formats_vl ifv where ifv.format_code = iepa0.payment_format_code) payee_payment_format,
 --xxen_util.meaning(iepa0.service_level_code,'IBY_SERVICE_LEVEL',0) payment_service_level,
 (select idcv.meaning from iby_delivery_channels_vl idcv where idcv.delivery_channel_code = iepa0.delivery_channel_code) payment_delivery_channel,
 (select ibiv.meaning from iby_bank_instructions_vl ibiv where ibiv.bank_instruction_code = iepa0.bank_instruction1_code) bank_instruction1,
 (select ibiv.meaning from iby_bank_instructions_vl ibiv where ibiv.bank_instruction_code = iepa0.bank_instruction2_code) bank_instruction2,
-iepa0.bank_instruction_details bank_instruction_details,
-iepa0.payment_text_message1 payment_text_message1,
-iepa0.payment_text_message2 payment_text_message2,
-iepa0.payment_text_message3 payment_text_message3,
+iepa0.bank_instruction_details,
+iepa0.payment_text_message1,
+iepa0.payment_text_message2,
+iepa0.payment_text_message3,
 xxen_util.meaning(iepa0.remit_advice_delivery_method,'IBY_DELIVERY_METHODS',0) remit_advice_del_method,
-iepa0.remit_advice_email remit_advice_email,
-iepa0.remit_advice_fax remit_advice_fax,
-iepa0.ece_tp_location_code ece_tp_location_code,
-iepa0.settlement_priority settlement_priority,
+iepa0.remit_advice_email,
+iepa0.remit_advice_fax,
+iepa0.ece_tp_location_code,
+iepa0.settlement_priority,
 -- ########
 -- Vendor Bank Accounts
 -- ########

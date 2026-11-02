@@ -98,7 +98,7 @@ ap_payment_schedules_all apsa
 where
 1=1 and
 aca.payment_type_flag in ('M','Q') and
-aca.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+aca.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 aca.org_id=haouv.organization_id and
 aca.vendor_id=aps.vendor_id and
 aca.vendor_site_id=assa.vendor_site_id and
@@ -151,7 +151,7 @@ ap_payment_schedules_all apsa
 where
 2=2 and
 :open_invoices='Y' and
-aia.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+aia.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 aia.org_id=haouv.organization_id and
 aia.vendor_id=aps.vendor_id and
 aia.vendor_site_id=assa.vendor_site_id and

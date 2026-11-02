@@ -5,8 +5,9 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: MSC Plan Order Upload
--- Description: Report: MSC Plan Orders Upload
--- Description: Upload to action Plan Order recommendations.
+-- Description: MSC Plan Order Upload
+-- =====================
+-- Upload to action Plan Order recommendations.
 -- This upload can be used to either select for release or release Plan Order Recommendations from ASCP planning instances.
 -- Currently supported recommendations that can be actioned by this upload are:
 -- - Planned Order Releases
@@ -104,7 +105,8 @@ mov.*,
 &lp_custom_attributes
 -- item dff attributes
 &lp_item_dff_cols
-'.' last_col_flag
+'.' last_col_flag,
+to_number(null) upload_row
 from
 (
 select
@@ -119,7 +121,7 @@ mpo.organization_code                           organization,
 decode(mov.project_id, null, null, msc_get_name.project&a2m_dblink(mov.project_id, mov.organization_id, mov.plan_id, mov.sr_instance_id)) project_number,
 decode(mov.task_id, null, null, msc_get_name.task&a2m_dblink(mov.task_id, mov.project_id, mov.organization_id, mov.plan_id, mov.sr_instance_id)) task_number,
 msi.planner_code                                planner,
-msi.buyer_name                                  buyer_name,
+msi.buyer_name,
 --
 msc_get_name.lookup_meaning&a2m_dblink('MTL_PLANNING_MAKE_BUY',msi.planning_make_buy_code) make_buy,
 msi.item_name item,
@@ -230,23 +232,23 @@ when  mov.reschedule_flag = 1
 and   nvl(mov.implement_daily_rate,mov.implement_quantity) = 0
 then  'Cancelled'
 when  mov.reschedule_flag = 1
-then  'Recheduled'
+then  'Rescheduled'
 when  mov.implemented_quantity is not null
 then  'Released'
 else  null
 end                                             released_status,
-mov.implemented_quantity                        implemented_quantity,
+mov.implemented_quantity,
 --
 msc_get_name.get_order_comments&a2m_dblink(mov.plan_id, 'SUPPLY', mov.transaction_id) comments,
 decode(mov.firm_planned_type, 1, 'Y',null)      firm,
 trunc(mov.firm_date)                            firm_date,
-mov.firm_quantity                               firm_quantity,
+mov.firm_quantity,
 --
 msc_get_name.org_code&a2m_dblink(mov.source_organization_id,mov.source_sr_instance_id) source_organization,
 msc_get_name.supplier&a2m_dblink(mov.supplier_id) supplier,
 msc_get_name.supplier_site&a2m_dblink(mov.supplier_site_id) supplier_site,
 --
-mov.reschedule_days                             reschedule_days,
+mov.reschedule_days,
 decode(mp.plan_type, 5, to_number(null), mov.schedule_priority) order_priority,
 --
 'SUPPLY' supply_demand_code,
@@ -256,7 +258,7 @@ mov.plan_id,
 mov.organization_id,
 mov.inventory_item_id,
 msi.sr_inventory_item_id,
-mic.category_set_id category_set_id,
+mic.category_set_id,
 nvl(mov.release_status,2) release_status
 from
 msc_supplies&a2m_dblink           mov,

@@ -66,6 +66,7 @@ from
 mtl_eam_asset_numbers_all_v meanv,
 mtl_eam_asset_attr_values meaav
 where
+meanv.current_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 1=1 and
 meanv.inventory_item_id=meaav.inventory_item_id and
 meanv.serial_number=meaav.serial_number

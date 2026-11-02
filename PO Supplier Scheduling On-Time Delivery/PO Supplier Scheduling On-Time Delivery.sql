@@ -138,7 +138,7 @@ k.ship_to_organization_id=msibk.organization_id(+) and
 pll.ship_to_organization_id=mp.organization_id(+) and
 pll.ship_to_location_id=hla.location_id(+) and
 pll.org_id=haouv.organization_id(+) and
-pll.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)
+pll.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU')
 ) x
 where
 1=1

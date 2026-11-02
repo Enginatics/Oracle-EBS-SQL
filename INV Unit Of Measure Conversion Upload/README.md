@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'INV Unit Of Measure Conversion Upload | Oracle EBS SQL Report'
-description: 'INV Unit Of Measure Conversion Upload ============================= In R12.2 and later: This upload enables the user to - upload new unit of measure…'
+description: 'INV Unit Of Measure Conversion Upload ============================= In R12.2.3 and later: This upload enables the user to - upload new unit of measure…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, INV, Unit, Measure, Conversion, mtl_uom_conversions, mtl_units_of_measure_vl, mtl_uom_classes_vl'
 permalink: /INV%20Unit%20Of%20Measure%20Conversion%20Upload/
 report_name: 'INV Unit Of Measure Conversion Upload'
@@ -16,7 +16,7 @@ report_web_name: inv-unit-of-measure-conversion-upload
 ## Overview
 INV Unit Of Measure Conversion Upload
 =============================
-In R12.2 and later:
+In R12.2.3 and later:
 This upload enables the user to 
 - upload new unit of measure conversions
 - update existing unit of measure conversions. 

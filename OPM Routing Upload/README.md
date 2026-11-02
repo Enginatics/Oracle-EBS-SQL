@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'OPM Routing Upload | Oracle EBS SQL Report'
-description: 'OPM Routing Upload ================== Create or update Oracle Process Manufacturing (OPM / GMD) Routings via the public API GMDROUTINGSPUB /…'
+description: 'Creates and updates Oracle Process Manufacturing routings with their steps and step dependencies. One row per routing step. The header columns…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, OPM, Routing, gmd_status_vl, fnd_user, gmd_routings_vl'
 permalink: /OPM%20Routing%20Upload/
 report_name: 'OPM Routing Upload'
@@ -14,30 +14,15 @@ report_web_name: opm-routing-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/opm-routing-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload).
 
 ## Overview
-OPM Routing Upload
-==================
-Create or update Oracle Process Manufacturing (OPM / GMD) Routings via the public API GMD_ROUTINGS_PUB / GMD_ROUTING_STEPS_PUB.
+Creates and updates Oracle Process Manufacturing routings with their steps and step dependencies.
 
-Row model
-=========
-One spreadsheet row per routing STEP. The header columns (Organization Code, Routing, Routing Version, Description, Class, UOM, dates, owner, header attributes) repeat on every step of the same routing. Each step carries its Step No, Operation (No + Version), Step Quantity, Release Type, and step attributes. Rows of the same routing (Organization Code + Routing + Routing Version) must be contiguous. Every routing must have at least one step.
+One row per routing step. The header columns (Organization Code, Routing, Routing Version, description, class, UOM, dates, owner, header attributes) repeat on every step of the routing; keep the rows of one routing together. Every routing needs at least one step.
 
-Step dependencies (optional)
-============================
-To make a step depend on a predecessor step, fill Depends On Step No (and optionally Standard / Minimum / Maximum Delay, Transfer Percent, Rework Code, Chargeable) on that step's row. For a step with more than one predecessor, add extra rows that repeat the Step No, leave Operation blank, and give a different Depends On Step No. Dependency Type is always Finish-to-Start.
+Step dependencies: to make a step depend on a predecessor, fill Depends On Step No (and optionally Standard, Minimum and Maximum Delay, Transfer Percent, Rework Code, Chargeable) on that step's row. For a step with more than one predecessor, add rows that repeat the Step No, leave Operation blank and give another Depends On Step No. The dependency type is always Finish-to-Start. Existing dependencies are not downloaded.
 
-Operations must already exist
-=============================
-Operations are referenced, not created - the Operation (No + Version) must already exist in the routing's organization, effective for the routing's dates.
+Operations are referenced, not created: the Operation and Operation Version must exist in the routing's organization, effective for the routing's dates.
 
-Upload modes
-============
-Create - empty template for new routings.
-Create, Update - downloads existing routings in the chosen organization for review/edit and allows adding new ones.
-
-Update limitations (public API)
-===============================
-On update, the OPM public API only allows changing a routing's Status, Routing Class, Routing UOM, Fixed Process Loss UOM, Owner and Organization at the header level; Description, Quantity, Process Loss, effective dates and the step-dependency flags are set at create time only. Steps can be added and their quantity / release type / yield updated.
+On update, Routing Class, Routing UOM, Fixed Process Loss UOM and Owner can change at header level; Description, Quantity, Process Loss, Status, the effective dates and the step dependency flags are used only when a routing is created. Steps can be added and deleted, and their Step Quantity, Release Type and Minimum Transfer Quantity changed.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
@@ -45,13 +30,13 @@ On update, the OPM public API only allows changing a routing's Status, Routing C
 Upload Mode, Organization Code, Routing
 
 ## Oracle EBS Tables Used
-[gmd_status_vl](https://www.enginatics.com/library/?pg=1&find=gmd_status_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload), [gmd_routings_vl](https://www.enginatics.com/library/?pg=1&find=gmd_routings_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload), [fm_rout_dtl](https://www.enginatics.com/library/?pg=1&find=fm_rout_dtl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload), [gmd_operations_vl](https://www.enginatics.com/library/?pg=1&find=gmd_operations_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload), [org_access_view](https://www.enginatics.com/library/?pg=1&find=org_access_view&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload)
+[gmd_status_vl](https://www.enginatics.com/library/?pg=1&find=gmd_status_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload), [fnd_user](https://www.enginatics.com/library/?pg=1&find=fnd_user&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload), [gmd_routings_vl](https://www.enginatics.com/library/?pg=1&find=gmd_routings_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload), [fm_rout_dtl](https://www.enginatics.com/library/?pg=1&find=fm_rout_dtl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload), [gmd_operations_vl](https://www.enginatics.com/library/?pg=1&find=gmd_operations_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload), [xxen_report_org_access](https://www.enginatics.com/library/?pg=1&find=xxen_report_org_access&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload)
 
 ## Related Reports
-[OPM Recipe Upload](/OPM%20Recipe%20Upload/ "OPM Recipe Upload Oracle EBS SQL Report"), [OPM Recipe Details](/OPM%20Recipe%20Details/ "OPM Recipe Details Oracle EBS SQL Report"), [OPM Formula Upload](/OPM%20Formula%20Upload/ "OPM Formula Upload Oracle EBS SQL Report"), [CAC OPM Costed Formula](/CAC%20OPM%20Costed%20Formula/ "CAC OPM Costed Formula Oracle EBS SQL Report"), [OPM Formula Details](/OPM%20Formula%20Details/ "OPM Formula Details Oracle EBS SQL Report"), [OPM Formula Where-Used](/OPM%20Formula%20Where-Used/ "OPM Formula Where-Used Oracle EBS SQL Report")
+[OPM Recipe Upload](/OPM%20Recipe%20Upload/ "OPM Recipe Upload Oracle EBS SQL Report"), [OPM Recipe Details](/OPM%20Recipe%20Details/ "OPM Recipe Details Oracle EBS SQL Report"), [OPM Formula Upload](/OPM%20Formula%20Upload/ "OPM Formula Upload Oracle EBS SQL Report"), [CAC OPM Costed Formula](/CAC%20OPM%20Costed%20Formula/ "CAC OPM Costed Formula Oracle EBS SQL Report"), [OPM Formula Details](/OPM%20Formula%20Details/ "OPM Formula Details Oracle EBS SQL Report"), [OPM Formula Where-Used](/OPM%20Formula%20Where-Used/ "OPM Formula Where-Used Oracle EBS SQL Report"), [CAC Inventory Organization Summary](/CAC%20Inventory%20Organization%20Summary/ "CAC Inventory Organization Summary Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/OPM%20Routing%20Upload/OPM%20Routing%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=opm-routing-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

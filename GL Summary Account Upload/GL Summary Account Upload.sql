@@ -5,7 +5,10 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: GL Summary Account Upload
--- Description: This upload can be used to import Summary Account Templates.
+-- Description: Adds and deletes GL summary account templates of a ledger. Each row is one summary template.
+-- The segment columns hold the summary type of each segment, as in the Summary Accounts window: D (Detail) creates a summary account for each detail value of the segment, T (Total) one summary account across all values, and the name of a rollup group one summary account for each parent value of that group.
+-- Add creates the template and Delete removes it with its summary accounts. Both run the Add/Delete Summary Accounts program, which creates or deletes the summary accounts and maintains their balances from the Earliest Period on. The Request Log column links to its log.
+-- An existing template cannot be changed: delete it and add it again. The budgetary control columns (Funds Check Level, Debit or Credit, Amount Type, Boundary, Funding Budget) apply to ledgers with budgetary control and are taken only when a template is added.
 -- Excel Example Output: https://www.enginatics.com/example/gl-summary-account-upload/
 -- Library Link: https://www.enginatics.com/reports/gl-summary-account-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -60,7 +63,8 @@ flvv1.meaning funds_check_level,
 flvv2.description debit_or_credit,
 flvv3.description amount_type,
 flvv4.meaning boundary,
-gbrjv.budget_name funding_budget
+gbrjv.budget_name funding_budget,
+to_number(null) upload_row
 from
 gl_summary_templates gst,
 gl_summary_bc_options gsbo,

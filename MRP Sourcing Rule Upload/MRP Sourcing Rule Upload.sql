@@ -6,9 +6,16 @@
 /*************************************************************************/
 -- Report Name: MRP Sourcing Rule Upload
 -- Description: MRP Sourcing Rule Upload
--- ====================
--- - Upload new Sourcing Rules
--- - Update Existing Sourcing Rules
+-- ========================
+-- - Upload new Sourcing Rules and Bills of Distribution
+-- - Download, update and delete existing Sourcing Rules, their receiving organizations and their sources
+-- Each row is one source (a shipping organization or a supplier) of one receiving organization of a sourcing rule. The rule and receiving organization columns repeat on every row of the rule. All rows of a rule are saved together through the Oracle sourcing rule API, so an error on one row rejects the whole rule.
+-- Planning Active is set by the upload: Yes when the allocation percentages of each rank of each receiving organization add up to 100.
+-- Delete Option
+-- - Sourcing Rule: deletes the whole rule
+-- - Shipping Org: deletes the source of the row
+-- A receiving organization entry cannot be deleted by the upload, as the Oracle API rejects it; delete its sources, delete the whole rule, or remove it in the Sourcing Rule form.
+-- Use Sourcing Rule Type, Sourcing Rule Organization and Include Global Sourcing Rules to select the rules to download.
 -- Excel Example Output: https://www.enginatics.com/example/mrp-sourcing-rule-upload/
 -- Library Link: https://www.enginatics.com/reports/mrp-sourcing-rule-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -38,10 +45,10 @@ select
  asu.segment1 supplier_number,
  mssov.vendor_site supplier_site,
  haouv.name supplier_site_op_unit,
- mssov.allocation_percent allocation_percent,
- mssov.rank rank,
- mssov.ship_method ship_method,
- mssov.intransit_time intransit_time,
+ mssov.allocation_percent,
+ mssov.rank,
+ mssov.ship_method,
+ mssov.intransit_time,
  -- attributes
  xxen_util.display_flexfield_context(704,'MRP_SOURCING_RULES',mrs.attribute_category) rule_attribute_category,
  xxen_util.display_flexfield_value(704,'MRP_SOURCING_RULES',mrs.attribute_category,'ATTRIBUTE1',mrs.rowid,mrs.attribute1) sr_rule_attribute1,
@@ -116,7 +123,7 @@ where
  assa.vendor_site_id (+) = mssov.vendor_site_id and
  haouv.organization_id (+) = assa.org_id and
  (mrs.organization_id is null or
-  mrs.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+  mrs.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')
  )
 )
 --
@@ -215,7 +222,8 @@ select /*+ push_pred(sr) */
  sr.sourcing_rule_id,
  sr.sr_receipt_id,
  sr.sr_source_id,
- to_number(null) group_id
+ to_number(null) group_id,
+ to_number(null) upload_row
 from
  sr_query sr
 where

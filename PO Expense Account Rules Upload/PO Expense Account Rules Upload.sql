@@ -43,5 +43,5 @@ fifsv.id_flex_code='GL#' and
 gl.chart_of_accounts_id=fifsv.id_flex_num and
 prea.segment_num=fifsv.application_column_name and
 prea.rule_value_id=mcv.category_id(+) and
-prea.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+prea.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 1=1

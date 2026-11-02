@@ -38,7 +38,7 @@ org_organization_definitions ood,
 gmd_status_vl gsv
 where
 1=1 and
-gsb.owner_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+gsb.owner_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 gsb.spec_id=gstl.spec_id and
 gstl.language=userenv('lang') and
 gsb.spec_id=gstv.spec_id and

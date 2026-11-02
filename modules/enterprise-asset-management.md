@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-02
 title: 'Oracle EBS Enterprise Asset Management Reports | 5 SQL reports'
 description: '5 free Oracle E-Business Suite Enterprise Asset Management SQL reports for Excel: EAM Assets, EAM Weekly Schedule, EAM Work Orders, EAM Work Orders 11i…'
-keywords: 'Oracle EBS Enterprise Asset Management reports, Oracle Enterprise Asset Management SQL, Oracle E-Business Suite, Blitz Report, mtl_parameters, org_access_view, bom_departments, mtl_eam_locations, mtl_system_items_b_kfv'
+keywords: 'Oracle EBS Enterprise Asset Management reports, Oracle Enterprise Asset Management SQL, Oracle E-Business Suite, Blitz Report, mtl_parameters, bom_departments, xxen_report_org_access, mtl_eam_locations, mtl_system_items_b_kfv'
 permalink: /modules/enterprise-asset-management/
 module: 'Enterprise Asset Management'
 module_page: true
@@ -11,7 +11,7 @@ module_page: true
 
 # Oracle EBS Enterprise Asset Management Reports
 
-5 ready-to-run SQL reports for **Oracle E-Business Suite Enterprise Asset Management**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Enterprise Asset Management tables in these reports are `mtl_parameters`, `org_access_view`, `bom_departments`, `mtl_eam_locations`, `mtl_system_items_b_kfv`, `wip_entities`.
+5 ready-to-run SQL reports for **Oracle E-Business Suite Enterprise Asset Management**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Enterprise Asset Management tables in these reports are `mtl_parameters`, `bom_departments`, `xxen_report_org_access`, `mtl_eam_locations`, `mtl_system_items_b_kfv`, `wip_entities`.
 
 > **Run any of these reports in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=module-enterprise-asset-management) – your first 30 reports are free.
 

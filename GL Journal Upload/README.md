@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'GL Journal Upload | Oracle EBS SQL Report'
 description: 'GL Journal Upload Templates are provided for the following Journal Types - Functional Actuals - Foreign Actuals - Budget Journals - Encumbrance Journals…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Journal, dual'
@@ -24,7 +24,7 @@ Templates are provided for the following Journal Types
 
 Submit for Approval
 ---------------------------
-Imported Journals requiring approval can be submitted for approval after import if they are eligble.
+Imported Journals requiring approval can be submitted for approval after import if they are eligible.
 
 Submit Journal Post
 ---------------------------

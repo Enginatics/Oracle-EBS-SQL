@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-02
 title: 'FA Additions By Source | Oracle EBS SQL Report'
 description: 'Application: Assets Source: Additions By Source Report Short Name: FASASSBS – Oracle EBS Assets SQL report: free SQL, parameters and tables used.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Assets, Enginatics, Additions, Source, fa_lookups_vl, fa_distribution_history, fa_asset_history'

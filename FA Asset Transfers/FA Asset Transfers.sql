@@ -22,6 +22,8 @@ x.asset_number,
 x.asset_description,
 x.tag_number,
 x.serial_number,
+x.asset_key,
+x.asset_key||' - '||x.asset_description asset_key_description,
 x.asset_type,
 x.category,
 x.transfer_date,
@@ -52,6 +54,7 @@ fa.asset_number,
 fa.description asset_description,
 fa.tag_number,
 fa.serial_number,
+fakk.concatenated_segments asset_key,
 (select fl.meaning from fa_lookups fl where fl.lookup_type='ASSET TYPE' and fa.asset_type=fl.lookup_code) asset_type,
 fcbk.concatenated_segments category,
 fth.transaction_date_entered transfer_date,
@@ -72,6 +75,7 @@ fa_transaction_headers fth,
 fa_deprn_periods fdp,
 fa_additions fa,
 fa_categories_b_kfv fcbk,
+fa_asset_keywords_kfv fakk,
 (
 select 'FROM' side, fdh.transaction_header_id_out transaction_header_id, fdh.distribution_id, fdh.units_assigned, fdh.assigned_to, fdh.code_combination_id, fdh.location_id from fa_distribution_history fdh
 union all
@@ -87,6 +91,7 @@ fth.date_effective>=fdp.period_open_date and
 fth.date_effective<=nvl(fdp.period_close_date,sysdate) and
 fth.asset_id=fa.asset_id and
 fa.asset_category_id=fcbk.category_id and
+fa.asset_key_ccid=fakk.code_combination_id(+) and
 fth.transaction_header_id=fdh.transaction_header_id
 ) x,
 (

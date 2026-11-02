@@ -6,6 +6,8 @@
 /*************************************************************************/
 -- Report Name: PO Internal Requisitions and Sales Orders
 -- Description: Report to display internal sales orders and requisition numbers, with aging dates and other useful information.
+-- IR Delivered, IR In Receiving, IR In Transit and IR Not Shipped Quantity split each requisition line as Oracle planning counts it: delivered into the destination organization, received but not yet delivered, shipped but not yet received, and not yet shipped. They are in the requisition's unit of measure and show on the first sales order line of a requisition line only, so that split sales order lines do not count them twice.
+-- Open refers to the internal sales order line, which closes when it ships, before it is received. Leave it empty to include shipped lines that are still in transit.
 -- Excel Example Output: https://www.enginatics.com/example/po-internal-requisitions-and-sales-orders/
 -- Library Link: https://www.enginatics.com/reports/po-internal-requisitions-and-sales-orders/
 -- Run Report: https://demo.enginatics.com/
@@ -86,6 +88,10 @@ oola.order_quantity_uom order_uom,
 oola.ordered_quantity,
 oola.shipped_quantity,
 decode(oola.cancelled_flag,'Y',oola.cancelled_quantity) cancelled_quantity,
+decode(row_number() over (partition by prla.requisition_line_id order by oola.line_id),1,prla.quantity_delivered) ir_delivered_quantity,
+decode(row_number() over (partition by prla.requisition_line_id order by oola.line_id),1,ms.in_receiving_quantity) ir_in_receiving_quantity,
+decode(row_number() over (partition by prla.requisition_line_id order by oola.line_id),1,ms.in_transit_quantity) ir_in_transit_quantity,
+decode(row_number() over (partition by prla.requisition_line_id order by oola.line_id),1,ms.not_shipped_quantity) ir_not_shipped_quantity,
 gl.currency_code,
 cic.item_cost unit_cost,
 (
@@ -135,12 +141,23 @@ hz_cust_site_uses_all hcsua,
 hz_cust_acct_sites_all hcasa,
 hz_party_sites hps,
 hz_locations hl,
-mtl_system_items_vl msiv_to
+mtl_system_items_vl msiv_to,
+(
+select
+ms.req_line_id,
+sum(decode(ms.supply_type_code,'RECEIVING',ms.quantity)) in_receiving_quantity,
+sum(decode(ms.supply_type_code,'SHIPMENT',ms.quantity)) in_transit_quantity,
+sum(decode(ms.supply_type_code,'REQ',ms.quantity)) not_shipped_quantity
+from
+mtl_supply ms
+group by
+ms.req_line_id
+) ms
 where
 1=1 and
 (
-prla.destination_organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) or
-oola.ship_from_org_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)
+prla.destination_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') or
+oola.ship_from_org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')
 ) and
 nvl(:organization_type,'Either')=nvl(:organization_type,'Either') and
 prla.requisition_header_id=prha.requisition_header_id and
@@ -171,7 +188,8 @@ hcsua.cust_acct_site_id=hcasa.cust_acct_site_id and
 hcasa.party_site_id=hps.party_site_id and
 hps.location_id=hl.location_id and
 prla.item_id=msiv_to.inventory_item_id(+) and
-prla.destination_organization_id=msiv_to.organization_id(+)
+prla.destination_organization_id=msiv_to.organization_id(+) and
+prla.requisition_line_id=ms.req_line_id(+)
 order by
 nvl(gl.short_name,gl.name),
 operating_unit,

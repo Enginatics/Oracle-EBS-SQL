@@ -62,7 +62,10 @@ gl.access_set_id
 from
 (
 select
-sum(lengthb(gl.name)+1) over (partition by gl.access_set_id order by gl.object_type_code desc, gl.name rows between unbounded preceding and current row) total_length,
+greatest(
+sum(lengthb(gl.name)+1) over (partition by gl.access_set_id order by gl.object_type_code desc, gl.name rows between unbounded preceding and current row),
+sum(lengthb(gl.ledger_id)+1) over (partition by gl.access_set_id order by gl.object_type_code desc, gl.name rows between unbounded preceding and current row)
+) total_length,
 gl.*
 from
 (
@@ -96,7 +99,15 @@ decode('&expand_operating_units','Y',to_char(y.organization_id),listagg(y.organi
 from
 (
 select
-decode('&expand_operating_units','Y',0,sum(lengthb(haouv.name)+1) over (partition by x.security_profile_id order by haouv.name rows between unbounded preceding and current row)) total_length,
+decode('&expand_operating_units','Y',0,greatest(
+sum(lengthb(z.operating_unit)+1) over (partition by z.security_profile_id order by z.operating_unit rows between unbounded preceding and current row),
+sum(nvl(lengthb(z.legal_entity),0)+1) over (partition by z.security_profile_id order by z.operating_unit rows between unbounded preceding and current row),
+sum(lengthb(z.organization_id)+1) over (partition by z.security_profile_id order by z.operating_unit rows between unbounded preceding and current row)
+)) total_length,
+z.*
+from
+(
+select
 haouv.name operating_unit,
 (select xfi.name from hr_operating_units hou, xle_firstparty_information_v xfi where haouv.organization_id=hou.organization_id and hou.default_legal_context_id=xfi.legal_entity_id) legal_entity,
 x.*
@@ -121,6 +132,7 @@ decode(psp.view_all_flag,'Y',nvl2(psp.business_group_id,null,-1))=hou0.view_all(
 (select haouv.* from hr_all_organization_units_vl haouv where sysdate between haouv.date_from and nvl(haouv.date_to,sysdate)) haouv
 where
 x.organization_id=haouv.organization_id(+)
+) z
 ) y
 where
 y.total_length<=4000

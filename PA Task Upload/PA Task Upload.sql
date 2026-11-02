@@ -7,8 +7,8 @@
 -- Report Name: PA Task Upload
 -- Description: PA Task Upload
 -- ======================
--- Create new tasks or update existing task attributes within Oracle Projects using APIs paprojectpub.addtask and paprojectpub.updatetask.
--- This upload does not create projects — it operates on tasks within existing projects.
+-- Create new tasks or update existing task attributes within Oracle Projects.
+-- This upload does not create projects - it operates on tasks within existing projects.
 -- Supported Actions:
 -- - Create: Add new top-level tasks, child tasks under existing parents, or entire parent-child hierarchies
 -- - Update: Modify attributes of existing tasks (organization, manager, work type, flags, schedules, etc.)
@@ -36,7 +36,7 @@
 -- - DFF: Attribute Category, Attributes 1-10
 -- - Publish Structure: Set to 'Yes' on the last task row of a project to publish the working structure version after upload
 -- Structure Version Handling:
--- - For projects without workplan versioning: tasks are added/updated directly — no special handling needed
+-- - For projects without workplan versioning: tasks are added/updated directly - no special handling needed
 -- - For versioned projects with a WORKING structure version: the upload uses the WORKING version automatically
 -- - For versioned projects with only a PUBLISHED version (no WORKING version): task add/update is NOT supported and records will be errored
 -- Unsupported Project Configurations:
@@ -48,12 +48,11 @@
 -- 1. Navigate to Projects > Project Super User > Projects
 -- 2. Query the project and go to the Workplan tab
 -- 3. Click "Update Workplan" to create a new WORKING structure version
--- 4. Re-run the upload — it will now pick up the WORKING version and succeed
+-- 4. Re-run the upload - it will now pick up the WORKING version and succeed
 -- 5. After the upload completes, publish the working version from the Workplan tab if needed
 -- Notes:
--- - To modify tasks on projects owned by other users, the profile option 'PA: Cross Project User -- Update' must be enabled at the responsibility level
 -- - Tasks with existing expenditure items cannot have new subtasks created below them
--- - When updating tasks, the task number itself is not modified — only other attributes are updated
+-- - When updating tasks, the task number itself is not modified - only other attributes are updated
 -- - The PM Product Code must be a valid value registered in the PALOOKUPS lookup type PMPRODUCTCODE (e.g., MSPROJECT, PRIMAVERA)
 -- Excel Example Output: https://www.enginatics.com/example/pa-task-upload/
 -- Library Link: https://www.enginatics.com/reports/pa-task-upload/

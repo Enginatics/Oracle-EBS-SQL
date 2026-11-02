@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'QP Modifier Upload | Oracle EBS SQL Report'
 description: 'This upload supports the creation and update of Modifiers in Oracle Advanced Pricing. The upload supports creation/update/deletion of the following…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Modifier, qp_secu_list_headers_vl, qp_qualifiers_v, qp_modifier_summary_v'

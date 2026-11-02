@@ -74,7 +74,7 @@ from
 &il_from
 where
  1=1 and
- ai.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+ ai.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
  ai.invoice_id=ail.invoice_id and
  rct.transaction_id = ail.rcv_transaction_id and
  pv.vendor_id = ai.vendor_id and

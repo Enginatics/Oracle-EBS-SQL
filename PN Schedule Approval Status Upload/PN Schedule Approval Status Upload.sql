@@ -54,7 +54,8 @@ xxen_util.meaning(ppsv.lease_status,'PN_LEASESTATUS_TYPE',0) lease_status,
 ppsv.lease_id,
 ppsv.lease_change_id,
 :p_set_of_books_id set_of_books_id,
-:p_sob_currency set_of_books_currency
+:p_sob_currency set_of_books_currency,
+to_number(null) upload_row
 from
 pn_payment_schedules_v ppsv,
 pn_leases_v plv,

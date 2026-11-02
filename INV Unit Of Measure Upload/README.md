@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'INV Unit Of Measure Upload | Oracle EBS SQL Report'
-description: 'INV Unit Of Measure Upload ====================== Note: This upload can only be used in R12.2 or later. This upload can be used to create and update Unit…'
+description: 'INV Unit Of Measure Upload ====================== Note: This upload can only be used in R12.2.3 or later. This upload can be used to create and update…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, INV, Unit, Measure, mtl_uom_classes_vl, mtl_units_of_measure_vl'
 permalink: /INV%20Unit%20Of%20Measure%20Upload/
 report_name: 'INV Unit Of Measure Upload'
@@ -16,7 +16,7 @@ report_web_name: inv-unit-of-measure-upload
 ## Overview
 INV Unit Of Measure Upload
 ======================
-Note: This upload can only be used in R12.2 or later.
+Note: This upload can only be used in R12.2.3 or later.
 
 This upload can be used to create and update Unit of Measure Classes and Units of Measures
 

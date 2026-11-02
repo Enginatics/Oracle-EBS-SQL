@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'Blitz Report Assignment Upload | Oracle EBS SQL Report'
-description: 'Upload to maintain Blitz Report assignments. The upload support creating, deleting or copying assignment and can be run with the following modes: -Create…'
+description: 'Upload to create, update, copy and delete Blitz Report assignments, which make reports available at site, application, request group, responsibility…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Blitz, Report, Assignment, xxen_report_assignment_users, fnd_user, xxen_reports_v'
 permalink: /Blitz%20Report%20Assignment%20Upload/
 report_name: 'Blitz Report Assignment Upload'
@@ -14,19 +14,23 @@ report_web_name: blitz-report-assignment-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/blitz-report-assignment-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-assignment-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-assignment-upload).
 
 ## Overview
-Upload to maintain Blitz Report assignments.
-The upload support creating, deleting or copying assignment and can be run with the following modes:
+Upload to create, update, copy and delete Blitz Report assignments, which make reports available at site, application, request group, responsibility, user, form or function level.
 
--Create with 'Create Empty File'=Yes:
-Opens an empty Excel file to enter new assignments.
+Upload modes:
 
--Create with 'Create Empty File'=blank:
-You can query a list of reports that you want create assignments for by report name, category or report type.
+- Create with Create Empty File = Yes opens an empty sheet to enter new assignments.
 
--Create, Update:
-Allows querying existing assignments, which can be deleted, or copied to a different assignment level.
-A frequent use case for customers having custom responsibilities linked to custom applications would be to copy seeded application level Enginatics assignments to custom applications instead.
-For this, you can query all Enginatics application level assignments, replace the application names with the corresponding custom applications, and upload the file again. Note that in this scenario, the Action column would show 'Update', but it would create new records, not update when uploading the file.
+- Create with Create Empty File blank lists the reports selected by Report Name starts with, Report Category or Report Type, one row per report, to enter new assignments for them.
+
+- Create, Update downloads the existing assignments.
+
+An assignment is identified by report, assignment level and assignment value, and by Description at Request Group, Responsibility and Form level, where it names the application. A row matching an existing assignment updates its Include/Exclude, Disabled, Form Block, Users and parameter defaulting; any other row creates a new assignment. Changing the level or value of a downloaded row therefore copies the assignment, for example to copy the seeded Enginatics application level assignments to custom applications. Delete = Yes deletes the assignment, or only the parameter defaulting of the row's Parameter Name.
+
+Users limits an Include assignment at Application, Request Group, Responsibility, Form or Function level to the listed users, entered as comma separated user names.
+
+At Form level, Form Block limits the assignment to one block of the form, and Parameter Name with either Block Name and Item Name or a Constant Value defaults a report parameter from a form field or a constant when the report is opened from the form. Id or Value tells whether the form field holds the parameter's id or its displayed value.
+
+Assignments of uploads can only be maintained with Blitz Report Access System.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-assignment-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
@@ -40,7 +44,7 @@ Upload Mode, Create Empty File, Report Name starts with, Report Category, Report
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-assignment-upload), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-assignment-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-assignment-upload)
 
 ## Related Reports
-[Blitz Report Assignments](/Blitz%20Report%20Assignments/ "Blitz Report Assignments Oracle EBS SQL Report"), [Blitz Report Template Sharing](/Blitz%20Report%20Template%20Sharing/ "Blitz Report Template Sharing Oracle EBS SQL Report"), [Blitz Report Assignments and Responsibilities](/Blitz%20Report%20Assignments%20and%20Responsibilities/ "Blitz Report Assignments and Responsibilities Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [Blitz Reports](/Blitz%20Reports/ "Blitz Reports Oracle EBS SQL Report"), [Blitz Report License Users](/Blitz%20Report%20License%20Users/ "Blitz Report License Users Oracle EBS SQL Report"), [Blitz Report Assignment Validation](/Blitz%20Report%20Assignment%20Validation/ "Blitz Report Assignment Validation Oracle EBS SQL Report"), [Blitz Report History](/Blitz%20Report%20History/ "Blitz Report History Oracle EBS SQL Report")
+[Blitz Report Assignments](/Blitz%20Report%20Assignments/ "Blitz Report Assignments Oracle EBS SQL Report"), [Blitz Report Template Sharing](/Blitz%20Report%20Template%20Sharing/ "Blitz Report Template Sharing Oracle EBS SQL Report"), [Blitz Report Assignments and Responsibilities](/Blitz%20Report%20Assignments%20and%20Responsibilities/ "Blitz Report Assignments and Responsibilities Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [Blitz Reports](/Blitz%20Reports/ "Blitz Reports Oracle EBS SQL Report"), [Blitz Report License Users](/Blitz%20Report%20License%20Users/ "Blitz Report License Users Oracle EBS SQL Report"), [Blitz Report History](/Blitz%20Report%20History/ "Blitz Report History Oracle EBS SQL Report"), [Blitz Report Assignment Validation](/Blitz%20Report%20Assignment%20Validation/ "Blitz Report Assignment Validation Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/Blitz%20Report%20Assignment%20Upload/Blitz%20Report%20Assignment%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-assignment-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

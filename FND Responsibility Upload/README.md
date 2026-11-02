@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'FND Responsibility Upload | Oracle EBS SQL Report'
-description: 'Create and update Oracle E-Business Suite responsibilities, and maintain their menu/function exclusions, replicating the System Administrator…'
+description: 'Upload to create and update responsibilities and their menu and function exclusions, as in the Responsibilities form of the System Administrator…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, FND, Responsibility, fnd_responsibility, fnd_responsibility_tl, fnd_application_vl'
 permalink: /FND%20Responsibility%20Upload/
 report_name: 'FND Responsibility Upload'
@@ -14,19 +14,17 @@ report_web_name: fnd-responsibility-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/fnd-responsibility-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-responsibility-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-responsibility-upload).
 
 ## Overview
-Create and update Oracle E-Business Suite responsibilities, and maintain their menu/function exclusions, replicating the System Administrator Responsibilities form (FNDSCRSP).
+Upload to create and update responsibilities and their menu and function exclusions, as in the Responsibilities form of the System Administrator responsibility.
 
-Each row is one of two entity types, chosen in the Row Type column:
+Each row is one of two row types:
 
-- Responsibility: creates or updates the responsibility definition (Name, Application, Key, Description, Effective Dates, Available From, Data Group, Menu, Request Group, Web Host/Agent Name). Responsibilities are identified by Application + Responsibility Key. A responsibility is created when that combination does not yet exist, otherwise it is updated. The Responsibility Key is the stable identifier and is not editable once created - to rename a responsibility change its Name, not its Key.
+- Responsibility: creates or updates the responsibility definition. A responsibility is identified by Application and Responsibility Key and created when that combination does not exist. The key cannot be changed once created; to rename a responsibility, change its Responsibility Name.
 
-- Menu/Function Exclusion: adds (or, with Exclude = Yes, removes) a menu or function exclusion for the responsibility identified by Application + Responsibility Key. Exclusion Type selects Function or Menu; Exclusion Name selects the item to exclude. When adding a new responsibility and its exclusions in the same upload, place the Responsibility row before its exclusion rows.
+- Menu/Function Exclusion: adds a menu or function exclusion to the responsibility identified by Application and Responsibility Key, or removes it with Exclude Yes. Exclusion Type selects Function or Menu, Exclusion Name the item. When creating a responsibility and its exclusions in one file, place the Responsibility row first.
 
-Upload Modes:
-- Create opens an empty template.
-- Create, Update downloads existing responsibilities (and their exclusions) matching the Application / Responsibility filters for review and update.
+Upload Mode Create opens an empty sheet. Create, Update downloads the responsibilities and their exclusions selected by Application and Responsibility Name; without either it downloads every responsibility of the instance.
 
-Responsibilities are not deleted by this upload; set an Effective Date To to disable one, matching Oracle best practice.
+Responsibilities are not deleted: enter an Effective Date To to end one.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-responsibility-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
@@ -40,7 +38,7 @@ Upload Mode, Application, Responsibility Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-responsibility-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-responsibility-upload)
 
 ## Related Reports
-[FND Responsibility Access](/FND%20Responsibility%20Access/ "FND Responsibility Access Oracle EBS SQL Report"), [Blitz Report Template Sharing](/Blitz%20Report%20Template%20Sharing/ "Blitz Report Template Sharing Oracle EBS SQL Report"), [INV Item Upload 11i](/INV%20Item%20Upload%2011i/ "INV Item Upload 11i Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [Blitz Report Assignments and Responsibilities](/Blitz%20Report%20Assignments%20and%20Responsibilities/ "Blitz Report Assignments and Responsibilities Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [FND Responsibilities](/FND%20Responsibilities/ "FND Responsibilities Oracle EBS SQL Report")
+[FND Responsibility Access](/FND%20Responsibility%20Access/ "FND Responsibility Access Oracle EBS SQL Report"), [Blitz Report Template Sharing](/Blitz%20Report%20Template%20Sharing/ "Blitz Report Template Sharing Oracle EBS SQL Report"), [INV Item Upload 11i](/INV%20Item%20Upload%2011i/ "INV Item Upload 11i Oracle EBS SQL Report"), [Blitz Report Assignments and Responsibilities](/Blitz%20Report%20Assignments%20and%20Responsibilities/ "Blitz Report Assignments and Responsibilities Oracle EBS SQL Report"), [FND Responsibilities](/FND%20Responsibilities/ "FND Responsibilities Oracle EBS SQL Report"), [FND Responsibility Menu Exclusions](/FND%20Responsibility%20Menu%20Exclusions/ "FND Responsibility Menu Exclusions Oracle EBS SQL Report"), [FND User Login History](/FND%20User%20Login%20History/ "FND User Login History Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/FND%20Responsibility%20Upload/FND%20Responsibility%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-responsibility-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

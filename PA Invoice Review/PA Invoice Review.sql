@@ -51,7 +51,7 @@ pdia.project_id=pdii.project_id and
 pdia.draft_invoice_num=pdii.draft_invoice_num and
 pdia.project_id=ppa.project_id and
 ppa.org_id=haouv.organization_id and
-haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+haouv.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 pdia.bill_to_customer_id=hca.cust_account_id(+) and
 hca.party_id=hp.party_id(+)
 order by

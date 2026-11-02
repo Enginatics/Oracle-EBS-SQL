@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-02
 title: 'Oracle EBS Master Scheduling/MRP Reports | 8 SQL reports'
 description: '8 free Oracle E-Business Suite Master Scheduling/MRP SQL reports for Excel: MRP End Assembly Pegging, MRP Exceptions, MRP Financial Analysis, MRP…'
 keywords: 'Oracle EBS Master Scheduling/MRP reports, Oracle Master Scheduling/MRP SQL, Oracle E-Business Suite, Blitz Report, mtl_system_items_vl, mtl_planners, per_people_x, mtl_parameters, mtl_categories_kfv'
@@ -11,7 +11,7 @@ module_page: true
 
 # Oracle EBS Master Scheduling/MRP Reports
 
-8 ready-to-run SQL reports for **Oracle E-Business Suite Master Scheduling/MRP**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Master Scheduling/MRP tables in these reports are `mtl_system_items_vl`, `mtl_planners`, `per_people_x`, `mtl_parameters`, `mtl_categories_kfv`, `org_access_view`.
+8 ready-to-run SQL reports for **Oracle E-Business Suite Master Scheduling/MRP**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Master Scheduling/MRP tables in these reports are `mtl_system_items_vl`, `mtl_planners`, `per_people_x`, `mtl_parameters`, `mtl_categories_kfv`, `xxen_report_org_access`.
 
 > **Run any of these reports in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=module-master-scheduling-mrp) – your first 30 reports are free.
 

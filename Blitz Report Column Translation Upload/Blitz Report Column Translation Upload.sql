@@ -6,7 +6,7 @@
 /*************************************************************************/
 -- Report Name: Blitz Report Column Translation Upload
 -- Description: Upload to maintain the Blitz Report column translations and number formats, which control how a report column heading is displayed in each language and how its values are formatted in Excel.
--- Translations are matched to reports by column name at run time, so one row here applies to every report producing a column of that name.
+-- Translations are matched to reports by column name at run time, so one row here applies to every report producing a column of that name. A Column Name is stored in lower case with underscores in place of blanks, the form in which report columns are matched, so Invoice Amount maintains the translations of invoiceamount.
 -- The Language parameter is required, because a single language already covers around twenty thousand column names.
 -- Run modes:
 -- - Create, Update: downloads the existing translations of the chosen language for editing. Set Delete to Yes to remove a translation.

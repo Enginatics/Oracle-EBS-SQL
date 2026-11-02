@@ -6,9 +6,9 @@
 /*************************************************************************/
 -- Report Name: QP GSA Pricing Upload
 -- Description: This upload supports the creation and update of GSA Pricing Setup in Oracle Advanced Pricing.
--- The upload supports creation/update/deletion of the following entities within a GSA Pricing List:
+-- The upload supports the creation and update of the following entities within a GSA Pricing List:
 -- - GSA Lists (created as a Modifier List)
--- - GSA List Qualifiers (created as a Modifier List Qualifier)
+-- - GSA List Qualifiers (created as a Modifier List Qualifier), which can also be deleted
 -- - GSA List Lines (created as Modifier Lines)
 -- Notes:
 -- When downloading existing GSA Lists into the upload excel; the List level Qualifiers and the List Lines will be downloaded into separate rows in the excel. This is to minimize the duplication of data in the excel.
@@ -52,8 +52,8 @@ from
 select
 --
 -- Modifier List Header
-qslhv.pte_code pte_code,
-qslhv.source_system_code source_system_code,
+qslhv.pte_code,
+qslhv.source_system_code,
 xxen_util.meaning(qslhv.list_type_code,'LIST_TYPE_CODE',661) list_type,
 qslhv.orig_system_header_ref list_orig_sys_ref,
 qslhv.name list_number,
@@ -133,7 +133,7 @@ qqv.qualifier_grouping_no qualifier_grouping_number,
 qp_util.get_context('QP_ATTR_DEFNS_QUALIFIER',qqv.qualifier_context) qualifier_context,
 qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_QUALIFIER',qqv.qualifier_context,qqv.qualifier_attribute) qualifier_attribute,
 xxen_util.meaning(decode(qqv.qualify_hier_descendents_flag,'Y','Y',null),'YES_NO',0) qualifier_applies_party_hier,
-qqv.qualifier_precedence qualifier_precedence,
+qqv.qualifier_precedence,
 qqv.comparision_operator_code qualifier_operator,
 rtrim(replace(
  qp_util.get_attribute_value
@@ -184,7 +184,7 @@ xxen_util.display_flexfield_value(661,'QP_QUALIFIERS',qqv.context,'ATTRIBUTE15',
 -- IDs
 qslhv.list_header_id modifier_list_id,
 to_number(null) modifier_line_id,
-qqv.qualifier_id qualifier_id,
+qqv.qualifier_id,
 'Modifier List' row_type,
 1.0 seq
 from
@@ -236,8 +236,8 @@ union
 select
 --
 -- Modifier List Header
-qslhv.pte_code pte_code,
-qslhv.source_system_code source_system_code,
+qslhv.pte_code,
+qslhv.source_system_code,
 xxen_util.meaning(qslhv.list_type_code,'LIST_TYPE_CODE',661) list_type,
 qslhv.orig_system_header_ref list_orig_sys_ref,
 qslhv.name list_number,

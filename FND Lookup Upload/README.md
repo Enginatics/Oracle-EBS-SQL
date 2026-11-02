@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'FND Lookup Upload | Oracle EBS SQL Report'
 description: 'This upload allows the user to - download and update lookup codes against existing Lookup Types. - add new lookup codes to existing Lookup Types. - create…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, FND, Lookup, fnd_lookup_types_vl, fnd_lookup_values_vl, fnd_application_vl'

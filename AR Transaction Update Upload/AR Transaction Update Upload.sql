@@ -70,7 +70,7 @@ hr_all_organization_units_vl haouv
 where
 1=1 and
 rctt.type not in ('DEP','GUAR') and
-rcta.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+rcta.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 rcta.bill_to_customer_id=hca.cust_account_id(+) and
 hca.party_id=hp.party_id(+) and
 rcta.cust_trx_type_id=rctt.cust_trx_type_id and

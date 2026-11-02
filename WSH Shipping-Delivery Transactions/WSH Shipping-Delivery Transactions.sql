@@ -336,10 +336,10 @@ hcsua.cust_acct_site_id=hcasa.cust_acct_site_id(+) and
 hcasa.party_site_id=hps.party_site_id(+) and
 hps.location_id=hl.location_id(+) and
 hcasa.org_id=haou2.organization_id(+) and
-(wdd.organization_id is null or exists (select null from org_access_view oav where oav.organization_id=wdd.organization_id and oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)) and
+(wdd.organization_id is null or wdd.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')) and
 (
-haou1.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) or
-haou2.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) or
+haou1.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') or
+haou2.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') or
 haou1.organization_id is null and haou2.organization_id is null
 )
 &il_where

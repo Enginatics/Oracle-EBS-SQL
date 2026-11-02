@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-02
 title: 'Oracle EBS Capacity Reports | 2 SQL reports'
 description: '2 free Oracle E-Business Suite Capacity SQL reports for Excel: CRP Available Resources, CRP Resource Plan.'
-keywords: 'Oracle EBS Capacity reports, Oracle Capacity SQL, Oracle E-Business Suite, Blitz Report, mtl_parameters, bom_departments, bom_resources, org_access_view, crp_available_resources'
+keywords: 'Oracle EBS Capacity reports, Oracle Capacity SQL, Oracle E-Business Suite, Blitz Report, mtl_parameters, bom_departments, bom_resources, xxen_report_org_access, crp_available_resources'
 permalink: /modules/capacity/
 module: 'Capacity'
 module_page: true
@@ -11,7 +11,7 @@ module_page: true
 
 # Oracle EBS Capacity Reports
 
-2 ready-to-run SQL reports for **Oracle E-Business Suite Capacity**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Capacity tables in these reports are `mtl_parameters`, `bom_departments`, `bom_resources`, `org_access_view`, `crp_available_resources`, `dual`.
+2 ready-to-run SQL reports for **Oracle E-Business Suite Capacity**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Capacity tables in these reports are `mtl_parameters`, `bom_departments`, `bom_resources`, `xxen_report_org_access`, `crp_available_resources`, `dual`.
 
 > **Run any of these reports in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=module-capacity) – your first 30 reports are free.
 

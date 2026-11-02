@@ -79,7 +79,7 @@ per_competences pc,
 per_qualification_types pqt
 where
 1=1 and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 mp.organization_id=br.organization_id and
 br.cost_code_type in (3,4) and
 br.supply_locator_id=milk.inventory_location_id(+) and

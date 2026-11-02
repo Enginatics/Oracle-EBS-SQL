@@ -35,9 +35,9 @@
 -- Contact Status
 -- ============
 -- Determines the status of the contacts to be downloaded. By default, only active contacts will be downloaded. But his can be changed to download all contacts, or inactive contacts only.
--- Default Operating Unit and Default Profile Class
--- ======================================
--- For creation of new Customers/Customer Sites, the Operating Unit and Profile Class to be used can be defaulted automatically if specified by these parameters
+-- Operating Unit and Profile Class
+-- ===========================
+-- For the creation of new Customers/Customer Sites, these parameters also default the operating unit and profile class of the new rows. With Operating Unit blank, new rows default the user's default operating unit.
 -- Default Assign. Level
 -- ========================
 -- For the creation of new Customers/Customer Sites, these parameters can be used to explicitly specify the level (Account or Site) to which the Profile Class, Tax Registration, Bank Accounts, Contacts, and Attachments should be assigned to respectively.
@@ -215,7 +215,7 @@ q_contacts as
 (select /*+ inline */
  hcar.cust_account_role_id,
  hcar.cust_account_id,
- hcar.cust_acct_site_id cust_acct_site_id,
+ hcar.cust_acct_site_id,
  case when hcar.status='A' AND hr.status='A' then 'A' else 'I' end contact_status_code,
  hprel.primary_phone_contact_pt_id pri_phone_contact_point_id,
  hcp.contact_point_id sec_phone_contact_point_id,
@@ -359,22 +359,22 @@ q_contacts as
 ),
 q_bank_accounts as
 (select /*+ inline */
- iepa.cust_account_id              cust_account_id,
+ iepa.cust_account_id,
  iepa.acct_site_use_id             site_use_id,
  ipiua.instrument_payment_use_id,
  iepa.ext_payer_id,
  ieba.ext_bank_account_id          bank_account_id,
- cbbv.bank_name                    bank_name,
- cbbv.bank_name_alt                bank_name_alt,
- cbbv.bank_number                  bank_number,
+ cbbv.bank_name,
+ cbbv.bank_name_alt,
+ cbbv.bank_number,
  (select ftv.territory_short_name
   from   fnd_territories_vl ftv
   where  ftv.territory_code = cbbv.bank_home_country
  )                                 bank_country,
- cbbv.bank_branch_name             bank_branch_name,
- cbbv.bank_branch_name_alt         bank_branch_name_alt,
+ cbbv.bank_branch_name,
+ cbbv.bank_branch_name_alt,
  cbbv.branch_number                bank_branch_number,
- cbbv.bank_branch_type             bank_branch_type,
+ cbbv.bank_branch_type,
  cbbv.eft_swift_code               bank_branch_bic,
  ieba.bank_account_name            bank_acct_name,
  ieba.bank_account_num             bank_acct_num,
@@ -655,6 +655,7 @@ xxen_util.meaning(zptp0.inclusive_tax_flag,'YES_NO',0) acct_inclusive_tax,
 (select territory_short_name from fnd_territories_vl ftv where ftv.territory_code = zptp0.country_code) acct_tax_reporting_country,
 zptp0.registration_type_code acct_tax_reporting_reg_type,
 zptp0.rep_registration_number acct_tax_reporting_reg_number,
+hca.comments acct_comments,
 -- cust account dff
 xxen_util.display_flexfield_context(222,'RA_CUSTOMERS_HZ',hca.attribute_category) acct_dff_context,
 xxen_util.display_flexfield_value(222,'RA_CUSTOMERS_HZ',hca.attribute_category,'ATTRIBUTE1',hca.rowid,hca.attribute1) hz_cust_acct_attribute1,
@@ -1286,6 +1287,7 @@ xxen_util.meaning(zptp0.inclusive_tax_flag,'YES_NO',0) acct_inclusive_tax,
 (select territory_short_name from fnd_territories_vl ftv where ftv.territory_code = zptp0.country_code) acct_tax_reporting_country,
 zptp0.registration_type_code acct_tax_reporting_reg_type,
 zptp0.rep_registration_number acct_tax_reporting_reg_number,
+hca.comments acct_comments,
 -- cust account dff
 xxen_util.display_flexfield_context(222,'RA_CUSTOMERS_HZ',hca.attribute_category) acct_dff_context,
 xxen_util.display_flexfield_value(222,'RA_CUSTOMERS_HZ',hca.attribute_category,'ATTRIBUTE1',hca.rowid,hca.attribute1) hz_cust_acct_attribute1,

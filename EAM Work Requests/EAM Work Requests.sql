@@ -50,7 +50,7 @@ wip_entities we,
 wip_discrete_jobs wdj
 where
 1=1 and
-wewr.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+wewr.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 wewr.organization_id=mp.organization_id and
 wewr.asset_group=msiv.inventory_item_id(+) and
 wewr.organization_id=msiv.organization_id(+) and

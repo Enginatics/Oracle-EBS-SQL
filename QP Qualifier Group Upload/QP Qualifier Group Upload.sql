@@ -48,7 +48,7 @@ qqv.qualifier_grouping_no qualifier_grouping_number,
 qp_util.get_context('QP_ATTR_DEFNS_QUALIFIER',qqv.qualifier_context) qualifier_context,
 qp_qp_form_pricing_attr.get_attribute('QP_ATTR_DEFNS_QUALIFIER',qqv.qualifier_context,qqv.qualifier_attribute) qualifier_attribute,
 xxen_util.meaning(decode(qqv.qualify_hier_descendents_flag,'Y','Y',null),'YES_NO',0) qualifier_applies_party_hier,
-qqv.qualifier_precedence qualifier_precedence,
+qqv.qualifier_precedence,
 qqv.comparision_operator_code qualifier_operator,
 rtrim(replace(
  qp_util.get_attribute_value

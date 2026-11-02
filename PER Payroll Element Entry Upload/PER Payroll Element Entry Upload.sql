@@ -6,8 +6,11 @@
 /*************************************************************************/
 -- Report Name: PER Payroll Element Entry Upload
 -- Description: PER Payroll Element Entry Upload
--- ==================
--- Use this upload to upload new or update existing PER Payroll Element Entries, or to enter adjustment entries.
+-- ================================
+-- Use this upload to create, update and delete payroll element entries of employees' primary assignments, or to enter adjustment entries.
+-- Only recurring elements that are processed in the payroll run can be entered: the Element Name list offers these, and a downloaded entry of a nonrecurring element cannot be uploaded again.
+-- The input values of an entry are listed in pairs of Input Value Name and Entry Value, in the order of the Element Entries form (display sequence, then name). The download shows the entries current today.
+-- Employees with the same name are told apart by the Employee Number, which downloaded rows carry and which can be entered on new rows.
 -- Excel Example Output: https://www.enginatics.com/example/per-payroll-element-entry-upload/
 -- Library Link: https://www.enginatics.com/reports/per-payroll-element-entry-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -15,7 +18,7 @@
 with input_values as
 (select * from
 (
-select peevf.element_entry_id,pivfv.name,pivfv.input_value_id,peevf.screen_entry_value entry_value, row_number() over (partition by pivfv.element_type_id,peevf.element_entry_id order by pivfv.display_sequence) rnum from 
+select peevf.element_entry_id,pivfv.name,pivfv.input_value_id,peevf.screen_entry_value entry_value, row_number() over (partition by pivfv.element_type_id,peevf.element_entry_id order by pivfv.display_sequence,pivfv.name) rnum from 
 pay_input_values_f_vl pivfv,
 pay_element_entry_values_f peevf
 where 

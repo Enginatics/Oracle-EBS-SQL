@@ -29,7 +29,7 @@ mcrv.cross_reference_type,
 xxen_util.yes(mcrv.org_independent_flag) applicable_to_all_orgs,
 mp_xref.organization_code org,
 mir.revision,
-mcrv.uom_code unit_of_measure,
+(select muomv.unit_of_measure from mtl_units_of_measure_vl muomv where mcrv.uom_code=muomv.uom_code) unit_of_measure,
 mcrv.cross_reference,
 mcrv.description,
 null delete_cross_reference,
@@ -64,6 +64,6 @@ msiv.organization_id=mp.organization_id and
 mp.organization_id=mp.master_organization_id and
 mcrv.organization_id=mp_xref.organization_id(+) and
 mcrv.revision_id=mir.revision_id(+) and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 :p_upload_mode like '%'||xxen_upload.action_update and
 1=1

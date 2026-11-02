@@ -140,7 +140,7 @@ where
 nvl(:p_operating_unit,'Y')=nvl(:p_operating_unit,'Y') and
 nvl(:p_validate_dff,'Y')=nvl(:p_validate_dff,'Y') and
 1=1 and
-haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+haouv.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 pe.project_id=pp.project_id and
 pp.org_id=haouv.organization_id and 
 pe.task_id=pt.task_id(+) and

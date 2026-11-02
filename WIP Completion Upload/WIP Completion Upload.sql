@@ -94,7 +94,7 @@ mtl_system_items_vl msiv,
 mtl_transaction_types mtt,
 mtl_item_locations_kfv milk
 where
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 mp.organization_id=wdj.organization_id and
 wdj.status_type in (3,4) and
 wdj.serialization_start_op is null and
@@ -134,7 +134,7 @@ mtl_system_items_vl msiv,
 mtl_transaction_types mtt,
 mtl_item_locations_kfv milk
 where
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 mp.organization_id=wri.organization_id and
 (wri.wip_entity_id,wri.line_id) in (select wrs.wip_entity_id, wrs.line_id from wip_repetitive_schedules wrs where wrs.status_type in (3,4)) and
 wri.line_id=wl.line_id and

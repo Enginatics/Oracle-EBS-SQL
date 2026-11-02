@@ -100,7 +100,7 @@ hcasa.party_site_id=hps.party_site_id(+) and
 hps.location_id=hl.location_id(+) and
 hl.country=ftv.territory_code(+) and
 hcp.cust_account_profile_id=hcpa.cust_account_profile_id(+) and
-(hcp.site_use_id is null or hcsua.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11))
+(hcp.site_use_id is null or hcsua.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU'))
 order by
 hp.party_name,
 hca.account_number,

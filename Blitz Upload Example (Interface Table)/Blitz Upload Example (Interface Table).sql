@@ -22,7 +22,8 @@ xue.date_of_birth,
 xue.created_by,
 xue.creation_date,
 to_number(null) last_updated_by,
-to_date(null) last_update_date
+to_date(null) last_update_date,
+to_number(null) upload_row
 from
 xxen_upload_example xue
 where

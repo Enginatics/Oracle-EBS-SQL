@@ -46,7 +46,7 @@ qp.organization_id=mp.organization_id(+) and
 qp.plan_id=qpt.plan_id and
 qpt.plan_transaction_id=qpct.plan_transaction_id(+) and
 qpct.collection_trigger_id=qc.char_id(+) and
-(qp.organization_id=0 or qp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)) and
+(qp.organization_id=0 or qp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')) and
 1=1
 order by
 mp.organization_code,

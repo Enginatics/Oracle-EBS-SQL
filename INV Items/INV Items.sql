@@ -415,7 +415,7 @@ mp.master_organization_id=mmpn.organization_id
 mtl_manufacturers mm
 where
 1=1 and
-msiv.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+msiv.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 msiv.organization_id=haouv.organization_id and
 msiv.organization_id=mp.organization_id and
 msiv.inventory_item_id=cca.source_object_id(+) and

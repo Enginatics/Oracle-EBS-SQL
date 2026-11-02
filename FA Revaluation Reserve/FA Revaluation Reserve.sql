@@ -53,6 +53,8 @@ select
   x.cost_center            cost_center,
   x.asset_number           asset_number,
   x.asset_description      asset_description,
+  x.asset_key,
+  x.asset_key||' - '||x.asset_description asset_key_description,
   x.begin_amount           beginning_balance,
   x.addition_amount        additions,
   x.depreciation_amount    amortization,
@@ -97,6 +99,7 @@ from
     fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg','SQLGL','GL#',gcc_dh.chart_of_accounts_id,null,gcc_dh.code_combination_id,'FA_COST_CTR','Y','VALUE') cost_center,
     fa.asset_number,
     fa.description asset_description,
+    fakk.concatenated_segments asset_key,
     nvl(round(sum(decode(fbrg.source_type_code, 'BEGIN'   , nvl(fbrg.amount,0) , null)), fc.precision),0) begin_amount,
     round(sum(decode(fbrg.source_type_code, 'ADDITION'    , nvl(fbrg.amount,0) , null)), fc.precision) addition_amount,
     round(sum(decode(fbrg.source_type_code, 'DEPRECIATION', nvl(fbrg.amount,0) , null)), fc.precision) depreciation_amount,
@@ -131,12 +134,14 @@ from
     fnd_currencies fc,
     fa_balances_report_q  fbrg,
     fa_additions          fa,
+    fa_asset_keywords_kfv fakk,
     gl_code_combinations  gcc_dh,
     gl_code_combinations  gcc_aj
   where
     gl.ledger_id                   = :p_ca_set_of_books_id and
     fc.currency_code               = gl.currency_code and
     fa.asset_id                    = fbrg.asset_id and
+    fa.asset_key_ccid              = fakk.code_combination_id (+) and
     gcc_dh.code_combination_id     = fbrg.distribution_ccid and
     gcc_aj.code_combination_id (+) = fbrg.adjustment_ccid and
     1=1
@@ -153,7 +158,8 @@ from
        ),
     fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_cost_seg','SQLGL','GL#',gcc_dh.chart_of_accounts_id,null,gcc_dh.code_combination_id,'FA_COST_CTR','Y','VALUE'),
     fa.asset_number,
-    fa.description
+    fa.description,
+    fakk.concatenated_segments
 ) x
 order by
   x.company_name,

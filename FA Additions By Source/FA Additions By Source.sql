@@ -27,6 +27,7 @@ select
  fas.tag_number,
  fas.asset_number,
  fas.asset_description,
+ fas.asset_key||' - '||fas.asset_description asset_key_description,
  fas.reference_number,
  (select flv.meaning from fa_lookups_vl flv where flv.lookup_type = 'FAXOLTRX' and flv.lookup_code = fas.transaction_type_code) transaction_type,
  fas.transaction_effective_period,

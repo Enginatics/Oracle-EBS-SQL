@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-02
 title: 'Oracle EBS Process Manufacturing Reports | 15 SQL reports'
 description: '15 free Oracle E-Business Suite Process Manufacturing SQL reports for Excel: OPM Batch Details and Status Summary, OPM Batch Lot Cost Details, OPM Batch…'
-keywords: 'Oracle EBS Process Manufacturing reports, Oracle Process Manufacturing SQL, Oracle E-Business Suite, Blitz Report, org_organization_definitions, mtl_system_items_vl, org_access_view, gme_batch_header, gmd_recipes_vl'
+keywords: 'Oracle EBS Process Manufacturing reports, Oracle Process Manufacturing SQL, Oracle E-Business Suite, Blitz Report, org_organization_definitions, mtl_system_items_vl, xxen_report_org_access, gme_batch_header, gmd_recipes_vl'
 permalink: /modules/process-manufacturing/
 module: 'Process Manufacturing'
 module_page: true
@@ -11,7 +11,7 @@ module_page: true
 
 # Oracle EBS Process Manufacturing Reports
 
-15 ready-to-run SQL reports for **Oracle E-Business Suite Process Manufacturing**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Process Manufacturing tables in these reports are `org_organization_definitions`, `mtl_system_items_vl`, `org_access_view`, `gme_batch_header`, `gmd_recipes_vl`, `gme_material_details`.
+15 ready-to-run SQL reports for **Oracle E-Business Suite Process Manufacturing**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Process Manufacturing tables in these reports are `org_organization_definitions`, `mtl_system_items_vl`, `xxen_report_org_access`, `gme_batch_header`, `gmd_recipes_vl`, `gme_material_details`.
 
 > **Run any of these reports in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=module-process-manufacturing) – your first 30 reports are free.
 

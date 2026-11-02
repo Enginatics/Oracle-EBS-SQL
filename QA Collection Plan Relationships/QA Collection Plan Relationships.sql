@@ -57,7 +57,7 @@ qp_c.organization_id=mp_c.organization_id(+) and
 qppr.plan_relationship_id=qper.plan_relationship_id(+) and
 qper.parent_char_id=qc_p.char_id(+) and
 qper.child_char_id=qc_c.char_id(+) and
-(qp_p.organization_id=0 or qp_p.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id)) and
+(qp_p.organization_id=0 or qp_p.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')) and
 1=1
 order by
 mp_p.organization_code,

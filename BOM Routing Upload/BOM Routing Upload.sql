@@ -5,11 +5,11 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: BOM Routing Upload
--- Description: Report: BOM Routing Upload
--- This upload can be used to create and/or update existing manufacturing BOM Routings.
--- - Create new Standard, Flow, and Lot Based (Network) Routings
--- - Update or Delete existing Standard, Flow, and Lot Based (Network) Routings
--- - Upload new Common Routing Assignments
+-- Description: Creates and updates manufacturing routings - standard, flow and lot based (network) routings - through the Oracle routing business object API: routing headers, revisions, operations, operation resources, substitute resources and the operation network of lot based routings.
+-- Each row holds one operation resource, substitute resource or network link, with the routing and operation columns repeated on every row of the routing.
+-- Set Delete Routing, Delete Revision, Delete Operation, Delete Resource or Delete Network Link to remove that record. Routings and operations are deleted through delete groups, as in the Delete Groups form.
+-- Common Routing Item assigns a common routing to a routing that has no operations of its own; the Common Routing Assignments template downloads and uploads these assignments.
+-- With End Date Matching Op Seq? set to Yes, creating an operation end-dates the active operation with the same sequence number.
 -- Excel Example Output: https://www.enginatics.com/example/bom-routing-upload/
 -- Library Link: https://www.enginatics.com/reports/bom-routing-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -43,7 +43,7 @@ bor.alternate_routing_designator alternate,
 xxen_util.meaning(bor.ctp_flag,'SYS_YES_NO',700) capable_to_promise,
 --> flow
 decode(bor.cfm_routing_flag,1,'Flow',2,'Standard',3,'Lot Based') routing_type,
-bor.cfm_routing_flag cfm_routing_flag, -- 1-Flow, 2-Discrete, 3-Lot Based Network (Default 2)
+bor.cfm_routing_flag, -- 1-Flow, 2-Discrete, 3-Lot Based Network (Default 2)
 wl.line_code line,
 bor.total_product_cycle_time total_cycle_time,
 --< flow
@@ -162,10 +162,10 @@ null substitute_resource_flag,
 borsc.resource_seq_num resource_seq,
 borsc.substitute_group_num,
 to_number(null) replacement_group_num,
-br.resource_code resource_code,
+br.resource_code,
 br.unit_of_measure resource_uom,
 xxen_util.meaning(borsc.basis_type,'BOM_BASIS_TYPE',700) resource_basis,
-borsc.usage_rate_or_amount usage_rate_or_amount,
+borsc.usage_rate_or_amount,
 borsc.usage_rate_or_amount_inverse inverse_rate_or_amount,
 (select xxen_util.meaning(bdr.available_24_hours_flag,'SYS_YES_NO',700) from bom_department_resources bdr where bdr.department_id = bos.department_id and bdr.resource_id = borsc.resource_id) available_24_hours,
 borsc.schedule_seq_num,
@@ -257,7 +257,6 @@ mp.organization_code = :p_organization_code and
 bor.routing_type = nvl(:p_bom_eng_flag,1) and -- Assembly Type
 nvl(bor.cfm_routing_flag,2) = nvl(:p_cfm_routing_flag,2) and -- Routing Type
 nvl(:p_revision,'?') = nvl(:p_revision,'?') and
-nvl(:p_restrict_org,'?') = nvl(:p_restrict_org,'?') and
 msiv.bom_enabled_flag = 'Y' and
 nvl(msiv.eam_item_type,3) = 3 and -- excluding enterprise asset management maintenance routings
 --
@@ -337,7 +336,7 @@ bor.alternate_routing_designator alternate,
 xxen_util.meaning(bor.ctp_flag,'SYS_YES_NO',700) capable_to_promise,
 --> flow
 decode(bor.cfm_routing_flag,1,'Flow',2,'Standard',3,'Lot Based') routing_type,
-bor.cfm_routing_flag cfm_routing_flag,
+bor.cfm_routing_flag,
 wl.line_code line,
 bor.total_product_cycle_time total_cycle_time,
 --< flow
@@ -456,10 +455,10 @@ xxen_util.meaning('Y','YES_NO',0) substitute_resource_flag,
 to_number(null) resource_seq,
 bsor.substitute_group_num,
 bsor.replacement_group_num,
-br.resource_code resource_code,
+br.resource_code,
 br.unit_of_measure resource_uom,
 xxen_util.meaning(bsor.basis_type,'BOM_BASIS_TYPE',700) resource_basis,
-bsor.usage_rate_or_amount usage_rate_or_amount,
+bsor.usage_rate_or_amount,
 bsor.usage_rate_or_amount_inverse inverse_rate_or_amount,
 null available_24_hours,
 bsor.schedule_seq_num,
@@ -551,7 +550,6 @@ where
 mp.organization_code = :p_organization_code and
 bor.routing_type = nvl(:p_bom_eng_flag,1) and -- Assembly Type
 nvl(bor.cfm_routing_flag,2) = nvl(:p_cfm_routing_flag,2) and -- Routing Type
-nvl(:p_restrict_org,'?') = nvl(:p_restrict_org,'?') and
 msiv.bom_enabled_flag = 'Y' and
 nvl(msiv.eam_item_type,3) = 3 and -- excluding enterprise asset management maintenance routings
 --
@@ -612,7 +610,7 @@ bor.alternate_routing_designator alternate,
 xxen_util.meaning(bor.ctp_flag,'SYS_YES_NO',700) capable_to_promise,
 --> flow
 decode(bor.cfm_routing_flag,1,'Flow',2,'Standard',3,'Lot Based') routing_type,
-bor.cfm_routing_flag cfm_routing_flag,
+bor.cfm_routing_flag,
 wl.line_code line,
 bor.total_product_cycle_time total_cycle_time,
 --< flow
@@ -827,7 +825,6 @@ mp.organization_code = :p_organization_code and
 bor.routing_type = nvl(:p_bom_eng_flag,1) and -- Assembly Type
 nvl(bor.cfm_routing_flag,2) = nvl(:p_cfm_routing_flag,2) and -- Routing Type
 nvl(:p_revision,'?') = nvl(:p_revision,'?') and
-nvl(:p_restrict_org,'?') = nvl(:p_restrict_org,'?') and
 msiv.bom_enabled_flag = 'Y' and
 nvl(msiv.eam_item_type,3) = 3 and -- excluding enterprise asset management maintenance routings
 --

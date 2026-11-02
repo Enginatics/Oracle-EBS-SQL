@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'FA Asset Additions | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: Asset Additions Report Application: Assets Source: Asset Additions Report (XML) Short Name: FAS420XML DB package…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Assets, Enginatics, Asset, Additions, fbc, fb, fds'

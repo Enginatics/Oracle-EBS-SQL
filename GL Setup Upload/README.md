@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'GL Setup Upload | Oracle EBS SQL Report'
-description: 'Create and update the General Ledger setup entities that the GL Setup menu maintains, replicating the Calendars (GLXSTCAL), Period Types (GLXSTPTY)…'
+description: 'Create and update the General Ledger setup entities that the GL Setup menu maintains, replicating the Accounting Calendar, Period Types, Journal Sources…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Setup, gl_period_types, gl_periods, gl_period_sets'
 permalink: /GL%20Setup%20Upload/
 report_name: 'GL Setup Upload'
@@ -14,7 +14,7 @@ report_web_name: gl-setup-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/gl-setup-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-setup-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-setup-upload).
 
 ## Overview
-Create and update the General Ledger setup entities that the GL Setup menu maintains, replicating the Calendars (GLXSTCAL), Period Types (GLXSTPTY), Journal Sources (GLXSTSRC), Journal Categories (GLXSTCAT), Encumbrance Types (GLXSTENC), Statistical Units of Measure (GLXSTUOM), Ledger Sets (GLXSTLST), Data Access Sets (GLXSTACC), Journal Reversal Criteria (GLXSTARV) and AutoPost Criteria (GLXSTAPO) forms, plus ledger options.
+Create and update the General Ledger setup entities that the GL Setup menu maintains, replicating the Accounting Calendar, Period Types, Journal Sources, Journal Categories, Encumbrance Types, Statistical Units of Measure, Ledger Sets, Data Access Sets, Journal Reversal Criteria and AutoPost Criteria Sets windows, plus ledger options.
 
 Each row is one of fifteen entity types, chosen in the Row Type column. Only the columns belonging to that entity are read; all other columns are ignored. A template is supplied for every entity, which shows only that entity's columns and sets the Row Type automatically.
 

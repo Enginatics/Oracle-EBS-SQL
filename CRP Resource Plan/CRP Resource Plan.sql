@@ -123,7 +123,7 @@ oe_order_lines_all oola,
 oe_order_headers_all ooha
 where
 2=2 and
-mfp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mfp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 mp.organization_id=mfp.organization_id and
 mp.organization_id=mfp0.organization_id and
 mfp.end_pegging_id=mfp0.pegging_id and
@@ -137,7 +137,7 @@ mfp.order_count<440
 ) x
 where
 1=1 and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 crp.repetitive_type=1 and
 crp.department_id=bd.department_id and
 crp.resource_id=br.resource_id and

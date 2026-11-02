@@ -47,6 +47,8 @@ select
   x.cost_center          cost_center,
   x.asset_number         asset_number,
   x.asset_description    asset_description,
+  fakk.concatenated_segments asset_key,
+  fakk.concatenated_segments||' - '||x.asset_description asset_key_description,
   -- cost
   sum(x.begin_amount)         beginning_balance,
   sum(x.addition_amount)      additions,
@@ -280,7 +282,12 @@ from
          fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_acct_seg','SQLGL','GL#',gcc_aj.chart_of_accounts_id,null,gcc_aj.code_combination_id,'GL_ACCOUNT','Y','VALUE'),
          fbrg.category_books_account
         )
-) x
+) x,
+fa_additions_b fab,
+fa_asset_keywords_kfv fakk
+where
+x.asset_id=fab.asset_id and
+fab.asset_key_ccid=fakk.code_combination_id(+)
 group by
   x.company_name,
   x.ledger,
@@ -291,7 +298,8 @@ group by
   x.reserve_account,
   x.cost_center,
   x.asset_number,
-  x.asset_description
+  x.asset_description,
+  fakk.concatenated_segments
 order by
   x.company_name,
   x.ledger,

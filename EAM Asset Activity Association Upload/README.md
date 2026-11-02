@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'EAM Asset Activity Association Upload | Oracle EBS SQL Report'
-description: 'EAM Asset Activity Association Upload ===================================== - Create new associations between an Activity item and an Asset Group…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, EAM, Asset, Activity, Association, mtl_eam_asset_activities, mtl_parameters, mtl_system_items_b_kfv'
+description: 'Create and update the associations of maintenance activities with assets and rebuildables, including the activity defaults that work orders take from the…'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, EAM, Asset, Activity, Association, mtl_eam_asset_activities, eam_org_maint_defaults, mtl_parameters'
 permalink: /EAM%20Asset%20Activity%20Association%20Upload/
 report_name: 'EAM Asset Activity Association Upload'
 report_web_name: eam-asset-activity-association-upload
@@ -14,22 +14,13 @@ report_web_name: eam-asset-activity-association-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/eam-asset-activity-association-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload).
 
 ## Overview
-EAM Asset Activity Association Upload
-=====================================
-- Create new associations between an Activity item and an Asset Group, specific Asset Number (serial instance), or Rebuildable item.
-- Update existing association attributes (dates, priority, owning department, WIP class, DFF, etc.).
-- Deletion is not supported by the public API in v1.
+Create and update the associations of maintenance activities with assets and rebuildables, including the activity defaults that work orders take from the association: priority, cause, type, shutdown type, source, owning department, WIP accounting class and tagging.
 
-Prerequisites
-=============
-- The Activity item (eam_item_type=2) must already exist in the maintenance organization. Use the INV Item Upload to create Activity items.
-- For Asset Group associations, the Asset Group (eam_item_type=1) and its serialised instance (csi_item_instances) must exist.
-- For Rebuildable (serial) associations, the Rebuildable item (eam_item_type=3) and instance must exist.
-- For Rebuildable (non-serial) associations, only the Rebuildable item is required.
+An association is for an Asset Number (an asset or a serialized rebuildable), or for a non-serialized Rebuildable item without an asset number. Asset group template associations, which Oracle copies to new assets of the group, are not supported.
 
-Natural business key for create/update detection:
-(Asset Activity + Maintenance Object Type + Maintenance Object Id)
-which maps to (Activity + Asset Group or Asset Number).
+An existing association is found by activity and asset number, or by activity and rebuildable item. Owning department, accounting class, cause, type, source, shutdown type and tagging are kept per maintenance organization, so a row updates them for the organization in its Maintenance Organization column.
+
+Associations cannot be deleted. End-date them with To Date.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
@@ -37,13 +28,13 @@ which maps to (Activity + Asset Group or Asset Number).
 Upload Mode, Maintenance Organization, Activity
 
 ## Oracle EBS Tables Used
-[mtl_eam_asset_activities](https://www.enginatics.com/library/?pg=1&find=mtl_eam_asset_activities&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload), [mtl_system_items_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload), [csi_item_instances](https://www.enginatics.com/library/?pg=1&find=csi_item_instances&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload)
+[mtl_eam_asset_activities](https://www.enginatics.com/library/?pg=1&find=mtl_eam_asset_activities&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload), [eam_org_maint_defaults](https://www.enginatics.com/library/?pg=1&find=eam_org_maint_defaults&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload), [mtl_system_items_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload), [csi_item_instances](https://www.enginatics.com/library/?pg=1&find=csi_item_instances&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload), [xxen_report_org_access](https://www.enginatics.com/library/?pg=1&find=xxen_report_org_access&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload), [bom_departments](https://www.enginatics.com/library/?pg=1&find=bom_departments&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload)
 
 ## Related Reports
-[EAM Work Orders](/EAM%20Work%20Orders/ "EAM Work Orders Oracle EBS SQL Report"), [EAM Weekly Schedule](/EAM%20Weekly%20Schedule/ "EAM Weekly Schedule Oracle EBS SQL Report"), [EAM Assets](/EAM%20Assets/ "EAM Assets Oracle EBS SQL Report"), [EAM PM Schedule Upload](/EAM%20PM%20Schedule%20Upload/ "EAM PM Schedule Upload Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [WIP Required Components](/WIP%20Required%20Components/ "WIP Required Components Oracle EBS SQL Report"), [BOM Routing Upload](/BOM%20Routing%20Upload/ "BOM Routing Upload Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report")
+[EAM Weekly Schedule](/EAM%20Weekly%20Schedule/ "EAM Weekly Schedule Oracle EBS SQL Report"), [EAM Work Orders](/EAM%20Work%20Orders/ "EAM Work Orders Oracle EBS SQL Report"), [EAM Assets](/EAM%20Assets/ "EAM Assets Oracle EBS SQL Report"), [EAM PM Schedule Upload](/EAM%20PM%20Schedule%20Upload/ "EAM PM Schedule Upload Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [EAM Work Orders 11i](/EAM%20Work%20Orders%2011i/ "EAM Work Orders 11i Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [EAM Asset Number Upload](/EAM%20Asset%20Number%20Upload/ "EAM Asset Number Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/EAM%20Asset%20Activity%20Association%20Upload/EAM%20Asset%20Activity%20Association%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-asset-activity-association-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

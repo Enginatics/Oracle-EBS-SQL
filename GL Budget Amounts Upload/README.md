@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'GL Budget Amounts Upload | Oracle EBS SQL Report'
-description: 'GL Budget Amounts Upload =================== This can be used to upload GL Budget Amounts'
+description: 'GL Budget Amounts Upload =================== Loads budget amounts into a budget organization of a GL budget. Each row holds one account and fiscal year…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Budget, Amounts, gl_period_statuses, gl_bc_packets, gl_balances'
 permalink: /GL%20Budget%20Amounts%20Upload/
 report_name: 'GL Budget Amounts Upload'
@@ -16,7 +16,11 @@ report_web_name: gl-budget-amounts-upload
 ## Overview
 GL Budget Amounts Upload
 ===================
-This can be used to upload GL Budget Amounts
+Loads budget amounts into a budget organization of a GL budget. Each row holds one account and fiscal year with up to 20 period amounts. A blank period amount leaves the period unchanged.
+
+For a budget that does not require budget journals, the rows go to the budget interface and the Upload Budget Amounts program runs after the upload. Add Or Replace decides whether an entered amount is added to the period balance or replaces it.
+
+For a budget that requires budget journals, each entered period amount becomes a budget journal line of the row's Journal Source and Journal Category, imported through Journal Import and funds reserved. Such amounts are always added to the balance: the Create, Update download shows the period balances, so a downloaded amount uploaded again unchanged is added a second time. Enter only the change.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=gl-budget-amounts-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 

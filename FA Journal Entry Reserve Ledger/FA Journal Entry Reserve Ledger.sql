@@ -27,6 +27,8 @@ select
   x.asset_number,
   x.tag_number,
   x.asset_desc        asset_description,
+  x.asset_key,
+  x.asset_key||' - '||x.asset_desc asset_key_description,
   x.start_date        date_placed_in_service,
   x.method            depreciation_method,
   x.d_life            "Life Yr.Mo",
@@ -53,6 +55,7 @@ select
   fa.asset_number,
   fa.tag_number,
   fa.description asset_desc,
+  fakk.concatenated_segments asset_key,
   frlg.date_placed_in_service start_date,
   frlg.method_code method,
   frlg.life life,
@@ -80,11 +83,13 @@ from
   gl_ledgers           gl,
   fa_reserve_ledger_gt frlg,
   fa_additions         fa,
+  fa_asset_keywords_kfv fakk,
   gl_code_combinations gcc,
   &lp_fa_deprn_summary fds
 where
   gl.ledger_id            = :p_ca_set_of_books_id and
   fa.asset_id             = frlg.asset_id and
+  fa.asset_key_ccid        = fakk.code_combination_id (+) and
   gcc.code_combination_id = frlg.dh_ccid and
   fds.period_counter  (+) = frlg.period_counter and
   fds.book_type_code  (+) = :p_book and
@@ -104,6 +109,7 @@ group by
   fa.asset_number,
   fa.tag_number,
   fa.description,
+  fakk.concatenated_segments,
   frlg.date_placed_in_service,
   frlg.method_code,
   frlg.life,

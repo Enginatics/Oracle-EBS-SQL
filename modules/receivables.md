@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
-title: 'Oracle EBS Receivables Reports | 30 SQL reports'
-description: '30 free Oracle E-Business Suite Receivables SQL reports for Excel: AR Adjustment Register, AR Aging, AR Aging Buckets and Interest Tiers Setup, AR Applied…'
+last_modified_at: 2026-11-02
+title: 'Oracle EBS Receivables Reports | 31 SQL reports'
+description: '31 free Oracle E-Business Suite Receivables SQL reports for Excel: AR Adjustment Register, AR Aging, AR Aging Buckets and Interest Tiers Setup, AR Applied…'
 keywords: 'Oracle EBS Receivables reports, Oracle Receivables SQL, Oracle E-Business Suite, Blitz Report, hz_parties, hz_cust_accounts, hz_cust_site_uses_all, hz_party_sites, hz_cust_acct_sites_all'
 permalink: /modules/receivables/
 module: 'Receivables'
@@ -11,7 +11,7 @@ module_page: true
 
 # Oracle EBS Receivables Reports
 
-30 ready-to-run SQL reports for **Oracle E-Business Suite Receivables**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Receivables tables in these reports are `hz_parties`, `hz_cust_accounts`, `hz_cust_site_uses_all`, `hz_party_sites`, `hz_cust_acct_sites_all`, `ra_customer_trx_all`.
+31 ready-to-run SQL reports for **Oracle E-Business Suite Receivables**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Receivables tables in these reports are `hz_parties`, `hz_cust_accounts`, `hz_cust_site_uses_all`, `hz_party_sites`, `hz_cust_acct_sites_all`, `ra_customer_trx_all`.
 
 > **Run any of these reports in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=module-receivables) – your first 30 reports are free.
 
@@ -39,6 +39,7 @@ module_page: true
 | [AR Open Items Revaluation](/AR%20Open%20Items%20Revaluation/) | Imported from BI Publisher Description: Open Items Revaluation Report Application: Receivables Source: Open Items Revaluation Report (XML) Short Name… |
 | [AR Past Due Invoice](/AR%20Past%20Due%20Invoice/) | Detail past due AR invoice report with invoice number, days past due, amount past due and currency code When India Localization is installed, the following GST… |
 | [AR Payment Terms](/AR%20Payment%20Terms/) | Master data report showing the payment terms codes with their respective profile options. |
+| [AR Receipt Analysis - Days Late](/AR%20Receipt%20Analysis%20-%20Days%20Late/) | Receipt applications against all transactions except credit memos, with the days between the installment due date and the application date. Converted from the… |
 | [AR Receipt Register](/AR%20Receipt%20Register/) | Application: Receivables Description: Receivables Receipt Register Provided Templates: Default: Detail - Detail Listing with no Pivot Summarization Pivot… |
 | [AR Sales Journal By Customer](/AR%20Sales%20Journal%20By%20Customer/) | Imported from BI Publisher Description: Sales Journal By Customer Application: Receivables Source: Sales Journal By Customer (XML) Short Name: RAXGLAXML DB… |
 | [AR Transaction Register](/AR%20Transaction%20Register/) | Application: Receivables Source: Transaction Register Short Name: ARRXINVR The report has now been enhanced to allow multiple accessible Ledgers or Operating… |

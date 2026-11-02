@@ -49,7 +49,7 @@ gmd.batch_id
 mtl_system_items_vl msiv
 where
 1=1 and
-gbh.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+gbh.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 gbh.batch_id=p.batch_id(+) and
 p.product_item_id=msiv.inventory_item_id(+) and
 gbh.organization_id=msiv.organization_id(+) and

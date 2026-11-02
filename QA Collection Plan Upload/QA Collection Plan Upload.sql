@@ -91,7 +91,8 @@ to_char(null) output_variable,
 to_char(null) output_element,
 null delete_record,
 1 row_type,
-qp.plan_id
+qp.plan_id,
+to_number(null) upload_row
 from
 qa_plans qp,
 mtl_parameters mp
@@ -148,7 +149,8 @@ to_char(null) output_variable,
 to_char(null) output_element,
 null delete_record,
 2 row_type,
-qp.plan_id
+qp.plan_id,
+to_number(null) upload_row
 from
 qa_plans qp,
 mtl_parameters mp,
@@ -209,7 +211,8 @@ to_char(null) output_variable,
 to_char(null) output_element,
 null delete_record,
 3 row_type,
-qp.plan_id
+qp.plan_id,
+to_number(null) upload_row
 from
 qa_plans qp,
 mtl_parameters mp,
@@ -275,7 +278,8 @@ to_char(null) output_variable,
 to_char(null) output_element,
 null delete_record,
 4 row_type,
-qp.plan_id
+qp.plan_id,
+to_number(null) upload_row
 from
 qa_plans qp,
 mtl_parameters mp,
@@ -336,7 +340,8 @@ to_char(null) output_variable,
 to_char(null) output_element,
 null delete_record,
 5 row_type,
-qp.plan_id
+qp.plan_id,
+to_number(null) upload_row
 from
 qa_plans qp,
 mtl_parameters mp,
@@ -400,7 +405,8 @@ to_char(null) output_variable,
 to_char(null) output_element,
 null delete_record,
 6 row_type,
-qp.plan_id
+qp.plan_id,
+to_number(null) upload_row
 from
 qa_plans qp,
 mtl_parameters mp,
@@ -464,7 +470,8 @@ to_char(null) output_variable,
 to_char(null) output_element,
 null delete_record,
 7 row_type,
-qp.plan_id
+qp.plan_id,
+to_number(null) upload_row
 from
 qa_plans qp,
 mtl_parameters mp,
@@ -538,7 +545,8 @@ qpcao.token_name output_variable,
 qc2.name output_element,
 null delete_record,
 8 row_type,
-qp.plan_id
+qp.plan_id,
+to_number(null) upload_row
 from
 qa_plans qp,
 mtl_parameters mp,

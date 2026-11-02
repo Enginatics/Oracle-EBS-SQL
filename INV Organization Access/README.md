@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'INV Organization Access | Oracle EBS SQL Report'
 description: 'Inventory organization access for all responsibilities, either through hr security profile or individual orgaccess assignment.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Inventory, Enginatics, INV, Organization, Access, mtl_parameters, org_access_view, org_access'
@@ -31,7 +31,7 @@ Organization Code, Application Name, Responsibility Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-organization-access)
 
 ## Related Reports
-[INV Onhand Quantities](/INV%20Onhand%20Quantities/ "INV Onhand Quantities Oracle EBS SQL Report"), [INV Item Default Transaction Locators](/INV%20Item%20Default%20Transaction%20Locators/ "INV Item Default Transaction Locators Oracle EBS SQL Report"), [BOM Calendar Exceptions](/BOM%20Calendar%20Exceptions/ "BOM Calendar Exceptions Oracle EBS SQL Report"), [PO Approved Supplier List](/PO%20Approved%20Supplier%20List/ "PO Approved Supplier List Oracle EBS SQL Report"), [EAM Assets](/EAM%20Assets/ "EAM Assets Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [INV Subinventories](/INV%20Subinventories/ "INV Subinventories Oracle EBS SQL Report"), [INV Stock Locators](/INV%20Stock%20Locators/ "INV Stock Locators Oracle EBS SQL Report"), [INV Safety Stocks](/INV%20Safety%20Stocks/ "INV Safety Stocks Oracle EBS SQL Report")
+[WIP Move Transactions 11i](/WIP%20Move%20Transactions%2011i/ "WIP Move Transactions 11i Oracle EBS SQL Report"), [INV Item Upload 11i](/INV%20Item%20Upload%2011i/ "INV Item Upload 11i Oracle EBS SQL Report"), [FND Responsibility Access](/FND%20Responsibility%20Access/ "FND Responsibility Access Oracle EBS SQL Report"), [CAC Inventory Organization Summary](/CAC%20Inventory%20Organization%20Summary/ "CAC Inventory Organization Summary Oracle EBS SQL Report"), [CAC Invoice Price Variance](/CAC%20Invoice%20Price%20Variance/ "CAC Invoice Price Variance Oracle EBS SQL Report"), [PO Cancelled Purchase Orders](/PO%20Cancelled%20Purchase%20Orders/ "PO Cancelled Purchase Orders Oracle EBS SQL Report"), [EAM Work Orders 11i](/EAM%20Work%20Orders%2011i/ "EAM Work Orders 11i Oracle EBS SQL Report"), [EAM PM Schedule Upload 11i](/EAM%20PM%20Schedule%20Upload%2011i/ "EAM PM Schedule Upload 11i Oracle EBS SQL Report"), [FND Responsibilities](/FND%20Responsibilities/ "FND Responsibilities Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/INV%20Organization%20Access/INV%20Organization%20Access.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-organization-access) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

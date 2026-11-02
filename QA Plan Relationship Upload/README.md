@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'QA Plan Relationship Upload | Oracle EBS SQL Report'
-description: 'Upload to create, update, or delete Quality Collection Plan parent-child relationships using the standard Oracle API qassparentchildpkg. This upload…'
+description: 'Upload to create, update and delete parent-child relationships between Quality collection plans, with their element relationships and the criteria for…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Plan, Relationship, qa_pc_element_relationship, mtl_parameters, qa_plans'
 permalink: /QA%20Plan%20Relationship%20Upload/
 report_name: 'QA Plan Relationship Upload'
@@ -14,18 +14,17 @@ report_web_name: qa-plan-relationship-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/qa-plan-relationship-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-plan-relationship-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-plan-relationship-upload).
 
 ## Overview
-Upload to create, update, or delete Quality Collection Plan parent-child relationships using the standard Oracle API qa_ss_parent_child_pkg.
+Upload to create, update and delete parent-child relationships between Quality collection plans, with their element relationships and the criteria for collecting child results.
 
-This upload manages:
-- Parent-Child Plan Relationships (QA_PC_PLAN_RELATIONSHIP)
-- Element Relationships between parent and child plans (QA_PC_ELEMENT_RELATIONSHIP)
-- Criteria for automatic child record creation (QA_PC_CRITERIA)
+Each row names a parent and a child plan. The row's element relationship (parent element, child element and relationship type) and criterion (criteria element, operator and values) are added to the plan relationship when they do not exist yet and updated otherwise. Delete Record deletes the whole plan relationship.
 
-Entry Modes:
-- Immediate: Child data entered immediately after parent record
-- Delayed: Child records entered manually later
-- Automatic: Child records auto-created when parent matches criteria
-- History: Child records auto-created when changes made to parent
+The download lists the element relationships and the criteria of a plan relationship side by side, one of each per row.
+
+Entry modes:
+- Immediate: child results are entered right after the parent result
+- Delayed: child results are entered later
+- Automatic: child results are created when the parent result meets the criteria
+- History: a child result is created when the parent result changes
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-plan-relationship-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
@@ -33,7 +32,7 @@ Entry Modes:
 Upload Mode, Organization, Parent Plan, Child Plan
 
 ## Oracle EBS Tables Used
-[qa_pc_element_relationship](https://www.enginatics.com/library/?pg=1&find=qa_pc_element_relationship&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-plan-relationship-upload), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-plan-relationship-upload), [qa_plans](https://www.enginatics.com/library/?pg=1&find=qa_plans&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-plan-relationship-upload), [qa_pc_plan_relationship](https://www.enginatics.com/library/?pg=1&find=qa_pc_plan_relationship&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-plan-relationship-upload), [qa_chars](https://www.enginatics.com/library/?pg=1&find=qa_chars&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-plan-relationship-upload), [qa_pc_criteria](https://www.enginatics.com/library/?pg=1&find=qa_pc_criteria&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-plan-relationship-upload)
+[qa_pc_element_relationship](https://www.enginatics.com/library/?pg=1&find=qa_pc_element_relationship&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-plan-relationship-upload), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-plan-relationship-upload), [qa_plans](https://www.enginatics.com/library/?pg=1&find=qa_plans&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-plan-relationship-upload), [qa_pc_plan_relationship](https://www.enginatics.com/library/?pg=1&find=qa_pc_plan_relationship&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-plan-relationship-upload), [qa_pc_criteria](https://www.enginatics.com/library/?pg=1&find=qa_pc_criteria&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-plan-relationship-upload), [qa_chars](https://www.enginatics.com/library/?pg=1&find=qa_chars&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-plan-relationship-upload)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-plan-relationship-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=qa-plan-relationship-upload)

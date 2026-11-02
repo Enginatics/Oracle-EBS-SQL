@@ -5,26 +5,10 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: EAM Failure Sets Upload
--- Description: EAM Failure Sets Upload
--- =======================
--- Creates and updates Oracle EAM (Enterprise Asset Management) Failure Sets, along with their Asset-Group Item Associations and Failure/Cause/Resolution Combinations.
--- One Set Name can own many child rows (Associations and Combinations). A SET row defines the header explicitly. For Create rows, the upload also creates the missing failure set header automatically from the first ASSOCIATION or COMBINATION row for that Set Name.
--- Row Type
--- --------
--- - SET: Creates or updates the failure set header (setname, description, effectiveenddate).
--- - ASSOCIATION: Links the set to an asset-group / rebuildable item. The item must have EAMITEMTYPE in (1,3) and exist in the master item organization. On Create, this row can also create the failure set header if it does not exist yet.
--- - COMBINATION: Adds a valid Failure / Cause / Resolution code triple to the set. The individual codes must already exist in EAM Failure Codes setup (use the EAM Failure Codes Upload). On Create, this row can also create the failure set header if it does not exist yet.
--- Upload Mode
--- ===========
--- - Create: opens an empty template. Enter a SET row per new failure set, or enter the first ASSOCIATION / COMBINATION row directly; the upload will create the missing header before processing the child row.
--- - Create, Update: downloads existing sets / associations / combinations for review or update.
--- Delete
--- ======
--- - SET rows cannot be deleted directly (Oracle API does not ship DeleteFailureSet). End-date the set instead by setting Set Effective End Date.
--- - ASSOCIATION and COMBINATION rows can be deleted by setting Delete to Yes.
--- Dates
--- =====
--- Blanking Effective End Date on an update reactivates the ended record.
+-- Description: Create and update EAM failure sets with their asset group and rebuildable item associations and their failure, cause and resolution code combinations. One row is one SET, ASSOCIATION or COMBINATION, and the rows of a set share its Set Name.
+-- A new ASSOCIATION or COMBINATION row creates its failure set when no set of that name exists, from the row's Set Description and Set Effective End Date.
+-- The associated item is an asset group or rebuildable item of a master organization. The codes of a combination must exist (EAM Failure Codes Upload).
+-- A failure set cannot be deleted; end-date it with Set Effective End Date, and clear the date to reactivate it. Delete Record ends an association or deletes a combination.
 -- Excel Example Output: https://www.enginatics.com/example/eam-failure-sets-upload/
 -- Library Link: https://www.enginatics.com/reports/eam-failure-sets-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -65,7 +49,7 @@ efs.set_name,
 cast(null as varchar2(240)) set_description,
 cast(null as date) set_effective_end_date,
 'ASSOCIATION' row_type,
-msibk.concatenated_segments inventory_item,
+(select msibk.concatenated_segments from mtl_system_items_b_kfv msibk where efsa.inventory_item_id=msibk.inventory_item_id and rownum=1) inventory_item,
 decode(efsa.failure_code_required,'Y',xxen_util.meaning('Y','YES_NO',0)) failure_code_required,
 efsa.effective_end_date association_effective_end_date,
 cast(null as varchar2(80)) failure_code,
@@ -75,14 +59,9 @@ cast(null as date) combination_effective_end_date,
 cast(null as varchar2(10)) delete_record
 from
 eam_failure_sets efs,
-eam_failure_set_associations efsa,
-mtl_system_items_b_kfv msibk,
-mtl_parameters mp
+eam_failure_set_associations efsa
 where
 efs.set_id=efsa.set_id and
-efsa.inventory_item_id=msibk.inventory_item_id and
-msibk.organization_id=mp.organization_id and
-mp.master_organization_id=mp.organization_id and
 2=2
 union all
 select
@@ -109,3 +88,5 @@ where
 efs.set_id=efc.set_id and
 2=2
 ) x
+where
+1=1

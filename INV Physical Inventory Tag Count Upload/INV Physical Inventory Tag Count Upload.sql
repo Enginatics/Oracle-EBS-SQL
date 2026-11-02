@@ -16,7 +16,7 @@
 -- For clients on R12.2.3 or later
 -- - the upload also supports the voiding/unvoiding of existing tags as well
 -- Note:
--- There is currently a bug in the R12.2.3+ API that will reject the creation/update of tags for items which do not require Locators in Subinvnetories where the Locator Control is set to 'Check Item Level'. The API is only checking the Locator control level at the subinventory level, and if it is not set to 'Locators not required' will reject any tags for items where no locator is specified. For this reason, if the physical inventory being uploaded includes any subinventories with Locator Control set to 'Check Item Level', the upload will revert to using the older API.
+-- There is currently a bug in the R12.2.3+ API that will reject the creation/update of tags for items which do not require Locators in Subinventories where the Locator Control is set to 'Check Item Level'. The API is only checking the Locator control level at the subinventory level, and if it is not set to 'Locators not required' will reject any tags for items where no locator is specified. For this reason, if the physical inventory being uploaded includes any subinventories with Locator Control set to 'Check Item Level', the upload will revert to using the older API.
 -- Excel Example Output: https://www.enginatics.com/example/inv-physical-inventory-tag-count-upload/
 -- Library Link: https://www.enginatics.com/reports/inv-physical-inventory-tag-count-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -212,7 +212,8 @@ mpit.attribute13,
 mpit.attribute14,
 mpit.attribute15,
 -- ids
-mpit.tag_id
+mpit.tag_id,
+to_number(null) upload_row
 from
 mpit_qry mpit
 where

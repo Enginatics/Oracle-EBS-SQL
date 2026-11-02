@@ -109,7 +109,7 @@ y.period_date>=:date_from and
 y.period_date<:date_to+1 and
 y.project_id=ppa.project_id and
 ppa.org_id=haouv.organization_id and
-haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+haouv.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 ppa.project_status_code=pps.project_status_code and
 ppa.carrying_out_organization_id=haouv2.organization_id and
 y.top_task_id=pt.task_id(+) and

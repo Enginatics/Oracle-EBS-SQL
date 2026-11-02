@@ -90,7 +90,7 @@ pa_tasks pt,
 ) prlm
 where
 1=1 and
-haouv.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+haouv.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 haouv.organization_id = ppa.org_id and
 ppa.project_id = pbv.project_id and
 pbv.budget_type_code = pbt.budget_type_code and

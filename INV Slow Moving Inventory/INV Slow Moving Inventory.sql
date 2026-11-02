@@ -126,7 +126,7 @@ mtl_onhand_quantities_detail moqd,
 mtl_parameters mp
 where
 2=2 and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 moqd.organization_id=mp.organization_id
 union all
 select
@@ -143,7 +143,7 @@ mtl_material_transactions mmt,
 mtl_parameters mp
 where
 3=3 and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 mmt.organization_id=mp.organization_id and
 nvl(mmt.logical_transaction,2)<>1
 ) u

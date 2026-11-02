@@ -66,7 +66,7 @@ pa_projects_all ppa,
 pa_tasks pt
 where
 1=1 and
-mp.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 mp.organization_id=wt.organization_id and
 wt.transaction_type in (1,2,3,4,5,6,7,17) and
 wt.wip_entity_id=we.wip_entity_id and

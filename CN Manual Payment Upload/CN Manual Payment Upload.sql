@@ -42,7 +42,7 @@ cn_quotas_all cqa
 where
 1=1 and
 cpta.incentive_type_code='MANUAL_PAY_ADJ' and
-cpta.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat) and
+cpta.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 cpta.payrun_id=cpa.payrun_id and
 cpa.pay_period_id=cpsa.period_id and
 cpa.org_id=cpsa.org_id and

@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-02
 title: 'Oracle EBS Inventory Reports | 53 SQL reports'
 description: '53 free Oracle E-Business Suite Inventory SQL reports for Excel: INV ABC assignments, INV Aging, INV Customer Item Cross References, INV Cycle count…'
-keywords: 'Oracle EBS Inventory reports, Oracle Inventory SQL, Oracle E-Business Suite, Blitz Report, mtl_system_items_vl, org_access_view, mtl_parameters, org_organization_definitions, mtl_item_locations_kfv'
+keywords: 'Oracle EBS Inventory reports, Oracle Inventory SQL, Oracle E-Business Suite, Blitz Report, mtl_system_items_vl, org_organization_definitions, xxen_report_org_access, mtl_parameters, mtl_item_locations_kfv'
 permalink: /modules/inventory/
 module: 'Inventory'
 module_page: true
@@ -11,7 +11,7 @@ module_page: true
 
 # Oracle EBS Inventory Reports
 
-53 ready-to-run SQL reports for **Oracle E-Business Suite Inventory**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Inventory tables in these reports are `mtl_system_items_vl`, `org_access_view`, `mtl_parameters`, `org_organization_definitions`, `mtl_item_locations_kfv`, `gl_ledgers`.
+53 ready-to-run SQL reports for **Oracle E-Business Suite Inventory**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Inventory tables in these reports are `mtl_system_items_vl`, `org_organization_definitions`, `xxen_report_org_access`, `mtl_parameters`, `mtl_item_locations_kfv`, `gl_ledgers`.
 
 > **Run any of these reports in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=module-inventory) – your first 30 reports are free.
 

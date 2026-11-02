@@ -33,7 +33,7 @@ mtl_system_items_vl msiv,
 org_organization_definitions ood
 where
 1=1 and
-gmd.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+gmd.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 gmd.batch_id=gbh.batch_id and
 gmd.line_type=-1 and
 gmd.inventory_item_id=msiv.inventory_item_id and

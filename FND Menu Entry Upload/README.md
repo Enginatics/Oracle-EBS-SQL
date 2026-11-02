@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'FND Menu Entry Upload | Oracle EBS SQL Report'
-description: 'Upload to create, update and delete menu entries in FND Menus. Useful for adding entries to existing menus, e.g. during Supply Chain Hub installation…'
+description: 'Upload to create, update and delete the entries of existing menus, as in the Menus form. Upload Mode Create opens an empty sheet for new entries. Create…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, FND, Menu, Entry, fnd_menus_vl, fnd_menu_entries, fnd_menu_entries_tl'
 permalink: /FND%20Menu%20Entry%20Upload/
 report_name: 'FND Menu Entry Upload'
@@ -14,32 +14,13 @@ report_web_name: fnd-menu-entry-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/fnd-menu-entry-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-menu-entry-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-menu-entry-upload).
 
 ## Overview
-Upload to create, update and delete menu entries in FND Menus.
-Useful for adding entries to existing menus, e.g. during Supply Chain Hub installation.
+Upload to create, update and delete the entries of existing menus, as in the Menus form.
 
-Upload Modes
-============
+Upload Mode Create opens an empty sheet for new entries. Create, Update downloads the entries of the menus selected by the parameters; new rows can be added to the same file.
 
-Create
-------
-Opens an empty spreadsheet where the user can enter new menu entries.
+User Menu Name and Menu Name select the menu and default each other. An entry is identified by the menu and its Entry Sequence, which defaults to the next multiple of ten above the highest sequence of the menu. Changing the Entry Sequence of a downloaded row creates a new entry and keeps the old one; delete the old entry with Delete Record Yes.
 
-Create, Update
---------------
-Downloads existing menu entries matching the Menu Name filter for review and update.
-New rows can be added to create additional entries in the same upload.
-
-Fields
-======
-- User Menu Name: Display-only. Shows the translatable menu name.
-- Menu Name: Required. The internal menu name (e.g. INV_NAVIGATE).
-- Entry Sequence: The sequence number for the entry within the menu. Auto-assigned if not provided for new entries.
-- Prompt: The display text shown in the menu for this entry.
-- Entry Description: Optional description of the menu entry.
-- Sub Menu: The sub-menu to navigate to. Either Sub Menu or Function Name must be specified.
-- Function Name: The form function to launch. Either Sub Menu or Function Name must be specified.
-- Grant Flag: Y (default) = entry is grantable via security, N = not grantable.
-- Delete Record: Set to Y to delete an existing menu entry.
+Either Sub Menu or Function Name is required. A blank Grant Flag makes the entry not grantable.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-menu-entry-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 

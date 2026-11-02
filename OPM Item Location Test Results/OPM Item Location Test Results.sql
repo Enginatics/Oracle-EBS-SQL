@@ -56,7 +56,7 @@ gs2.sample_id
 gmd_spec_tests_vl gstv
 where
 1=1 and
-gs.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+gs.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 gr.sample_id=gs.sample_id and
 gr.test_id=gqt.test_id and
 gqt.test_id=gqtt.test_id and

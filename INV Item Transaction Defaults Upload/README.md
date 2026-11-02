@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'INV Item Transaction Defaults Upload | Oracle EBS SQL Report'
-description: 'This upload can be used to create and update Item transaction default subinventories and locators'
+description: 'This upload creates, updates and deletes the default subinventories and default locators of items for shipping, receiving and move order receipt…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, INV, Item, Transaction, Defaults, mtl_item_sub_defaults, hr_all_organization_units_vl, mtl_system_items_vl'
 permalink: /INV%20Item%20Transaction%20Defaults%20Upload/
 report_name: 'INV Item Transaction Defaults Upload'
@@ -14,7 +14,7 @@ report_web_name: inv-item-transaction-defaults-upload
 **Oracle E-Business Suite** SQL report from the [Enginatics Library](https://www.enginatics.com/reports/inv-item-transaction-defaults-upload/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-transaction-defaults-upload) powered by [Blitz Report™](https://www.enginatics.com/blitz-report/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-transaction-defaults-upload).
 
 ## Overview
-This upload can be used to create and update Item transaction default subinventories and locators
+This upload creates, updates and deletes the default subinventories and default locators of items for shipping, receiving and move order receipt transactions.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-transaction-defaults-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 

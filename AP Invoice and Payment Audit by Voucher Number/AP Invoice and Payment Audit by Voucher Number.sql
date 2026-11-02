@@ -95,7 +95,7 @@ ap_invoices_all aia,
 ap_checks_all aca
 where
 1=1 and
-fds.doc_sequence_id in (select fdsa2.doc_sequence_id from fnd_doc_sequence_assignments fdsa2 where fdsa2.set_of_books_id in (select hou.set_of_books_id from hr_operating_units hou where hou.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11))) and
+fds.doc_sequence_id in (select fdsa2.doc_sequence_id from fnd_doc_sequence_assignments fdsa2 where fdsa2.set_of_books_id in (select hou.set_of_books_id from hr_operating_units hou where hou.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU'))) and
 fds.doc_sequence_id=adsa.doc_sequence_id and
 adsa.doc_sequence_assignment_id=fdsa.doc_sequence_assignment_id and
 fdsa.application_id=fdsc.application_id and
@@ -113,7 +113,7 @@ hr_all_organization_units_vl haouv,
 ap_suppliers aps
 where
 2=2 and
-z.set_of_books_id in (select hou.set_of_books_id from hr_operating_units hou where hou.organization_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11)) and
+z.set_of_books_id in (select hou.set_of_books_id from hr_operating_units hou where hou.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU')) and
 z.set_of_books_id=gl.ledger_id and
 z.org_id=haouv.organization_id(+) and
 z.vendor_id=aps.vendor_id(+)

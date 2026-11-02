@@ -75,7 +75,7 @@ mtl_system_items_vl msiv,
 qp_list_headers_vl qlhv
 where
 1=1 and
-ooha.org_id in (select mgoat.organization_id from mo_glob_org_access_tmp mgoat union select fnd_global.org_id from dual where fnd_release.major_version=11) and
+ooha.org_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='OU') and
 opa.list_line_type_code in (select flvv.lookup_code from fnd_lookup_values_vl flvv where flvv.lookup_type='LIST_LINE_TYPE_CODE' and flvv.view_application_id=661 and flvv.security_group_id=0) and
 haouv.organization_id=ooha.org_id and
 ooha.header_id=opa.header_id and

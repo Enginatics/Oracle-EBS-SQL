@@ -49,7 +49,7 @@ org_organization_definitions ood,
 gmd_status_vl gsv
 where
 1=1 and
-fmd.organization_id in (select oav.organization_id from org_access_view oav where oav.resp_application_id=fnd_global.resp_appl_id and oav.responsibility_id=fnd_global.resp_id) and
+fmd.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 fmd.line_type=-1 and
 fmd.formula_id=ffm.formula_id and
 fmd.inventory_item_id=msiv.inventory_item_id and

@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-19
+last_modified_at: 2026-11-02
 title: 'GL Daily Rates Upload | Oracle EBS SQL Report'
 description: 'GL Daily Rates Upload ================== Use this upload to upload new or update existing GL Daily Exchange Rate Conversions. If exchange rates do not…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Daily, Rates, gl_daily_rates, gl_daily_conversion_types, fnd_user'
