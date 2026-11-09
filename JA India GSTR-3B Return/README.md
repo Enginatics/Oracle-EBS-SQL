@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-09
 title: 'JA India GSTR-3B Return | Oracle EBS SQL Report'
 description: 'Imported from BI Publisher Description: GSTR-3B Return Report Application: Asia/Pacific Localizations Source: India GSTR-3B Return Report Short Name…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Asia/Pacific Localizations, Enginatics, R12 only, India, GSTR-3B, Return, jai_party_reg_lines_v, jai_party_regs_v, jai_tax_det_factors'
@@ -36,7 +36,7 @@ Tax Regime, GST Registration Number, Return Period (MONYYYY)
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-3b-return), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-3b-return)
 
 ## Related Reports
-[JA India GSTR-2 Return](/JA%20India%20GSTR-2%20Return/ "JA India GSTR-2 Return Oracle EBS SQL Report"), [JA India GSTR-1 Return](/JA%20India%20GSTR-1%20Return/ "JA India GSTR-1 Return Oracle EBS SQL Report"), [JA India Third Party Registration Upload](/JA%20India%20Third%20Party%20Registration%20Upload/ "JA India Third Party Registration Upload Oracle EBS SQL Report")
+[JA India GSTR-2 Return](/JA%20India%20GSTR-2%20Return/ "JA India GSTR-2 Return Oracle EBS SQL Report"), [JA India Third Party Registration Upload](/JA%20India%20Third%20Party%20Registration%20Upload/ "JA India Third Party Registration Upload Oracle EBS SQL Report"), [JA India GSTR-1 Return](/JA%20India%20GSTR-1%20Return/ "JA India GSTR-1 Return Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/JA%20India%20GSTR-3B%20Return/JA%20India%20GSTR-3B%20Return.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ja-india-gstr-3b-return) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

@@ -17,7 +17,7 @@
 -- "... if you want it all automatic, give ALL FREE MEMORY on your machine to the SGA and be done with it. No more monitoring, no more thinking about how it could be, should be, would be used.
 -- Set the PGA aggregate target and the SGA target to be a tad less than physical memory on the machine and you are done."
 -- https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11QUESTIONID:30011178429375
--- Database created or cloned is the date of the last clone: the controlfile creation date, which Rapid Clone and RMAN DUPLICATE reset, or the PDB creation date on a multitenant database if that is later.
+-- Database created or cloned is the date of the last clone: the latest of the controlfile creation date (reset by Rapid Clone and RMAN DUPLICATE), the last open with resetlogs (a clone restored from a backup or a storage snapshot keeps the source's creation date) and, on a multitenant database, the PDB creation date.
 -- The report also shows the status of system statistics.
 -- select from sys.auxstats$
 -- If CPUSPEEDNW still shows the default of 4096, it either means that the stats have never been gathered or it could also mean that your storage is too fast to gather them with the standard NOWORKLOAD method and you should set reasonable values manually then.
@@ -25,10 +25,14 @@
 -- exec dbmsstats.setsystemstats('IOSEEKTIM',1);
 -- exec dbmsstats.setsystemstats('IOTFRSPEED',85782);
 -- There is also an Exadata mode, considering the faster storage correctly and updating the MBRC too
--- exec dbmsstats.gathersystemstats(‘EXADATA');
+-- exec dbmsstats.gathersystemstats('EXADATA');
 -- The following command checks if hugepages are configured and how many are in use:
 -- grep Huge /proc/meminfo
 -- https://access.redhat.com/solutions/320303
+-- The SGA and PGA of every other Oracle instance on the host (other databases, ASM, a second EBS environment) share its memory. To list them and the free memory:
+-- ps -eo user,args | grep -E '[o]rapmon|[a]smpmon'
+-- grep -v '^' /etc/oratab
+-- free -g
 -- To configure hugepages, set the vm.nrhugepages in the /etc/sysctl.conf file and hard and soft memlock in /etc/security/limits.conf for the oracle user.
 -- /etc/sysctl.conf
 -- vm.nrhugepages = SGA GB x 512 + 5
@@ -77,7 +81,8 @@ from
 (
 select go.inst_id, 'cpu physical' name, go.value, 11 order_by from gv$osstat go where go.stat_name='NUM_CPUS' union all
 select go.inst_id, 'memory physical' name, go.value, 1 order_by from gv$osstat go where go.stat_name='PHYSICAL_MEMORY_BYTES' union all
-select go.inst_id, 'memory unused' name, go.value-(select sum(gp.value) from gv$system_parameter gp where go.inst_id=gp.inst_id and gp.name in ('sga_target','memory_target','pga_aggregate_target')) value, 2 order_by from gv$osstat go where go.stat_name='PHYSICAL_MEMORY_BYTES' union all
+select go.inst_id, 'memory unused' name, go.value-coalesce((select nullif(to_number(gp.value),0) from gv$system_parameter gp where go.inst_id=gp.inst_id and gp.name='memory_target'),(select gsi.bytes from gv$sgainfo gsi where go.inst_id=gsi.inst_id and gsi.name='Maximum SGA Size')+(select to_number(gp.value) from gv$system_parameter gp where go.inst_id=gp.inst_id and gp.name='pga_aggregate_target')) value, 2 order_by from gv$osstat go where go.stat_name='PHYSICAL_MEMORY_BYTES' union all
+select gsi.inst_id, 'SGA size' name, gsi.bytes value, 3.5 order_by from gv$sgainfo gsi where gsi.name='Maximum SGA Size' union all
 select gp.inst_id, gp.name, to_number(gp.value) value,
 decode(gp.name,
 'cpu_count',12,
@@ -146,6 +151,6 @@ select to_number(null) inst_id, 'control_management_pack_access: '||vp.value nam
 select to_number(null) inst_id, 'awr_pdb_autoflush_enabled: '||vp.value name, null value from v$parameter vp where vp.name='awr_pdb_autoflush_enabled' union all
 select distinct to_number(null) inst_id, 'AWR Report last usage date: '||max(dfus.last_usage_date) over () name, null value from dba_feature_usage_statistics dfus where dfus.name='AWR Report' and dfus.dbid in (select vd.dbid from v$database vd) union all
 select distinct to_number(null) inst_id, 'AWR Report usages' name, sum(dfus.detected_usages) over () value from dba_feature_usage_statistics dfus where dfus.name='AWR Report' and dfus.dbid in (select vd.dbid from v$database vd) union all
-select to_number(null) inst_id, 'Database created or cloned: '||greatest(vd.created&pdb_creation_time) name, null value from v$database vd union all
+select to_number(null) inst_id, 'Database created or cloned: '||greatest(vd.created,vd.resetlogs_time&pdb_creation_time) name, null value from v$database vd union all
 select to_number(null) inst_id, 'Database Editions: ' name, count(*) value from dba_editions de union all
 select to_number(null) inst_id, 'Database size' name, sum((select vp.value from v$parameter vp where vp.name like 'db_block_size')*dtum.used_space)/1024/1024/1024 value from dba_tablespace_usage_metrics dtum

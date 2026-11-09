@@ -212,6 +212,7 @@ with ap_inv as -- ap invoice data
     , pda.quantity_billed                              po_dist_qty_billed
     , mp1.organization_code                            po_ship_to_organization
     , mp2.organization_code                            po_destination_organization
+    , xxen_util.meaning(pda.destination_type_code,'DESTINATION TYPE',201) po_destination_type
     , pdr.receipt_nums                                 po_dist_receipt_nums
     , msi.inventory_item_id
     , msi.organization_id
@@ -369,6 +370,7 @@ select
 , po.po_dist_qty_billed
 , po.po_ship_to_organization
 , po.po_destination_organization
+, po.po_destination_type
 , po.po_dist_receipt_nums
 --
 &l_ico_sel

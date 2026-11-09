@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-11-02
+last_modified_at: 2026-11-09
 title: 'AR Aging | Oracle EBS SQL Report'
 description: 'The AR Aging report allows users to review information about their open receivables items at a specified point in time (the As of Date). The report will…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Receivables, Enginatics, R12 only, Aging, hr_all_organization_units, hz_cust_site_uses_all, hz_cust_acct_sites_all'

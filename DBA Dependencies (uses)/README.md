@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-09
 title: 'DBA Dependencies (uses) | Oracle EBS SQL Report'
-description: 'Hierarchical report showing all dependent database objects that a specified object, e.g. a view or package name uses or depends on (top to bottom)'
+description: 'Hierarchical report showing all database objects that the specified objects, e.g. views or packages, use or depend on (top to bottom). Select several…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, Dependencies, (uses), dba_objects, dba_dependencies'
 permalink: /DBA%20Dependencies%20%28uses%29/
 report_name: 'DBA Dependencies (uses)'
@@ -17,12 +17,16 @@ module_url: /modules/database-administration/
 **Oracle EBS module:** [Database Administration](/modules/database-administration/ "Oracle EBS Database Administration reports") · [all Database Administration reports](/modules/database-administration/)  
 
 ## Overview
-Hierarchical report showing all dependent database objects that a specified object, e.g. a view or package name uses or depends on (top to bottom)
+Hierarchical report showing all database objects that the specified objects, e.g. views or packages, use or depend on (top to bottom).
+
+Select several object names to list the hierarchy of each, one after the other.
+
+Show Table Statistics adds the optimizer statistics and the indexes of every table in the hierarchy, to review the access paths of a view or package.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-dependencies-uses) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
-Owner, Object Type, Object Name
+Owner, Object Type, Object Name, Show Table Statistics
 
 ## Oracle EBS Tables Used
 [dba_objects](https://www.enginatics.com/library/?pg=1&find=dba_objects&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-dependencies-uses), [dba_dependencies](https://www.enginatics.com/library/?pg=1&find=dba_dependencies&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-dependencies-uses)

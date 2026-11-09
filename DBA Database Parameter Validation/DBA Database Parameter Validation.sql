@@ -9,6 +9,7 @@
 -- Reference: https://support.oracle.com/rs?type=doc&id=2126712.1
 -- It compares the current instance settings in v$systemparameter2 against Oracle's required values for the running RDBMS version (11.1 / 11.2 / 12.1 / 19c) and EBS release, per My Oracle Support Doc 396009.1 / KA1002 ("Database Initialization Parameters for Oracle E-Business Suite").
 -- https://support.oracle.com/support/?kmContentId=11158187
+-- On EBS 11i the applicable note is Doc 216205.1 / KB868261 ("Database Initialization Parameters for Oracle Applications Release 11i"). For the database versions supported on 11i it has the same mandatory values and removal list; only the sizing recommendations differ. Oracle checks it with bdechkcbo.sql (Doc 174605.1 / KB707933).
 -- Three sections:
 -- 1. Mandatory Database Parameters - current vs required value, with a Check of OK / NOT FOUND:OK / ERROR.
 -- 2. Database Parameters to be Removed - parameters (and events) that are explicitly set but should be removed for the running RDBMS version.
@@ -22,19 +23,6 @@
 -- Run Report: https://demo.enginatics.com/
 
 with
-function fmt_size(p_value varchar2) return varchar2 is
-l_n number;
-begin
-  if regexp_like(p_value,'^\d+$') then
-    l_n:=to_number(p_value);
-    if l_n>=1073741824 then
-      return rtrim(rtrim(to_char(round(l_n/1073741824,2),'fm999999990.99'),'0'),'.')||'G';
-    elsif l_n>=1048576 then
-      return rtrim(rtrim(to_char(round(l_n/1048576,2),'fm999999990.99'),'0'),'.')||'M';
-    end if;
-  end if;
-  return p_value;
-end;
 ref0 as (
 select 'db_block_size' param,'MANDATORY' category,'ALL' stmt,'ALL' apps,'8192' db_default,'8192' req from dual union all
 select '_system_trig_enabled' param,'MANDATORY' category,'ALL' stmt,'ALL' apps,'TRUE' db_default,'TRUE' req from dual union all
@@ -193,7 +181,7 @@ select 'optimizer_index_cost_adj' param,'REMOVE' category,'11.2.0' stmt,'ALL' ap
 select 'optimizer_max_permutations' param,'REMOVE' category,'11.2.0' stmt,'ALL' apps,null db_default,null req from dual union all
 select 'optimizer_mode' param,'REMOVE' category,'11.2.0' stmt,'ALL' apps,null db_default,null req from dual union all
 select 'optimizer_percent_parallel' param,'REMOVE' category,'11.2.0' stmt,'ALL' apps,null db_default,null req from dual union all
-select ' parallel_instance_group' param,'REMOVE' category,'11.2.0' stmt,'ALL' apps,null db_default,null req from dual union all
+select 'parallel_instance_group' param,'REMOVE' category,'11.2.0' stmt,'ALL' apps,null db_default,null req from dual union all
 select 'instance_groups' param,'REMOVE' category,'11.2.0' stmt,'ALL' apps,null db_default,null req from dual union all
 select 'plsql_compiler_flags' param,'REMOVE' category,'11.2.0' stmt,'ALL' apps,null db_default,null req from dual union all
 select 'plsql_native_library_dir' param,'REMOVE' category,'11.2.0' stmt,'ALL' apps,null db_default,null req from dual union all
@@ -261,7 +249,7 @@ select 'optimizer_index_cost_adj' param,'REMOVE' category,'12.1.0' stmt,'ALL' ap
 select 'optimizer_max_permutations' param,'REMOVE' category,'12.1.0' stmt,'ALL' apps,null db_default,null req from dual union all
 select 'optimizer_mode' param,'REMOVE' category,'12.1.0' stmt,'ALL' apps,null db_default,null req from dual union all
 select 'optimizer_percent_parallel' param,'REMOVE' category,'12.1.0' stmt,'ALL' apps,null db_default,null req from dual union all
-select ' parallel_instance_group' param,'REMOVE' category,'12.1.0' stmt,'ALL' apps,null db_default,null req from dual union all
+select 'parallel_instance_group' param,'REMOVE' category,'12.1.0' stmt,'ALL' apps,null db_default,null req from dual union all
 select 'instance_groups' param,'REMOVE' category,'12.1.0' stmt,'ALL' apps,null db_default,null req from dual union all
 select 'plsql_compiler_flags' param,'REMOVE' category,'12.1.0' stmt,'ALL' apps,null db_default,null req from dual union all
 select 'plsql_native_library_dir' param,'REMOVE' category,'12.1.0' stmt,'ALL' apps,null db_default,null req from dual union all
@@ -328,8 +316,18 @@ where (r.stmt='ALL' or r.stmt=ctx.dbv) and (r.apps='ALL' or r.apps=ctx.appsv)
 select
 x.section "Section",
 x.parameter_name "Parameter Name",
-fmt_size(x.current_value) "Current Value",
-fmt_size(x.required_value) "Required Value",
+case
+when not regexp_like(x.current_value,'^\d+$') then x.current_value
+when to_number(x.current_value)>=1073741824 then rtrim(rtrim(to_char(to_number(x.current_value)/1073741824,'fm999999990.99'),'0'),'.')||'G'
+when to_number(x.current_value)>=1048576 then rtrim(rtrim(to_char(to_number(x.current_value)/1048576,'fm999999990.99'),'0'),'.')||'M'
+else x.current_value
+end "Current Value",
+case
+when not regexp_like(x.required_value,'^\d+$') then x.required_value
+when to_number(x.required_value)>=1073741824 then rtrim(rtrim(to_char(to_number(x.required_value)/1073741824,'fm999999990.99'),'0'),'.')||'G'
+when to_number(x.required_value)>=1048576 then rtrim(rtrim(to_char(to_number(x.required_value)/1048576,'fm999999990.99'),'0'),'.')||'M'
+else x.required_value
+end "Required Value",
 x.db_default "DB Default",
 x.check_result "Check",
 x.description "Description",

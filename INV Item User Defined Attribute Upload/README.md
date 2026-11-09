@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-11-02
+last_modified_at: 2026-11-09
 title: 'INV Item User Defined Attribute Upload | Oracle EBS SQL Report'
 description: 'Item user-defined attribute (UDA) values upload for Oracle Product Information Management (PIM / Advanced Product Catalog). Creates, updates and deletes…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, INV, Item, User, Defined, ego_mtl_sy_items_ext_b, mtl_parameters, mtl_system_items_vl'
@@ -37,6 +37,8 @@ Upload Mode, Organization Code, Item, Item Catalog Category, Attribute Group, Da
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-user-defined-attribute-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-user-defined-attribute-upload)
 
+## Related Reports
+[INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [AP Invoices and Lines](/AP%20Invoices%20and%20Lines/ "AP Invoices and Lines Oracle EBS SQL Report"), [INV Item Upload 11i](/INV%20Item%20Upload%2011i/ "INV Item Upload 11i Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/INV%20Item%20User%20Defined%20Attribute%20Upload/INV%20Item%20User%20Defined%20Attribute%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-item-user-defined-attribute-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

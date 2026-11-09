@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-09
 title: 'GL Account Distribution Analysis | Oracle EBS SQL Report'
 description: 'Detailed GL transaction report with one line per distribution including all segments and subledger data, with amounts in both transaction currency and…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, General Ledger, Enginatics, R12 only, Account, Distribution, Analysis, fnd_flex_value_norm_hierarchy, gl_code_combinations_kfv, gl_je_categories_vl'

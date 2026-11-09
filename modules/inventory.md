@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-11-02
+last_modified_at: 2026-11-09
 title: 'Oracle EBS Inventory Reports | 53 SQL reports'
 description: '53 free Oracle E-Business Suite Inventory SQL reports for Excel: INV ABC assignments, INV Aging, INV Customer Item Cross References, INV Cycle count…'
 keywords: 'Oracle EBS Inventory reports, Oracle Inventory SQL, Oracle E-Business Suite, Blitz Report, mtl_system_items_vl, org_organization_definitions, xxen_report_org_access, mtl_parameters, mtl_item_locations_kfv'
@@ -42,7 +42,7 @@ module_page: true
 | [INV Item Relationships](/INV%20Item%20Relationships/) | Master listing for Inventory item relationships |
 | [INV Item Reservations](/INV%20Item%20Reservations/) | Imported from BI Publisher Description: Item reservations report Application: Inventory Source: Item reservations report (XML) Short Name: INVDRRSVXML DB… |
 | [INV Item Statuses](/INV%20Item%20Statuses/) | Master data report of inventory items with the various status attributes, such as: is BOM allowed, Build in WIP, customer orders enabled, internal orders… |
-| [INV Item Supply/Demand](/INV%20Item%20Supply-Demand/) | Inventory Item Supply/Demand data as per the standard Inventory Item Supply/Demand form |
+| [INV Item Supply/Demand](/INV%20Item%20Supply-Demand/) | Inventory Item Supply/Demand data as per the standard Inventory Item Supply/Demand form The run time depends on the number of items selected, as Oracle's… |
 | [INV Item Templates](/INV%20Item%20Templates/) | Inventory item templates and their item attribute values |
 | [INV Items](/INV%20Items/) | Master data report that lists item master attributes such as item type, UOM, status, serial control, account numbers and various other attributes. Item Cost is… |
 | [INV Kanban Cards](/INV%20Kanban%20Cards/) | Kanban cards with their pull sequence, one row per card, including card type, card status, supply status and card kanban size. Replenishment Cycles and Last… |

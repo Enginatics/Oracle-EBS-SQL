@@ -6,7 +6,7 @@
 /*************************************************************************/
 -- Report Name: PO Advance Shipment Notice Upload
 -- Description: Creates advance shipment notices (ASN) and advance shipment and billing notices (ASBN) against approved purchase order shipments, as a supplier does in iSupplier Portal or by EDI, and cancels them.
--- Each row is one shipment line. Rows with the same Ship-To Organization, supplier and Shipment Number form one shipment, whose header values are taken from its first row. The supplier and supplier site are those of the purchase order.
+-- Each row is one shipment line. Rows with the same Ship-To Organization, supplier and Shipment Number form one shipment, whose header values are taken from its first row. The supplier and supplier site are those of the purchase order, which must belong to an operating unit the responsibility can access.
 -- The rows are loaded into the receiving open interface and processed by the Receiving Transaction Processor; its errors are shown in the Message column.
 -- Create, Update downloads the open lines of existing shipments. Cancel Shipment cancels a shipment that has not been received yet, with all of its lines. Shipments shipped more than 12 months ago cannot be cancelled.
 -- An ASBN needs Invoice Number, Invoice Date and Invoice Amount; the Receiving Transaction Processor passes its invoice on to Payables Open Interface Import.

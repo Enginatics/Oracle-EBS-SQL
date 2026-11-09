@@ -24,7 +24,7 @@ select
 x.lov_name,
 x.report_name,
 x.parameter_name,
-xxen_report.validate_sql(replace(x.lov_query,':$flex$.',':'),'parse') error_message,
+xxen_report.validate_sql(replace(regexp_replace(x.lov_query,':\$flex\$\.(\w+)\.value(\W|$)',':$flex$.v__\1\2',1,0,'i'),':$flex$.',':f_'),'parse') error_message,
 x.lov_query
 from
 (

@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-11-02
+last_modified_at: 2026-11-09
 title: 'XDO Publisher Data Definitions | Oracle EBS SQL Report'
 description: 'XML Publisher data definitions or sources, associated concurrent programs, executables and templates. To include complete template information, enter a…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, XML Publisher, Enginatics, XDO, Publisher, Data, Definitions, xdo_lobs, fnd_request_group_units, xdo_ds_definitions_vl'

@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-11-02
+last_modified_at: 2026-11-09
 title: 'CAC Intransit Value (Real-Time) | Oracle EBS SQL Report'
 description: 'Report to show intransit values across all ledgers for current onhand balances and current costing method costs. This is a "real-time" report, showing the…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Cost Accounting, Enginatics, CAC, Intransit, Value, (Real-Time), mtl_supply, rcv_shipment_headers, mtl_parameters'
@@ -19,6 +19,10 @@ module_url: /modules/cost-accounting/
 ## Overview
 Report to show intransit values across all ledgers for current onhand balances and current costing method costs.  This is a "real-time" report, showing the quantities and values at the time you run this report.  (Used the cst_intransit_value_view to simplify the design.)
 
+A shipment is listed when the responsibility can access its owning organization, or its receiving organization when To Organization Code is entered.
+
+Category Set and Category restrict the shipments by the item's category in the owning organization. Category Set 1 to 3 only add category columns.
+
 /* +=============================================================================+
 -- |  Copyright 2009-20 Douglas Volz Consulting, Inc.                            |
 -- |  All rights reserved.                                                       |
@@ -31,17 +35,6 @@ Report to show intransit values across all ledgers for current onhand balances a
 -- |
 -- |  Program Name:  xxx_intransit_value_report.sql
 -- |
--- |  Parameters:
--- |  p_org_code            -- Specific inventory organization you wish to report (optional)
--- |  p_operating_unit      -- Operating Unit you wish to report, leave blank for all
--- |                           operating units (optional) 
--- |  p_ledger              -- general ledger you wish to report, leave blank for all
--- |                           ledgers (optional)
--- |  p_category_set1       -- The first item category set to report, typically the
--- |                           Cost or Product Line Category Set
--- |  p_category_set2       -- The second item category set to report, typically the
--- |                           Inventory Category Set
--- | 
 -- |  Description:
 -- |  Report to show intransit values across all ledgers, for current onhand
 -- |  balances and current costing method costs.  This is a "real-time" report,
@@ -68,15 +61,21 @@ Report to show intransit values across all ledgers for current onhand balances a
 -- |                                     the FOB Point from cst_intransit_value_view.
 -- |  1.12    27 Nov 2024 Eric Clegg. Added Minimum Absolute Intransit Quantity parameter
 -- |  1.13    23 Oct 2026 Andy Haack    Rebuilt to the Blitz Report SQL standards.
+-- |  1.14    05 Nov 2026 Eric Clegg    Added To Organization Code, Planner, To Org
+-- |                                     Planner, Category Set, Category, From Org
+-- |                                     Planner and Expected Delivery Date for demand
+-- |                                     planners, and shipments into an accessible
+-- |                                     receiving org when To Organization Code is
+-- |                                     entered.
 -- +=============================================================================+*/
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
-Category Set 1, Category Set 2, Category Set 3, Item Number, Organization Code, Operating Unit, Ledger, Minimum Absolute Intransit Qty
+Category Set 1, Category Set 2, Category Set 3, Item Number, Organization Code, To Organization Code, Planner, To Org Planner, Category Set, Category, Operating Unit, Ledger, Minimum Absolute Intransit Qty
 
 ## Oracle EBS Tables Used
-[mtl_supply](https://www.enginatics.com/library/?pg=1&find=mtl_supply&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [rcv_shipment_headers](https://www.enginatics.com/library/?pg=1&find=rcv_shipment_headers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [mtl_interorg_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_interorg_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [mtl_item_status_vl](https://www.enginatics.com/library/?pg=1&find=mtl_item_status_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [xxen_report_org_access](https://www.enginatics.com/library/?pg=1&find=xxen_report_org_access&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time)
+[mtl_supply](https://www.enginatics.com/library/?pg=1&find=mtl_supply&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [rcv_shipment_headers](https://www.enginatics.com/library/?pg=1&find=rcv_shipment_headers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [hr_organization_information](https://www.enginatics.com/library/?pg=1&find=hr_organization_information&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [gl_ledgers](https://www.enginatics.com/library/?pg=1&find=gl_ledgers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [mtl_interorg_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_interorg_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [cst_item_costs](https://www.enginatics.com/library/?pg=1&find=cst_item_costs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [mtl_item_status_vl](https://www.enginatics.com/library/?pg=1&find=mtl_item_status_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [mtl_system_items_b](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time), [xxen_report_org_access](https://www.enginatics.com/library/?pg=1&find=xxen_report_org_access&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=cac-intransit-value-real-time)

@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-09
 title: 'XLA Entity Types and Event Class Attributes | Oracle EBS SQL Report'
 description: 'Subledger event types and their attributes, for example reporting view – Oracle EBS Subledger Accounting SQL report: free SQL, parameters and tables used.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Subledger Accounting, Enginatics, R12 only, XLA, Entity, Types, Event, fnd_application_vl, xla_entity_types_vl, xla_event_class_attrs'
@@ -31,7 +31,7 @@ None
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-entity-types-and-event-class-attributes), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-entity-types-and-event-class-attributes)
 
 ## Related Reports
-[GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
+[XLA Accounting Errors](/XLA%20Accounting%20Errors/ "XLA Accounting Errors Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report"), [GL Account Analysis (Drilldown) (with inventory and WIP)](/GL%20Account%20Analysis%20%28Drilldown%29%20%28with%20inventory%20and%20WIP%29/ "GL Account Analysis (Drilldown) (with inventory and WIP) Oracle EBS SQL Report"), [XLA Subledger Accounting Rules Detail Listing](/XLA%20Subledger%20Accounting%20Rules%20Detail%20Listing/ "XLA Subledger Accounting Rules Detail Listing Oracle EBS SQL Report"), [GL Account Analysis 11g](/GL%20Account%20Analysis%2011g/ "GL Account Analysis 11g Oracle EBS SQL Report"), [GL Account Analysis](/GL%20Account%20Analysis/ "GL Account Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/XLA%20Entity%20Types%20and%20Event%20Class%20Attributes/XLA%20Entity%20Types%20and%20Event%20Class%20Attributes.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=xla-entity-types-and-event-class-attributes) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

@@ -98,6 +98,9 @@ select
 :posting_status,
 :fund_status,
 :created_by,
-:effective_date
+:effective_date,
+:period,
+:output_mode,
+:hide_zero_rows
 from
 dual

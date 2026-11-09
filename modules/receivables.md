@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-11-02
+last_modified_at: 2026-11-09
 title: 'Oracle EBS Receivables Reports | 31 SQL reports'
 description: '31 free Oracle E-Business Suite Receivables SQL reports for Excel: AR Adjustment Register, AR Aging, AR Aging Buckets and Interest Tiers Setup, AR Applied…'
 keywords: 'Oracle EBS Receivables reports, Oracle Receivables SQL, Oracle E-Business Suite, Blitz Report, hz_parties, hz_cust_accounts, hz_cust_site_uses_all, hz_party_sites, hz_cust_acct_sites_all'
@@ -27,7 +27,7 @@ module_page: true
 | [AR Customer Credit Limits](/AR%20Customer%20Credit%20Limits/) | Master data report for customer setup audit of credit amount limits and GL accounts for customer credit management and dunning notices. |
 | [AR Customer Credit Snapshot](/AR%20Customer%20Credit%20Snapshot/) | Application: Receivables Source: Customer Credit Snapshot (XML) Short Name: ARXCCSXML DB package: ARARXCCSXMLPPKG |
 | [AR Customer Open Balances Period Lookback](/AR%20Customer%20Open%20Balances%20Period%20Lookback/) | Report: AR Customer Open Balances Period Lookback Application: Receivables Description: Customer Open Balances summary showing - Open Balances as of the… |
-| [AR Customer Profiles](/AR%20Customer%20Profiles/) | Customer account and site level profile details such as profile class, payment terms, statement, dunning, collector and credit settings, including the profile… |
+| [AR Customer Profiles](/AR%20Customer%20Profiles/) | Customer party, account and site level profile details such as profile class, payment terms, statement, dunning, collector and credit settings, including the… |
 | [AR Customer Statement](/AR%20Customer%20Statement/) | Application: Receivables Source: Customer Statement Short Name: ARSTMTRPT DB package: ARTPSTMTPKG When India Localization is installed, the following GST… |
 | [AR Customers and Sites](/AR%20Customers%20and%20Sites/) | Master data report of customer master data including address, sites, site uses, payment terms, Salesperson, price list and other profile information. Payment… |
 | [AR Disputed Invoice](/AR%20Disputed%20Invoice/) | Imported Oracle standard disputed invoice report Source: Disputed Invoice Report (XML) Short Name: ARXDIRXML DB package: ARARXDIRXMLPPKG When India… |

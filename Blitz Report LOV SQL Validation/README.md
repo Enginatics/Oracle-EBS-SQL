@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-09
 title: 'Blitz Report LOV SQL Validation | Oracle EBS SQL Report'
 description: 'Validates Blitz Report LOV SQLs for valid syntax. This can be useful after mass migrating reports from other tools such as Discoverer, Excl4apps, splashBI…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Blitz, Report, LOV, SQL, xxen_report_parameter_lovs, xxen_report_parameters_v'

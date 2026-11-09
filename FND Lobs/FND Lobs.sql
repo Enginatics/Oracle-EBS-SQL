@@ -6,6 +6,7 @@
 /*************************************************************************/
 -- Report Name: FND Lobs
 -- Description: Generic file manager lob data, such as attachments, help files, imported and exported Blitz Report files etc.
+-- Template Summary by Program shows the space per program and whether the files have expired, which is what Purge Obsolete Generic File Manager Data removes.
 -- Excel Example Output: https://www.enginatics.com/example/fnd-lobs/
 -- Library Link: https://www.enginatics.com/reports/fnd-lobs/
 -- Run Report: https://demo.enginatics.com/
@@ -17,6 +18,7 @@ fl.file_content_type,
 &file_data
 fl.upload_date,
 fl.expiration_date,
+xxen_util.yes(case when fl.expiration_date<sysdate then 'Y' end) expired,
 fl.program_name,
 fl.program_tag,
 fl.language,

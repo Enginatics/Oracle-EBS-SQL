@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-11-02
+last_modified_at: 2026-11-09
 title: 'AR Customer Profiles | Oracle EBS SQL Report'
-description: 'Customer account and site level profile details such as profile class, payment terms, statement, dunning, collector and credit settings, including the…'
+description: 'Customer party, account and site level profile details such as profile class, payment terms, statement, dunning, collector and credit settings, including…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Receivables, Enginatics, Customer, Profiles, hz_cust_accounts, hz_parties, hz_customer_profiles'
 permalink: /AR%20Customer%20Profiles/
 report_name: 'AR Customer Profiles'
@@ -17,7 +17,10 @@ module_url: /modules/receivables/
 **Oracle EBS module:** [Receivables](/modules/receivables/ "Oracle EBS Receivables reports") · [all Receivables reports](/modules/receivables/)  
 
 ## Overview
-Customer account and site level profile details such as profile class, payment terms, statement, dunning, collector and credit settings, including the profile amount limits per currency.
+Customer party, account and site level profile details such as profile class, payment terms, statement, dunning, collector and credit settings, including the profile amount limits per currency.
+
+A party profile is reported once for each account of the party, and site level profiles for Bill To, Statements and Dunning site uses only. The Operating Unit parameter selects the accounts with a site in the operating unit, with their party and account profiles and their site profiles in that operating unit.
+
 Application: Receivables
 Source: Customer Profiles Report (XML)
 Short Name: ARXCCP_XML
@@ -26,7 +29,7 @@ DB package: AR_ARXCCP_XMLP_PKG
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
-Operating Unit, Customer Name, Account Number, Account Number From, Account Number To, Profile Class, Collector, Credit Hold
+Operating Unit, Customer Name, Account Number, Account Number From, Account Number To, Profile Class, Collector, Credit Hold, Show active only
 
 ## Oracle EBS Tables Used
 [hz_cust_accounts](https://www.enginatics.com/library/?pg=1&find=hz_cust_accounts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles), [hz_parties](https://www.enginatics.com/library/?pg=1&find=hz_parties&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles), [hz_customer_profiles](https://www.enginatics.com/library/?pg=1&find=hz_customer_profiles&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles), [hz_cust_profile_classes](https://www.enginatics.com/library/?pg=1&find=hz_cust_profile_classes&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles), [ar_collectors](https://www.enginatics.com/library/?pg=1&find=ar_collectors&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles), [ra_terms_vl](https://www.enginatics.com/library/?pg=1&find=ra_terms_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles), [ar_statement_cycles](https://www.enginatics.com/library/?pg=1&find=ar_statement_cycles&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles), [ar_dunning_letter_sets](https://www.enginatics.com/library/?pg=1&find=ar_dunning_letter_sets&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles), [ar_autocash_hierarchies](https://www.enginatics.com/library/?pg=1&find=ar_autocash_hierarchies&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles), [ra_grouping_rules](https://www.enginatics.com/library/?pg=1&find=ra_grouping_rules&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles), [hz_cust_site_uses_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_site_uses_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles), [hz_cust_acct_sites_all](https://www.enginatics.com/library/?pg=1&find=hz_cust_acct_sites_all&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles), [hz_party_sites](https://www.enginatics.com/library/?pg=1&find=hz_party_sites&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles), [hr_all_organization_units_vl](https://www.enginatics.com/library/?pg=1&find=hr_all_organization_units_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles), [fnd_territories_vl](https://www.enginatics.com/library/?pg=1&find=fnd_territories_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles), [hz_locations](https://www.enginatics.com/library/?pg=1&find=hz_locations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles), [hz_cust_profile_amts](https://www.enginatics.com/library/?pg=1&find=hz_cust_profile_amts&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles), [xxen_report_org_access](https://www.enginatics.com/library/?pg=1&find=xxen_report_org_access&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-customer-profiles)

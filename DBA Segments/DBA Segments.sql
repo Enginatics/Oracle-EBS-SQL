@@ -20,7 +20,7 @@ from
 (
 select distinct
 &column1
-sum(ds.bytes) over (partition by &partition_by) bytes,
+sum(ds.bytes) over (&partition_by) bytes,
 sum(ds.bytes) over () total_bytes
 from
 dba_segments ds,

@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-09
 title: 'DBA AWR System Time Summary | Oracle EBS SQL Report'
 description: 'Historic system time model values from the automated workload repository showing how the database time was spent e.g. on excuting SQL, PL/SQL or Java…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, AWR, System, Time, dba_hist_snapshot, dba_hist_sys_time_model'

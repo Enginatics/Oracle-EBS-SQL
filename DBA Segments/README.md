@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-09
 title: 'DBA Segments | Oracle EBS SQL Report'
 description: 'Database segments such as tables, indexes, lob segments by size and total database size summary'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, Segments, dba_segments, dba_indexes, dba_lobs'

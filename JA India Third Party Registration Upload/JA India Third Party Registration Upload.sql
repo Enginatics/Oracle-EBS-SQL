@@ -18,8 +18,8 @@
 -- 5.Party Name: Auto-populates after you enter the Party Number. You can also use the LOV to search by Supplier/Customer name; the LOV displays the Party Number as well.
 -- 6.Party Site Name: Select the Party Site based on the Operating Unit. Leave blank for a null site registration.
 -- 7.Registration Regime Code, Registration Type, Registration Number, Secondary Registration Type, Secondary Registration Number: Enter these fields to create/update a party registration. These fields are available only when Record Type = Registration.
--- 8.Assessable Price List: Enter an Assessable Price List when the selected Regime Code is a Non-TDS Regime. Available only when Record Type = Registration.
--- 9.Default TDS Section: Enter a Default TDS Section code when the selected Regime Code is a TDS Regime. Available only when Record Type = Registration.
+-- 8.Assessable Price List: Enter an Assessable Price List when the selected Regime Code is a transaction (non-withholding) regime. Available only when Record Type = Registration.
+-- 9.Default TDS Section: Enter a Default TDS Section code when the selected Regime Code is a withholding (TDS) regime. Available only when Record Type = Registration.
 -- 10.Registration Start Date, Registration End Date: Enter the effective dates for the registration. The Start Date defaults to 01-Jul-2017 (GST implementation date in India), but you can change it as needed.
 -- 11.Reporting Code Regime Code, Reporting Code Type, Reporting Code: Enter these fields to create/update a reporting code for the registration. These fields are available only when Record Type = Reporting Code.
 -- 12.Reporting Code Start Date, Reporting Code End Date: Enter the effective dates for the reporting code. The Start Date defaults to 01-Jul-2017, but you can change it as needed.
@@ -54,12 +54,14 @@ to_char(null) reporting_code_regime_code,
 to_char(null) reporting_code_type,
 to_char(null) reporting_code,
 to_date(null) reporting_code_start_date,
-to_date(null) reporting_code_end_date
+to_date(null) reporting_code_end_date,
+null upload_row
 from
 jai_party_regs_v jprv,
 jai_party_reg_lines_v jprlv
 where
 1=1 and
+2=2 and
 jprv.reg_class_code='THIRD_PARTY' and
 jprv.party_reg_id=jprlv.party_reg_id
 union all
@@ -87,22 +89,17 @@ to_char(null) default_tds_section,
 to_date(null) registration_start_date,
 to_date(null) registration_end_date,
 jrav.regime_code reporting_code_regime_code,
-jrav.reporting_type_name reporting_code_type,
+(select jrt.reporting_type_name from jai_reporting_types jrt where jrav.reporting_type_id=jrt.reporting_type_id) reporting_code_type,
 jrav.reporting_code,
 jrav.effective_from reporting_code_start_date,
-jrav.effective_to reporting_code_end_date
+jrav.effective_to reporting_code_end_date,
+null upload_row
 from
 jai_party_regs_v jprv,
 jai_reporting_associations_v jrav
 where
 1=1 and
+3=3 and
 jprv.reg_class_code='THIRD_PARTY' and
 jprv.party_reg_id=jrav.entity_id and
 jrav.entity_code='THIRD_PARTY'
-order by
-party_type,
-party_number,
-record_type,
-party_reg_id,
-party_reg_line_id nulls last,
-reporting_association_id

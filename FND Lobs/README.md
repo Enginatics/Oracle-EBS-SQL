@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-11-02
+last_modified_at: 2026-11-09
 title: 'FND Lobs | Oracle EBS SQL Report'
-description: 'Generic file manager lob data, such as attachments, help files, imported and exported Blitz Report files etc.'
+description: 'Generic file manager lob data, such as attachments, help files, imported and exported Blitz Report files etc. Template Summary by Program shows the space…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Application Object Library, Enginatics, FND, Lobs, fnd_lobs'
 permalink: /FND%20Lobs/
 report_name: 'FND Lobs'
@@ -18,6 +18,8 @@ module_url: /modules/application-object-library/
 
 ## Overview
 Generic file manager lob data, such as attachments, help files, imported and exported Blitz Report files etc.
+
+Template Summary by Program shows the space per program and whether the files have expired, which is what Purge Obsolete Generic File Manager Data removes.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=fnd-lobs) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 

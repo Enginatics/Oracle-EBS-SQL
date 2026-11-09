@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-09
 title: 'DBA Database Parameter Validation | Oracle EBS SQL Report'
 description: 'Replicates the database initialization-parameter validation performed by Oracle''s EBS Database Performance and Statistics Analyzer (My Oracle Support Doc…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, Database, Parameter, Validation, ref0, dual, v$instance'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, Database, Parameter, Validation, dual, v$instance, v$system_parameter'
 permalink: /DBA%20Database%20Parameter%20Validation/
 report_name: 'DBA Database Parameter Validation'
 report_web_name: dba-database-parameter-validation
@@ -24,6 +24,8 @@ Reference: <a href="https://support.oracle.com/rs?type=doc&id=2126712.1" rel="no
 It compares the current instance settings in v$system_parameter2 against Oracle's required values for the running RDBMS version (11.1 / 11.2 / 12.1 / 19c) and EBS release, per My Oracle Support Doc 396009.1 / KA1002 ("Database Initialization Parameters for Oracle E-Business Suite").
 <a href="https://support.oracle.com/support/?kmContentId=11158187" rel="nofollow" target="_blank">https://support.oracle.com/support/?kmContentId=11158187</a>
 
+On EBS 11i the applicable note is Doc 216205.1 / KB868261 ("Database Initialization Parameters for Oracle Applications Release 11i"). For the database versions supported on 11i it has the same mandatory values and removal list; only the sizing recommendations differ. Oracle checks it with bde_chk_cbo.sql (Doc 174605.1 / KB707933).
+
 Three sections:
 1. Mandatory Database Parameters - current vs required value, with a Check of OK / NOT FOUND:OK / ERROR.
 2. Database Parameters to be Removed - parameters (and events) that are explicitly set but should be removed for the running RDBMS version.
@@ -41,13 +43,13 @@ grant select on sys.V_$SYSTEM_PARAMETER2 to apps;
 Only show errors
 
 ## Oracle EBS Tables Used
-[ref0](https://www.enginatics.com/library/?pg=1&find=ref0&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-database-parameter-validation), [dual](https://www.enginatics.com/library/?pg=1&find=dual&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-database-parameter-validation), [v$instance](https://www.enginatics.com/library/?pg=1&find=v%24instance&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-database-parameter-validation), [v$system_parameter](https://www.enginatics.com/library/?pg=1&find=v%24system_parameter&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-database-parameter-validation), [v$system_parameter2](https://www.enginatics.com/library/?pg=1&find=v%24system_parameter2&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-database-parameter-validation)
+[dual](https://www.enginatics.com/library/?pg=1&find=dual&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-database-parameter-validation), [v$instance](https://www.enginatics.com/library/?pg=1&find=v%24instance&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-database-parameter-validation), [v$system_parameter](https://www.enginatics.com/library/?pg=1&find=v%24system_parameter&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-database-parameter-validation), [fnd_product_groups](https://www.enginatics.com/library/?pg=1&find=fnd_product_groups&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-database-parameter-validation), [v$system_parameter2](https://www.enginatics.com/library/?pg=1&find=v%24system_parameter2&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-database-parameter-validation)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-database-parameter-validation)
 
 ## Related Reports
-[DBA AWR System Metrics Summary](/DBA%20AWR%20System%20Metrics%20Summary/ "DBA AWR System Metrics Summary Oracle EBS SQL Report"), [DBA SGA+PGA Memory Configuration](/DBA%20SGA-PGA%20Memory%20Configuration/ "DBA SGA+PGA Memory Configuration Oracle EBS SQL Report"), [DBA Sessions](/DBA%20Sessions/ "DBA Sessions Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [INV Item Upload 11i](/INV%20Item%20Upload%2011i/ "INV Item Upload 11i Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [AR Transactions and Lines](/AR%20Transactions%20and%20Lines/ "AR Transactions and Lines Oracle EBS SQL Report")
+[INV Item Upload 11i](/INV%20Item%20Upload%2011i/ "INV Item Upload 11i Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [AP Invoice Upload](/AP%20Invoice%20Upload/ "AP Invoice Upload Oracle EBS SQL Report"), [OKL Termination Quotes](/OKL%20Termination%20Quotes/ "OKL Termination Quotes Oracle EBS SQL Report"), [DBA Sessions](/DBA%20Sessions/ "DBA Sessions Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20Database%20Parameter%20Validation/DBA%20Database%20Parameter%20Validation.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-database-parameter-validation) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

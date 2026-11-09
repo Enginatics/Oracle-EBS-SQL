@@ -27,7 +27,7 @@ from
 select distinct
 &pivot_time2
 x.stat_name,
-greatest(0, max(x.value) over (partition by x.stat_id, x.dbid, x.instance_number &pivot_partition2)-
+greatest(0, max(x.value) over (partition by x.stat_id, x.dbid, x.instance_number &pivot_partition2)
 &delta_prev_value) delta
 from
 (

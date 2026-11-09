@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-09
 title: 'AP Invoices with PO, Intercompany and SLA Details | Oracle EBS SQL Report'
 description: 'AP Invoices with PO, Intercompany and SLA Details When India Localization is installed, the following GST columns are also included: GST Registration No…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Payables, Enginatics, R12 only, Invoices, PO,, Intercompany, SLA, mtl_material_transactions, rcv_transactions, rcv_shipment_headers'

@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-09
 title: 'Oracle EBS Application Object Library Reports | 64 SQL reports'
 description: '64 free Oracle E-Business Suite Application Object Library SQL reports for Excel: FND Application Context File, FND Applications, FND Attached Documents…'
 keywords: 'Oracle EBS Application Object Library reports, Oracle Application Object Library SQL, Oracle E-Business Suite, Blitz Report, fnd_application_vl, fnd_concurrent_programs_vl, fnd_responsibility_vl, hr_all_organization_units_vl, fnd_form_functions_vl'
@@ -55,7 +55,7 @@ module_page: true
 | [FND Integrated SOA Gateway Requests](/FND%20Integrated%20SOA%20Gateway%20Requests/) | Integrated SOA Gateway (ISG) web service requests as logged for the SOA Monitor, one row per request, with execution time, status, HTTP and fault details… |
 | [FND Key Flexfields](/FND%20Key%20Flexfields/) | Key flexfields table, structure, column and validation information |
 | [FND Languages](/FND%20Languages/) |  |
-| [FND Lobs](/FND%20Lobs/) | Generic file manager lob data, such as attachments, help files, imported and exported Blitz Report files etc. |
+| [FND Lobs](/FND%20Lobs/) | Generic file manager lob data, such as attachments, help files, imported and exported Blitz Report files etc. Template Summary by Program shows the space per… |
 | [FND Log Messages](/FND%20Log%20Messages/) |  |
 | [FND Lookup Search](/FND%20Lookup%20Search/) | Finds the best matching lookuptype for a given set of lookupcodes in a custom application base table. Example: Coding a sql for ap suppliers, the value of… |
 | [FND Lookup Values](/FND%20Lookup%20Values/) | Lookup types and values, for example to find a lookup type for a particular lookup code value or meaning. |

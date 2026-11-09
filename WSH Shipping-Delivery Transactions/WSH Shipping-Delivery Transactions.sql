@@ -41,6 +41,7 @@ hz_format_pub.format_address(hl.location_id,null,null,',') customer_ship_to_addr
 hl.postal_code,
 hl.city,
 hl.country,
+&dff_columns
 wdd.cust_po_number customer_po_number,
 wnd.name customer_delivery_name,
 -- delivery item details

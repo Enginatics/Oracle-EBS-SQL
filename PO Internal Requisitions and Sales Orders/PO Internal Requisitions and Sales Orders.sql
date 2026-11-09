@@ -5,9 +5,12 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: PO Internal Requisitions and Sales Orders
--- Description: Report to display internal sales orders and requisition numbers, with aging dates and other useful information.
+-- Description: Report to display internal sales orders and requisition numbers, with aging dates and other useful information. For process manufacturing organizations the unit cost and COGS amount come from the OPM item cost of the fiscal policy cost type in the latest costed period; discrete organizations use the item cost of the primary cost method.
 -- IR Delivered, IR In Receiving, IR In Transit and IR Not Shipped Quantity split each requisition line as Oracle planning counts it: delivered into the destination organization, received but not yet delivered, shipped but not yet received, and not yet shipped. They are in the requisition's unit of measure and show on the first sales order line of a requisition line only, so that split sales order lines do not count them twice.
 -- Open refers to the internal sales order line, which closes when it ships, before it is received. Leave it empty to include shipped lines that are still in transit.
+-- With Show Delivery Details, an order line returns one row per delivery and pick status; Delivery Qty and Delivery Shipped Qty are the quantities of that row, and a row packed in several containers lists their tracking numbers separated by commas.
+-- With Show Lot Numbers, an order line returns one row per lot of its shipment transaction with Lot Number and Lot Quantity.
+-- Together with Show Delivery Details the rows are per delivery detail and lot, and Delivery Qty and Delivery Shipped Qty appear once per delivery detail, on its first lot row. A shipment whose delivery detail was purged shows its lots only without Show Delivery Details.
 -- Excel Example Output: https://www.enginatics.com/example/po-internal-requisitions-and-sales-orders/
 -- Library Link: https://www.enginatics.com/reports/po-internal-requisitions-and-sales-orders/
 -- Run Report: https://demo.enginatics.com/
@@ -73,6 +76,8 @@ xxen_util.client_time(oola.promise_date) promise_date,
 xxen_util.client_time(oola.schedule_ship_date) schedule_ship_date,
 xxen_util.client_time(oola.schedule_arrival_date) schedule_arrival_date,
 xxen_util.client_time(oola.actual_shipment_date) actual_shipment_date,
+&delivery_columns
+&lot_columns
 xxen_util.client_time((select min(rt.transaction_date) from rcv_transactions rt where prla.requisition_line_id=rt.requisition_line_id)) receipt_date,
 trunc(sysdate-ooha.request_date) days_outstanding,
 case
@@ -93,7 +98,7 @@ decode(row_number() over (partition by prla.requisition_line_id order by oola.li
 decode(row_number() over (partition by prla.requisition_line_id order by oola.line_id),1,ms.in_transit_quantity) ir_in_transit_quantity,
 decode(row_number() over (partition by prla.requisition_line_id order by oola.line_id),1,ms.not_shipped_quantity) ir_not_shipped_quantity,
 gl.currency_code,
-cic.item_cost unit_cost,
+&item_cost unit_cost,
 (
 select listagg(x.receipt_num,', ')  
 within group(order by x.receipt_num) receipt_number
@@ -111,7 +116,7 @@ x.requisition_line_id=prla.requisition_line_id
 ) receipt_number,
 xxen_util.meaning(nvl(oola.freight_terms_code,ooha.freight_terms_code),'FREIGHT_TERMS',660) freight_terms,
 xxen_util.meaning(nvl(oola.fob_point_code,ooha.fob_point_code),'FOB',222) fob,
-round(oola.ordered_quantity*cic.item_cost,2) cogs_amount,
+round(oola.ordered_quantity*&item_cost,2) cogs_amount,
 xxen_util.user_name(prha.created_by) ir_created_by,
 xxen_util.client_time(prha.creation_date) ir_creation_date,
 xxen_util.user_name(prha.last_updated_by) ir_last_updated_by,
@@ -134,13 +139,14 @@ gl_ledgers gl,
 mtl_system_items_vl msiv,
 mtl_item_status_vl misv,
 mtl_units_of_measure_vl muomv,
-cst_item_costs cic,
 hz_cust_accounts hca,
 hz_parties hp,
 hz_cust_site_uses_all hcsua,
 hz_cust_acct_sites_all hcasa,
 hz_party_sites hps,
 hz_locations hl,
+&delivery_tables
+&lot_tables
 mtl_system_items_vl msiv_to,
 (
 select
@@ -178,15 +184,15 @@ oola.inventory_item_id=msiv.inventory_item_id and
 oola.ship_from_org_id=msiv.organization_id and
 msiv.inventory_item_status_code=misv.inventory_item_status_code and
 msiv.primary_uom_code=muomv.uom_code and
-msiv.inventory_item_id=cic.inventory_item_id and
-msiv.organization_id=cic.organization_id and
-mp.primary_cost_method=cic.cost_type_id and
+(mp.process_enabled_flag='Y' or exists (select null from cst_item_costs cic where msiv.inventory_item_id=cic.inventory_item_id and msiv.organization_id=cic.organization_id and mp.primary_cost_method=cic.cost_type_id)) and
 oola.sold_to_org_id=hca.cust_account_id and
 hca.party_id=hp.party_id and
 oola.ship_to_org_id=hcsua.site_use_id and
 hcsua.cust_acct_site_id=hcasa.cust_acct_site_id and
 hcasa.party_site_id=hps.party_site_id and
 hps.location_id=hl.location_id and
+&delivery_joins
+&lot_joins
 prla.item_id=msiv_to.inventory_item_id(+) and
 prla.destination_organization_id=msiv_to.organization_id(+) and
 prla.requisition_line_id=ms.req_line_id(+)

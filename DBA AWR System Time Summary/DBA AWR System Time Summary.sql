@@ -30,7 +30,7 @@ select distinct
 &pivot_time2
 x.instance_number,
 x.stat_name,
-greatest(0, max(x.value) over (partition by x.stat_name, x.dbid, x.instance_number &pivot_partition2)-
+greatest(0, max(x.value) over (partition by x.stat_name, x.dbid, x.instance_number &pivot_partition2)
 &delta_prev_value) delta,
 sum(x.time_interval) over (partition by x.stat_name, x.dbid, x.instance_number &time_partition_by) time_interval
 from

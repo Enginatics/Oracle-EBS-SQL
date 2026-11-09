@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-09
 title: 'DBA SGA+PGA Memory Configuration | Oracle EBS SQL Report'
 description: 'Current SGA and PGA memory configuration in gigabytes. A frequent configuration problem is not making full use of the available hardware resources…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, SGA+PGA, Memory, Configuration, dba_hist_snapshot, dba_hist_sqlstat, dba_hist_sqltext'
@@ -34,7 +34,7 @@ Tom Kyte's recommendation:
 Set the PGA aggregate target and the SGA target to be a tad less than physical memory on the machine and you are done."
 <a href="https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11_QUESTION_ID:30011178429375" rel="nofollow" target="_blank">https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11_QUESTION_ID:30011178429375</a>
 
-Database created or cloned is the date of the last clone: the controlfile creation date, which Rapid Clone and RMAN DUPLICATE reset, or the PDB creation date on a multitenant database if that is later.
+Database created or cloned is the date of the last clone: the latest of the controlfile creation date (reset by Rapid Clone and RMAN DUPLICATE), the last open with resetlogs (a clone restored from a backup or a storage snapshot keeps the source's creation date) and, on a multitenant database, the PDB creation date.
 
 The report also shows the status of system statistics.
 select * from sys.aux_stats$
@@ -45,11 +45,16 @@ exec dbms_stats.set_system_stats('IOSEEKTIM',1);
 exec dbms_stats.set_system_stats('IOTFRSPEED',85782);
 
 There is also an Exadata mode, considering the faster storage correctly and updating the MBRC too
-exec dbms_stats.gather_system_stats(‘EXADATA');
+exec dbms_stats.gather_system_stats('EXADATA');
 
 The following command checks if hugepages are configured and how many are in use:
 grep Huge /proc/meminfo
 <a href="https://access.redhat.com/solutions/320303" rel="nofollow" target="_blank">https://access.redhat.com/solutions/320303</a>
+
+The SGA and PGA of every other Oracle instance on the host (other databases, ASM, a second EBS environment) share its memory. To list them and the free memory:
+ps -eo user,args | grep -E '[o]ra_pmon_|[a]sm_pmon_'
+grep -v '^#' /etc/oratab
+free -g
 
 To configure hugepages, set the vm.nr_hugepages in the /etc/sysctl.conf file and hard and soft memlock in /etc/security/limits.conf for the oracle user.
 /etc/sysctl.conf

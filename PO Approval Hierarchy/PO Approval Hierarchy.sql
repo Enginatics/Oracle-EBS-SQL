@@ -10,7 +10,7 @@
 -- One row per employee, level, approver and approval group. Level 0 is the employee's own approval authority. A position held by several people shows one row per holder, a vacant position shows the position without an approver. Employees at the top of the hierarchy appear only as approvers.
 -- Approval Amount From is the highest document total limit below that level in the employee's chain, so each approver row shows the amount band it approves. Template By Position shows the approval chain per initiator position instead of per employee.
 -- Approval groups are those assigned to the approver's position (position hierarchy) or job (supervisor hierarchy) for the document type in Approval Assignments. Document Total Limit is the amount limit of the group's Document Total rule; account, item and location rules are listed by PO Approval Assignments with Show Approval Group Amounts.
--- Use the Approver parameter to list everyone a person approves for.
+-- Use the Approver parameter to list everyone a person approves for. HR Organization includes the organizations below it in the Organization Hierarchy, which defaults to the business group's primary reporting hierarchy; leave Organization Hierarchy blank to select the HR Organization alone.
 -- Excel Example Output: https://www.enginatics.com/example/po-approval-hierarchy/
 -- Library Link: https://www.enginatics.com/reports/po-approval-hierarchy/
 -- Run Report: https://demo.enginatics.com/

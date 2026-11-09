@@ -7,7 +7,7 @@
 -- Report Name: PO Receiving Transaction Upload
 -- Description: PO Receiving Transaction Upload
 -- ================================
--- Create receiving transactions (receipts) against approved standard purchase orders.
+-- Create receiving transactions (receipts) against approved standard purchase orders and blanket and scheduled releases.
 -- Upload Modes
 -- ============
 -- Create
@@ -25,7 +25,9 @@
 -- Fields
 -- ======
 -- - Organization Code: Required. The receiving inventory organization.
+-- - Operating Unit: Required. The operating unit of the purchase order, one the responsibility can access. Defaults to the operating unit of the receiving organization.
 -- - PO Number: Required. The purchase order number.
+-- - Release Num: Optional. The release number of a blanket or scheduled release. Leave it empty for a standard purchase order.
 -- - Line Num: Required. The PO line number.
 -- - Shipment Num: Required. The PO shipment number.
 -- - Item Revision: Optional. Item revision (defaults from PO line, override for revision-controlled items).
@@ -50,12 +52,14 @@ null modified_columns_,
 to_number(null) request_id_,
 to_char(null) row_id,
 mp.organization_code,
+(select hou.name from hr_operating_units hou where pha.org_id=hou.organization_id) operating_unit,
 aps.vendor_name supplier,
 assa.vendor_site_code supplier_site,
 pha.segment1 po_number,
+pra.release_num,
 pla.line_num,
 plla.shipment_num,
-msibk.concatenated_segments item,
+(select msibk.concatenated_segments from mtl_system_items_b_kfv msibk where pla.item_id=msibk.inventory_item_id and plla.ship_to_organization_id=msibk.organization_id) item,
 pla.item_revision,
 pla.item_description,
 plla.quantity quantity_ordered,
@@ -64,11 +68,11 @@ plla.quantity-nvl(plla.quantity_received,0) quantity_remaining,
 pla.unit_meas_lookup_code unit_of_measure,
 to_number(null) quantity,
 to_date(null) transaction_date,
-(select xxen_util.meaning(pda.destination_type_code,'DESTINATION TYPE',201) from po_distributions_all pda where pda.line_location_id=plla.line_location_id and rownum=1) destination_type,
-(select pda.destination_subinventory from po_distributions_all pda where pda.line_location_id=plla.line_location_id and rownum=1) subinventory,
+(select xxen_util.meaning(pda.destination_type_code,'DESTINATION TYPE',201) from po_distributions_all pda where plla.line_location_id=pda.line_location_id and rownum=1) destination_type,
+(select pda.destination_subinventory from po_distributions_all pda where plla.line_location_id=pda.line_location_id and rownum=1) subinventory,
 to_char(null) locator,
-(select hla.location_code from hr_locations_all hla where hla.location_id=(select pda.deliver_to_location_id from po_distributions_all pda where pda.line_location_id=plla.line_location_id and rownum=1)) deliver_to_location,
-(select ft.territory_short_name from fnd_territories_vl ft where ft.territory_code=plla.country_of_origin_code) country_of_origin,
+(select hla.location_code from hr_locations_all hla where hla.location_id=(select pda.deliver_to_location_id from po_distributions_all pda where plla.line_location_id=pda.line_location_id and rownum=1)) deliver_to_location,
+(select ft.territory_short_name from fnd_territories_vl ft where plla.country_of_origin_code=ft.territory_code) country_of_origin,
 cast(null as varchar2(30)) vendor_lot_num,
 cast(null as varchar2(240)) comments,
 to_number(null) upload_row
@@ -78,18 +82,17 @@ ap_suppliers aps,
 ap_supplier_sites_all assa,
 po_lines_all pla,
 po_line_locations_all plla,
-mtl_parameters mp,
-mtl_system_items_b_kfv msibk
+po_releases_all pra,
+mtl_parameters mp
 where
 pha.vendor_id=aps.vendor_id and
 pha.vendor_site_id=assa.vendor_site_id(+) and
 pha.po_header_id=pla.po_header_id and
 pla.po_line_id=plla.po_line_id and
+plla.po_release_id=pra.po_release_id(+) and
 plla.ship_to_organization_id=mp.organization_id and
-pla.item_id=msibk.inventory_item_id(+) and
-plla.ship_to_organization_id=msibk.organization_id(+) and
 plla.shipment_type in ('STANDARD','BLANKET','SCHEDULED') and
-nvl(plla.approved_flag,'N')='Y' and
+plla.approved_flag='Y' and
 nvl(plla.cancel_flag,'N')='N' and
 nvl(plla.closed_code,'OPEN') not in ('FINALLY CLOSED','CLOSED','CLOSED FOR RECEIVING') and
 plla.quantity-nvl(plla.quantity_received,0)>0 and

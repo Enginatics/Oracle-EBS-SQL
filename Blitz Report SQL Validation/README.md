@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-09
 title: 'Blitz Report SQL Validation | Oracle EBS SQL Report'
 description: 'Validates Blitz Reports for valid SQL syntax. This can be useful after mass migrating reports from other tools such as Discoverer, Excl4apps, splashBI or…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Blitz, Report, SQL, Validation, xxen_reports_v'

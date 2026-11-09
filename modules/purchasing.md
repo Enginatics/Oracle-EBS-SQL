@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-11-02
+last_modified_at: 2026-11-09
 title: 'Oracle EBS Purchasing Reports | 21 SQL reports'
 description: '21 free Oracle E-Business Suite Purchasing SQL reports for Excel: PO Approval Assignments, PO Approval Groups, PO Approval Hierarchy, PO Approval History…'
-keywords: 'Oracle EBS Purchasing reports, Oracle Purchasing SQL, Oracle E-Business Suite, Blitz Report, po_headers_all, hr_all_organization_units_vl, mtl_system_items_vl, xxen_report_org_access, rcv_transactions'
+keywords: 'Oracle EBS Purchasing reports, Oracle Purchasing SQL, Oracle E-Business Suite, Blitz Report, po_headers_all, hr_all_organization_units_vl, xxen_report_org_access, mtl_system_items_vl, rcv_transactions'
 permalink: /modules/purchasing/
 module: 'Purchasing'
 module_page: true
@@ -11,7 +11,7 @@ module_page: true
 
 # Oracle EBS Purchasing Reports
 
-21 ready-to-run SQL reports for **Oracle E-Business Suite Purchasing**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Purchasing tables in these reports are `po_headers_all`, `hr_all_organization_units_vl`, `mtl_system_items_vl`, `xxen_report_org_access`, `rcv_transactions`, `financials_system_params_all`.
+21 ready-to-run SQL reports for **Oracle E-Business Suite Purchasing**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Purchasing tables in these reports are `po_headers_all`, `hr_all_organization_units_vl`, `xxen_report_org_access`, `mtl_system_items_vl`, `rcv_transactions`, `financials_system_params_all`.
 
 > **Run any of these reports in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=module-purchasing) – your first 30 reports are free.
 
@@ -29,7 +29,7 @@ module_page: true
 | [PO Document Types](/PO%20Document%20Types/) | PO document types setup |
 | [PO Headers](/PO%20Headers/) | PO headers or releases with corresponding invoices and their payment status. Example: To show all POs or releases which have an invoice but no receiving TRX… |
 | [PO Headers and Lines](/PO%20Headers%20and%20Lines/) | PO headers, lines, receiving transactions and corresponding AP invoices When India Localization is installed, the following GST columns are also included: GST… |
-| [PO Internal Requisitions and Sales Orders](/PO%20Internal%20Requisitions%20and%20Sales%20Orders/) | Report to display internal sales orders and requisition numbers, with aging dates and other useful information. IR Delivered, IR In Receiving, IR In Transit… |
+| [PO Internal Requisitions and Sales Orders](/PO%20Internal%20Requisitions%20and%20Sales%20Orders/) | Report to display internal sales orders and requisition numbers, with aging dates and other useful information. For process manufacturing organizations the… |
 | [PO Internal Requisitions/Deliveries Discrepancy](/PO%20Internal%20Requisitions-Deliveries%20Discrepancy/) | Application: Purchasing Description: Internal Requisitions/Deliveries Discrepancy Report Source: Internal Requisitions/Deliveries Discrepancy Report (XML)… |
 | [PO Invoice Price Variance](/PO%20Invoice%20Price%20Variance/) | Imported Oracle standard Invoice Price Variance report Application: Purchasing Source: Invoice Price Variance Report Short Name: POXRCIPV |
 | [PO Printed Planning Schedule](/PO%20Printed%20Planning%20Schedule/) | Migration of the Oracle standard concurrent program Printed Planning Schedule (XML) (CHVPRSCHXML) from Supplier Scheduling. Shows, for each confirmed… |

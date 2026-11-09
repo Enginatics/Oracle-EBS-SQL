@@ -6,6 +6,7 @@
 /*************************************************************************/
 -- Report Name: INV Item Supply/Demand
 -- Description: Inventory Item Supply/Demand data as per the standard Inventory Item Supply/Demand form
+-- The run time depends on the number of items selected, as Oracle's supply/demand calculation runs once for each item and organization. Supply Demand Type only restricts the rows shown.
 -- Excel Example Output: https://www.enginatics.com/example/inv-item-supply-demand/
 -- Library Link: https://www.enginatics.com/reports/inv-item-supply-demand/
 -- Run Report: https://demo.enginatics.com/
@@ -22,12 +23,17 @@ sd.requirement_date,
 sd.supply_demand_type,
 sd.identifier,
 sd.quantity,
-(sum(sd.qty_) over (partition by sd.item, sd.organization_code order by sd.seq)) +  sd.avail_qty_ available_quantity,
+sd.available_quantity,
 sd.onhand_qty_ current_onhand,
 sd.avail_qty_ current_available,
 sd.reservable_onhand_qty_ current_reservable_onhand,
 sd.reservable_avail_qty_ current_reservable_available,
 sd.reserved_qty_ current_reserved
+from
+(
+select
+sd1.*,
+sum(sd1.qty_) over (partition by sd1.item, sd1.organization_code order by sd1.seq)+sd1.avail_qty_ available_quantity
 from
 ( select
    rownum seq,
@@ -131,4 +137,7 @@ from
      decode(sign(msdt.quantity),-1,-1*msdt.on_hand_quantity,msdt.on_hand_quantity),
      identifier
    ) sd2
+) sd1
 ) sd
+where
+2=2

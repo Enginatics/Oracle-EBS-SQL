@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
-title: 'Oracle EBS Subledger Accounting Reports | 6 SQL reports'
-description: '6 free Oracle E-Business Suite Subledger Accounting SQL reports for Excel: XLA Distribution Links Summary, XLA Entity ID Mappings, XLA Entity Types and…'
-keywords: 'Oracle EBS Subledger Accounting reports, Oracle Subledger Accounting SQL, Oracle E-Business Suite, Blitz Report, fnd_application_vl, gl_ledgers, xla_ae_headers, xla_transaction_entities, xla_ae_lines'
+last_modified_at: 2026-11-09
+title: 'Oracle EBS Subledger Accounting Reports | 7 SQL reports'
+description: '7 free Oracle E-Business Suite Subledger Accounting SQL reports for Excel: XLA Accounting Errors, XLA Distribution Links Summary, XLA Entity ID Mappings…'
+keywords: 'Oracle EBS Subledger Accounting reports, Oracle Subledger Accounting SQL, Oracle E-Business Suite, Blitz Report, fnd_application_vl, xla_transaction_entities, gl_ledgers, xla_event_types_vl, xla_ae_headers'
 permalink: /modules/subledger-accounting/
 module: 'Subledger Accounting'
 module_page: true
@@ -11,7 +11,7 @@ module_page: true
 
 # Oracle EBS Subledger Accounting Reports
 
-6 ready-to-run SQL reports for **Oracle E-Business Suite Subledger Accounting**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Subledger Accounting tables in these reports are `fnd_application_vl`, `gl_ledgers`, `xla_ae_headers`, `xla_transaction_entities`, `xla_ae_lines`, `xla_distribution_links`.
+7 ready-to-run SQL reports for **Oracle E-Business Suite Subledger Accounting**, maintained by Enginatics and used in production at Oracle EBS customers worldwide. Each report page lists its parameters, the Oracle EBS tables it reads and an Excel example output. The most frequently used Subledger Accounting tables in these reports are `fnd_application_vl`, `xla_transaction_entities`, `gl_ledgers`, `xla_event_types_vl`, `xla_ae_headers`, `xla_accounting_errors`.
 
 > **Run any of these reports in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=module-subledger-accounting) – your first 30 reports are free.
 
@@ -19,6 +19,7 @@ module_page: true
 
 | Report | Description |
 |---|---|
+| [XLA Accounting Errors](/XLA%20Accounting%20Errors/) | Errors and warnings of the subledger accounting program (Create Accounting) for each ledger, application, accounting event and transaction, as the Create… |
 | [XLA Distribution Links Summary](/XLA%20Distribution%20Links%20Summary/) | Summary of subledger distribution links for developers to understand which sourceids are populated for which subledger table sources. The link to subledger… |
 | [XLA Entity ID Mappings](/XLA%20Entity%20ID%20Mappings/) | Shows the column link between table xlatransactionentities and subledger source tables such as and AP invoiceid or AR customertrxid, used when writing queries… |
 | [XLA Entity Types and Event Class Attributes](/XLA%20Entity%20Types%20and%20Event%20Class%20Attributes/) | Subledger event types and their attributes, for example reporting view |

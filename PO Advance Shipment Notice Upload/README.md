@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-09
 title: 'PO Advance Shipment Notice Upload | Oracle EBS SQL Report'
 description: 'Creates advance shipment notices (ASN) and advance shipment and billing notices (ASBN) against approved purchase order shipments, as a supplier does in…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, Advance, Shipment, Notice, ap_terms_vl, fnd_territories_vl, mtl_parameters'
@@ -16,7 +16,7 @@ report_web_name: po-advance-shipment-notice-upload
 ## Overview
 Creates advance shipment notices (ASN) and advance shipment and billing notices (ASBN) against approved purchase order shipments, as a supplier does in iSupplier Portal or by EDI, and cancels them.
 
-Each row is one shipment line. Rows with the same Ship-To Organization, supplier and Shipment Number form one shipment, whose header values are taken from its first row. The supplier and supplier site are those of the purchase order.
+Each row is one shipment line. Rows with the same Ship-To Organization, supplier and Shipment Number form one shipment, whose header values are taken from its first row. The supplier and supplier site are those of the purchase order, which must belong to an operating unit the responsibility can access.
 
 The rows are loaded into the receiving open interface and processed by the Receiving Transaction Processor; its errors are shown in the Message column.
 

@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-09
 title: 'AR Aging Buckets and Interest Tiers Setup | Oracle EBS SQL Report'
 description: 'AR Aging Buckets and Interest Tiers Setup – Oracle EBS Receivables SQL report: free SQL, parameters and tables used.'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Receivables, Enginatics, Aging, Buckets, Interest, Tiers, ar_aging_bucket_lines, ar_aging_buckets'
@@ -31,7 +31,7 @@ Bucket Type, Bucket Name, Bucket Status
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup)
 
 ## Related Reports
-[INV Aging](/INV%20Aging/ "INV Aging Oracle EBS SQL Report")
+[OZF Claims and Deductions](/OZF%20Claims%20and%20Deductions/ "OZF Claims and Deductions Oracle EBS SQL Report"), [INV Aging](/INV%20Aging/ "INV Aging Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/AR%20Aging%20Buckets%20and%20Interest%20Tiers%20Setup/AR%20Aging%20Buckets%20and%20Interest%20Tiers%20Setup.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=ar-aging-buckets-and-interest-tiers-setup) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

@@ -86,6 +86,7 @@ plla.po_line_id,
 plla.line_location_id,
 plla.shipment_num,
 plla.quantity ship_quantity,
+plla.quantity_received,
 plla.price_override break_price,
 plla.unit_meas_lookup_code break_unit_of_measure,
 plla.price_discount discount,
@@ -320,6 +321,7 @@ pha.po_header_id=pl.po_header_id(+) and
 pl.po_line_id=pll.po_line_id(+) and
 pll.line_location_id=pda.line_location_id(+) and
 (pll.price_break_end_date is null or pll.price_break_end_date >= trunc(sysdate) or :p_active_price_breaks_only is null) and
+(nvl(pll.quantity_received,0)=0 or :p_unreceived_shipments_only is null) and
 pda.code_combination_id=gcck.code_combination_id(+) and
 nvl(pha.cancel_flag,'N')='N' and
 nvl(pha.closed_code,'OPEN')='OPEN' and

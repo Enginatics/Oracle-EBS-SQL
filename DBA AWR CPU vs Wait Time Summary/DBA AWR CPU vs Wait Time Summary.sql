@@ -62,5 +62,5 @@ x.total_seconds,
 rollup(x.stat_name)
 ) y
 order by
-instance_number,
+&instance_number
 seconds desc

@@ -6,6 +6,8 @@
 /*************************************************************************/
 -- Report Name: CAC Intransit Value (Real-Time)
 -- Description: Report to show intransit values across all ledgers for current onhand balances and current costing method costs. This is a "real-time" report, showing the quantities and values at the time you run this report. (Used the cstintransitvalueview to simplify the design.)
+-- A shipment is listed when the responsibility can access its owning organization, or its receiving organization when To Organization Code is entered.
+-- Category Set and Category restrict the shipments by the item's category in the owning organization. Category Set 1 to 3 only add category columns.
 -- / +=============================================================================+
 -- -- | Copyright 2009-20 Douglas Volz Consulting, Inc. |
 -- -- | All rights reserved. |
@@ -17,17 +19,6 @@
 -- -- | Original Author: Douglas Volz (doug@volzconsulting.com)
 -- -- |
 -- -- | Program Name: xxxintransitvaluereport.sql
--- -- |
--- -- | Parameters:
--- -- | porgcode -- Specific inventory organization you wish to report (optional)
--- -- | poperatingunit -- Operating Unit you wish to report, leave blank for all
--- -- | operating units (optional)
--- -- | pledger -- general ledger you wish to report, leave blank for all
--- -- | ledgers (optional)
--- -- | pcategoryset1 -- The first item category set to report, typically the
--- -- | Cost or Product Line Category Set
--- -- | pcategoryset2 -- The second item category set to report, typically the
--- -- | Inventory Category Set
 -- -- |
 -- -- | Description:
 -- -- | Report to show intransit values across all ledgers, for current onhand
@@ -55,6 +46,12 @@
 -- -- | the FOB Point from cstintransitvalueview.
 -- -- | 1.12 27 Nov 2024 Eric Clegg. Added Minimum Absolute Intransit Quantity parameter
 -- -- | 1.13 23 Oct 2026 Andy Haack Rebuilt to the Blitz Report SQL standards.
+-- -- | 1.14 05 Nov 2026 Eric Clegg Added To Organization Code, Planner, To Org
+-- -- | Planner, Category Set, Category, From Org
+-- -- | Planner and Expected Delivery Date for demand
+-- -- | planners, and shipments into an accessible
+-- -- | receiving org when To Organization Code is
+-- -- | entered.
 -- -- +=============================================================================+/
 -- Excel Example Output: https://www.enginatics.com/example/cac-intransit-value-real-time/
 -- Library Link: https://www.enginatics.com/reports/cac-intransit-value-real-time/
@@ -73,6 +70,8 @@ msiv.concatenated_segments item_number,
 msiv.description item_description,
 xxen_util.meaning(msiv.item_type,'ITEM_TYPE',3) item_type,
 misv.inventory_item_status_code_tl item_status,
+msib_from.planner_code from_org_planner,
+msib_to.planner_code to_org_planner,
 &category_columns
 x.shipment_num shipment_number,
 x.receipt_num receipt_number,
@@ -80,6 +79,7 @@ x.need_by_date,
 x.shipped_date,
 x.aging_date,
 x.arrival_date,
+x.expected_delivery_date,
 msiv.primary_uom_code uom_code,
 sum(x.to_org_primary_quantity) intransit_quantity,
 gl.currency_code,
@@ -106,7 +106,8 @@ when sysdate-rsh.shipped_date<151 then '150 days'
 when sysdate-rsh.shipped_date<181 then '180 days'
 else 'Over 180 days'
 end aging_date,
-trunc(ms.receipt_date) arrival_date
+trunc(ms.receipt_date) arrival_date,
+trunc(ms.expected_delivery_date) expected_delivery_date
 from
 mtl_supply ms,
 rcv_shipment_headers rsh
@@ -125,10 +126,15 @@ mtl_interorg_parameters mip,
 gl_code_combinations gcc,
 cst_item_costs cic,
 mtl_system_items_vl msiv,
-mtl_item_status_vl misv
+mtl_item_status_vl misv,
+mtl_system_items_b msib_from,
+mtl_system_items_b msib_to
 where
 1=1 and
-mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
+(
+mp.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') or
+'&to_org_access' is not null and x.to_organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV')
+) and
 x.intransit_owning_org_id=mp.organization_id and
 mp.organization_id=hoi.organization_id and
 hoi.org_information_context='Accounting Information' and
@@ -146,7 +152,11 @@ x.item_id=cic.inventory_item_id and
 mp.primary_cost_method=cic.cost_type_id and
 cic.organization_id=msiv.organization_id and
 cic.inventory_item_id=msiv.inventory_item_id and
-msiv.inventory_item_status_code=misv.inventory_item_status_code
+msiv.inventory_item_status_code=misv.inventory_item_status_code and
+x.item_id=msib_from.inventory_item_id and
+x.from_organization_id=msib_from.organization_id and
+x.item_id=msib_to.inventory_item_id and
+x.to_organization_id=msib_to.organization_id
 group by
 nvl(gl.short_name,gl.name),
 haouv_ou.name,
@@ -160,12 +170,15 @@ msiv.concatenated_segments,
 msiv.description,
 msiv.item_type,
 misv.inventory_item_status_code_tl,
+msib_from.planner_code,
+msib_to.planner_code,
 x.shipment_num,
 x.receipt_num,
 x.need_by_date,
 x.shipped_date,
 x.aging_date,
 x.arrival_date,
+x.expected_delivery_date,
 msiv.primary_uom_code,
 gl.currency_code,
 msiv.inventory_item_id,

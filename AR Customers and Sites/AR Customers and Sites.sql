@@ -7,6 +7,7 @@
 -- Report Name: AR Customers and Sites
 -- Description: Master data report of customer master data including address, sites, site uses, payment terms, Salesperson, price list and other profile information.
 -- Payment terms are reported from each of their own sources: Account Profile Payment Term and Site Profile Payment Term from the customer profile at account and site level, and Site Use Payment Term from the site use Order Management terms.
+-- Customer profiles are reported at Customer level, and at Site Use level for Bill To, Statements and Dunning site uses only. At Customer level, an account profile and a party profile are reported on separate rows. At Site Use level, the profile amounts come from the site use profile, else the account profile, else the party profile, which is also reported in the account profile columns when the account has no account profile. Profile Level shows the level of the profile amounts.
 -- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No.
 -- Excel Example Output: https://www.enginatics.com/example/ar-customers-and-sites/
 -- Library Link: https://www.enginatics.com/reports/ar-customers-and-sites/
@@ -300,6 +301,12 @@ x.credit_check,
 x.site_credit_check,
 x.credit_hold,
 x.site_credit_hold,
+x.credit_rating,
+x.site_credit_rating,
+x.last_credit_review_date,
+x.site_last_credit_review_date,
+x.next_credit_review_date,
+x.site_next_credit_review_date,
 x.account_profile_payment_term,
 x.site_profile_payment_term,
 x.site_use_payment_term,
@@ -609,7 +616,11 @@ case when hcsua.site_use_code = 'BILL_TO' and hcsua.gl_id_unearned is not null t
 -- dff
 &dff_columns
 -- Profile Class
-xxen_util.meaning(nvl2(hcp2.cust_account_profile_id,'SITE',nvl2(hcp1.cust_account_profile_id,'ACCOUNT',null)),'HZ_CONS_BILL_LEVEL',222) profile_level,
+case
+when hcp2.cust_account_profile_id is not null then xxen_util.meaning('SITE','HZ_CONS_BILL_LEVEL',222)
+when hcp1.cust_account_id=-1 then xxen_util.meaning('PARTY','REQUESTED_BY',222)
+when hcp1.cust_account_profile_id is not null then xxen_util.meaning('ACCOUNT','HZ_CONS_BILL_LEVEL',222)
+end profile_level,
 hcpc1.name profile_class,
 hcpc2.name site_profile_class,
 xxen_util.meaning(hcpc1.credit_classification,'AR_CMGT_CREDIT_CLASSIFICATION',222) credit_classification,
@@ -618,6 +629,12 @@ xxen_util.meaning(hcp1.credit_checking,'YES_NO',0) credit_check,
 xxen_util.meaning(hcp2.credit_checking,'YES_NO',0) site_credit_check,
 xxen_util.meaning(hcp1.credit_hold,'YES_NO',0) credit_hold,
 xxen_util.meaning(hcp2.credit_hold,'YES_NO',0) site_credit_hold,
+xxen_util.meaning(hcp1.credit_rating,'CREDIT_RATING',222) credit_rating,
+xxen_util.meaning(hcp2.credit_rating,'CREDIT_RATING',222) site_credit_rating,
+hcp1.last_credit_review_date,
+hcp2.last_credit_review_date site_last_credit_review_date,
+hcp1.next_credit_review_date,
+hcp2.next_credit_review_date site_next_credit_review_date,
 (select rtv.name from ra_terms_vl rtv where hcp1.standard_terms=rtv.term_id) account_profile_payment_term,
 (select rtv.name from ra_terms_vl rtv where hcp2.standard_terms=rtv.term_id) site_profile_payment_term,
 (select rtv.name from ra_terms_vl rtv where hcsua.payment_term_id=rtv.term_id) site_use_payment_term,
@@ -658,6 +675,7 @@ xxen_util.user_name(hcp2.last_updated_by) site_profile_last_updated_by,
 xxen_util.client_time(hcp2.last_update_date) site_profile_last_update_date,
 nvl(hcsua.org_id,hcasa.org_id) org_id,
 hcp1.cust_account_profile_id,
+hcp1.cust_account_id profile_cust_account_id,
 hcp2.cust_account_profile_id site_cust_account_profile_id,
 nvl(hcp2.cust_account_profile_id,hcp1.cust_account_profile_id) prof_amt_profile_id,
 hp.party_id,
@@ -688,7 +706,26 @@ hz_party_sites hps,
 hz_locations hl,
 fnd_territories_tl ftt,
 (select hcsua.* from hz_cust_site_uses_all hcsua where :detail_level='Site Use') hcsua,
-(select hcp.* from hz_customer_profiles hcp where hcp.site_use_id is null) hcp1,
+(
+select
+hcp.cust_account_id join_cust_account_id,
+hcp.*
+from
+hz_customer_profiles hcp
+where
+hcp.site_use_id is null
+union all
+select
+hca0.cust_account_id join_cust_account_id,
+hcp.*
+from
+hz_cust_accounts hca0,
+hz_customer_profiles hcp
+where
+hca0.party_id=hcp.party_id and
+hcp.cust_account_id=-1 and
+(:detail_level='Customer' or hca0.cust_account_id not in (select hcp0.cust_account_id from hz_customer_profiles hcp0 where hcp0.site_use_id is null))
+) hcp1,
 (select hcp.* from hz_customer_profiles hcp where hcp.site_use_id is not null and :detail_level='Site Use') hcp2,
 hz_cust_profile_classes hcpc1,
 hz_cust_profile_classes hcpc2,
@@ -736,9 +773,8 @@ hps.location_id=hl.location_id(+) and
 hl.country=ftt.territory_code(+) and
 ftt.language(+)=userenv('lang') and
 hcasa.cust_acct_site_id=hcsua.cust_acct_site_id(+) and
-hca.cust_account_id=hcp1.cust_account_id(+) and
-nvl(hcp1.site_use_id(+),0)=0 and
-hcsua.site_use_id=hcp2.site_use_id(+) and
+case when :detail_level='Customer' or hcsua.site_use_code in ('BILL_TO','STMTS','DUN') then hca.cust_account_id end=hcp1.join_cust_account_id(+) and
+case when hcsua.site_use_code in ('BILL_TO','STMTS','DUN') then hcsua.site_use_id end=hcp2.site_use_id(+) and
 hcp1.profile_class_id=hcpc1.profile_class_id(+) and
 hcp2.profile_class_id=hcpc2.profile_class_id(+) and
 hca.warehouse_id=haouv1.organization_id(+) and
@@ -801,6 +837,8 @@ x.operating_unit,
 x.country,
 x.address,
 x.site_use,
+decode(x.profile_cust_account_id,-1,2,1),
+hcpa.currency_code,
 nvl2(zr.party_site_id,2,1),
 nvl2(rcrm.site_use_id,2,1),
 nvl2(ba.site_use_id,2,1),
@@ -814,5 +852,4 @@ ida.priority,
 nvl2(ctct.cust_acct_site_id,2,1),
 ctct.contact_last_name,
 ctct.contact_first_name,
-ctct.contact_prefix,
-nvl2(zr.party_site_id,2,1)
+ctct.contact_prefix

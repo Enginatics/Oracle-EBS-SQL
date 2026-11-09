@@ -69,7 +69,7 @@ data_template_name path '@name',
 data_template_description path '@description',
 package_name path '@defaultPackage'
 )(+) x,
-xmltable('/dataTemplate["&enable_sql"="Y"]/dataQuery/*[fn:lower-case(name())="sqlstatement"]' passing xl.xml columns
+xmltable('/dataTemplate["&show_sql"="Y"]/dataQuery/*[fn:lower-case(name())="sqlstatement"]' passing xl.xml columns
 sql_number for ordinality,
 sql_name path '@name',
 sql_text clob path 'text()[1]'

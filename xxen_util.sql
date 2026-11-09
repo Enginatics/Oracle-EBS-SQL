@@ -2674,6 +2674,9 @@ function concatenated_segments(p_code_combination_id in number) return varchar2 
 l_key varchar2(40):=to_char(p_code_combination_id);
 l_concatenated_segments varchar2(800);
 begin
+  if p_code_combination_id is null then
+    return null;
+  end if;
   if g_concatenated_segments.exists(l_key) then
     return g_concatenated_segments(l_key);
   end if;
@@ -6466,6 +6469,11 @@ begin
   w(p_text||chr(10));
 end;
 
+function column_ref(p_column_name in varchar2) return varchar2 is
+begin
+  return case when regexp_like(p_column_name,'^[A-Z][A-Z0-9_$#]*$') then p_column_name else '"'||p_column_name||'"' end;
+end;
+
 function index_ddl(p_index_owner in varchar2, p_index_name in varchar2, p_table_owner in varchar2, p_table_name in varchar2, p_uniqueness in varchar2, p_tablespace in varchar2) return varchar2 is
 l_idx varchar2(4000);
 l_isep varchar2(2);
@@ -6475,7 +6483,7 @@ begin
   select dic.column_name from dba_ind_columns dic
   where dic.index_owner=p_index_owner and dic.index_name=p_index_name order by dic.column_position
   ) loop
-    l_idx:=l_idx||l_isep||cc.column_name;
+    l_idx:=l_idx||l_isep||column_ref(cc.column_name);
     l_isep:=', ';
   end loop;
   l_idx:=l_idx||')';
@@ -6559,7 +6567,7 @@ elsif p_object_type='TABLE' then
     order by
     dtc.column_id
     ) loop
-      l_line:='  '||case when cc.rn>1 then ', ' end||cc.column_name||' '||
+      l_line:='  '||case when cc.rn>1 then ', ' end||column_ref(cc.column_name)||' '||
         case
           when cc.data_type='NUMBER' and cc.data_precision is not null then 'number('||cc.data_precision||case when cc.data_scale>0 then ','||cc.data_scale end||')'
           when cc.data_type='NUMBER' then 'number'

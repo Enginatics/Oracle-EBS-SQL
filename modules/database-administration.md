@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-09
 title: 'Oracle EBS Database Administration Reports | 73 SQL reports'
 description: '73 free Oracle E-Business Suite Database Administration SQL reports for Excel: DBA ASM Disk Groups, DBA AWR Active Session History, DBA AWR Blocking…'
 keywords: 'Oracle EBS Database Administration reports, Oracle Database Administration SQL, Oracle E-Business Suite, Blitz Report, dba_hist_snapshot, dba_objects, v$parameter, dual, gv$sqlarea'
@@ -48,8 +48,8 @@ module_page: true
 | [DBA Data Files](/DBA%20Data%20Files/) | Data and temp files per tablespace with their size, free space, autoextend settings and the space still available up to the maximum size. All sizes are shown… |
 | [DBA Database Links](/DBA%20Database%20Links/) | Database links with their owner, remote user and connect string. |
 | [DBA Database Parameter Validation](/DBA%20Database%20Parameter%20Validation/) | Replicates the database initialization-parameter validation performed by Oracle's EBS Database Performance and Statistics Analyzer (My Oracle Support Doc… |
-| [DBA Dependencies (used by)](/DBA%20Dependencies%20%28used%20by%29/) | Hierarchical report showing all database objects using the specified object, e.g. a certain table and the report shows all the views or packages that are… |
-| [DBA Dependencies (uses)](/DBA%20Dependencies%20%28uses%29/) | Hierarchical report showing all dependent database objects that a specified object, e.g. a view or package name uses or depends on (top to bottom) |
+| [DBA Dependencies (used by)](/DBA%20Dependencies%20%28used%20by%29/) | Hierarchical report showing all database objects that use the specified objects, e.g. all views or packages referencing or depending on a table (bottom to… |
+| [DBA Dependencies (uses)](/DBA%20Dependencies%20%28uses%29/) | Hierarchical report showing all database objects that the specified objects, e.g. views or packages, use or depend on (top to bottom). Select several object… |
 | [DBA Directories](/DBA%20Directories/) | Database directory objects with their operating system path and the users granted read, write or execute access to them. |
 | [DBA Editioned Object Summary](/DBA%20Editioned%20Object%20Summary/) | Summary of editioned objects per edition from ADZDSHOWOBJS.sql There is a good blog: https://www.pythian.com/blog/technical-track/adop-edition-cleanup |
 | [DBA Editions](/DBA%20Editions/) | Database editions, their type and status |
@@ -61,7 +61,7 @@ module_page: true
 | [DBA Log Switches](/DBA%20Log%20Switches/) |  |
 | [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/) | Validates the Oracle REST Data Services (ORDS) configuration for Blitz Report webservices. Checks: ORDS schema enablement and URL mapping, REST module status… |
 | [DBA Object Access Privileges](/DBA%20Object%20Access%20Privileges/) | Database object privileges for a specific user, including privileges inherited through role grants. Useful for DB access security audits to understand exactly… |
-| [DBA Objects](/DBA%20Objects/) | All database objects |
+| [DBA Objects](/DBA%20Objects/) | All database objects. Show DDL returns each object's DDL or source code. DDL longer than 32,000 characters is split over several rows, numbered in column DDL… |
 | [DBA Parameters](/DBA%20Parameters/) | To validate recommended settings validate following notes: Database Initialization Parameters for Oracle E-Business Suite Release 12 (Doc ID 396009.1) EBS… |
 | [DBA Profiler Data](/DBA%20Profiler%20Data/) | Excel version of Oracle's dbmsprofiler PLSQL performance analysis, see Oracle note: Using DBMSPROFILER (KB85737)… |
 | [DBA Redo Log Files](/DBA%20Redo%20Log%20Files/) |  |

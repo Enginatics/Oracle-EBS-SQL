@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-11-02
+last_modified_at: 2026-11-09
 title: 'DBA Objects | Oracle EBS SQL Report'
-description: 'All database objects – Oracle EBS Database Administration SQL report: free SQL, parameters and tables used.'
+description: 'All database objects. Show DDL returns each object''s DDL or source code. DDL longer than 32,000 characters is split over several rows, numbered in column…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, Objects, dba_objects'
 permalink: /DBA%20Objects/
 report_name: 'DBA Objects'
@@ -17,7 +17,9 @@ module_url: /modules/database-administration/
 **Oracle EBS module:** [Database Administration](/modules/database-administration/ "Oracle EBS Database Administration reports") · [all Database Administration reports](/modules/database-administration/)  
 
 ## Overview
-All database objects
+All database objects.
+
+Show DDL returns each object's DDL or source code. DDL longer than 32,000 characters is split over several rows, numbered in column DDL Part, as an Excel cell holds at most 32,767 characters.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-objects) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 

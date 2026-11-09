@@ -8,7 +8,7 @@
 -- Description: Master data report that lists item master attributes such as item type, UOM, status, serial control, account numbers and various other attributes.
 -- Item Cost is the item's cost in the cost type of the organization's primary cost method. Item Cost and List Price are in the organization's ledger Currency.
 -- Sourcing Supplier is the supplier and site that Oracle's sourcing routine selects from the Sourcing Assignment Set: the most specific assignment (item and organization, item, category, organization, global) first, then the highest allocation percent and the lowest rank, skipping suppliers the approved supplier list does not allow for sourcing. The site is the one the sourcing rule names, which can belong to a different operating unit from the organization's.
--- An item with several manufacturer part numbers is listed once per part number.
+-- Show Manufacturer Part Numbers lists an item once per manufacturer part number, and Show Item Cross References once per active cross reference that applies to its organization, i.e. one defined for all organizations or for that organization. With both, the item is listed once per combination.
 -- Excel Example Output: https://www.enginatics.com/example/inv-items/
 -- Library Link: https://www.enginatics.com/reports/inv-items/
 -- Run Report: https://demo.enginatics.com/
@@ -386,8 +386,8 @@ msiv.cas_number cas_number,
 --
 &dff_columns
 --
-mm.manufacturer_name manufaturer,
-mmpn.mfg_part_num manufacturer_part_number,
+&mfg_part_columns
+&xref_columns
 --
 xxen_util.user_name(msiv.created_by) created_by,
 xxen_util.client_time(msiv.creation_date) creation_date,
@@ -398,31 +398,17 @@ from
 hr_all_organization_units_vl haouv,
 mtl_parameters mp,
 mtl_system_items_vl msiv,
+&mfg_part_table
+&xref_table
 cs_ctr_associations cca,
-cs_counter_groups ccg,
-(
-select
-mp.organization_id,
-mmpn.inventory_item_id,
-mmpn.manufacturer_id,
-mmpn.mfg_part_num
-from
-mtl_parameters mp,
-mtl_mfg_part_numbers mmpn
-where
-mp.master_organization_id=mmpn.organization_id
-) mmpn,
-mtl_manufacturers mm
+cs_counter_groups ccg
 where
 1=1 and
 msiv.organization_id in (select xroa.id from xxen_report_org_access xroa where xroa.access_type='INV') and
 msiv.organization_id=haouv.organization_id and
 msiv.organization_id=mp.organization_id and
 msiv.inventory_item_id=cca.source_object_id(+) and
-cca.counter_group_id=ccg.counter_group_id(+) and
-msiv.inventory_item_id=mmpn.inventory_item_id(+) and
-msiv.organization_id=mmpn.organization_id(+) and
-mmpn.manufacturer_id=mm.manufacturer_id(+)
+cca.counter_group_id=ccg.counter_group_id(+)
 order by
 mp.organization_code,
 msiv.concatenated_segments

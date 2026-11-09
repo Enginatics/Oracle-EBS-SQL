@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-16
+last_modified_at: 2026-11-09
 title: 'DBA AWR CPU vs Wait Time Summary | Oracle EBS SQL Report'
 description: 'Summary of database CPU vs. wait times and average active sessions for a specified time frame To see data in this report based on dbahistsystimemodel, set…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, DBA, AWR, CPU, Wait, dba_hist_snapshot, dba_hist_sys_time_model'

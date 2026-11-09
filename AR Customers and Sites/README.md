@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-11-02
+last_modified_at: 2026-11-09
 title: 'AR Customers and Sites | Oracle EBS SQL Report'
 description: 'Master data report of customer master data including address, sites, site uses, payment terms, Salesperson, price list and other profile information…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Receivables, Enginatics, R12 only, Customers, Sites, fnd_territories_vl, hz_role_responsibility, hz_cust_account_roles'
@@ -20,6 +20,8 @@ module_url: /modules/receivables/
 Master data report of customer master data including address, sites, site uses, payment terms, Salesperson, price list and other profile information.
 
 Payment terms are reported from each of their own sources: Account Profile Payment Term and Site Profile Payment Term from the customer profile at account and site level, and Site Use Payment Term from the site use Order Management terms.
+
+Customer profiles are reported at Customer level, and at Site Use level for Bill To, Statements and Dunning site uses only. At Customer level, an account profile and a party profile are reported on separate rows. At Site Use level, the profile amounts come from the site use profile, else the account profile, else the party profile, which is also reported in the account profile columns when the account has no account profile. Profile Level shows the level of the profile amounts.
 
 When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No.
 

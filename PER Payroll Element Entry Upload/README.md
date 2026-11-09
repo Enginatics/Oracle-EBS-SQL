@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-11-02
+last_modified_at: 2026-11-09
 title: 'PER Payroll Element Entry Upload | Oracle EBS SQL Report'
 description: 'PER Payroll Element Entry Upload ================================ Use this upload to create, update and delete payroll element entries of employees''…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, PER, Payroll, Element, Entry, pay_input_values_f_vl, pay_element_entry_values_f, per_all_people_f'
@@ -36,7 +36,7 @@ Upload Mode, Business Group, Employee Name
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload)
 
 ## Related Reports
-[PAY Element Entries](/PAY%20Element%20Entries/ "PAY Element Entries Oracle EBS SQL Report"), [PAY Batch Element Entry](/PAY%20Batch%20Element%20Entry/ "PAY Batch Element Entry Oracle EBS SQL Report"), [PAY Gross to Net Summary](/PAY%20Gross%20to%20Net%20Summary/ "PAY Gross to Net Summary Oracle EBS SQL Report"), [PAY Employee Payroll History](/PAY%20Employee%20Payroll%20History/ "PAY Employee Payroll History Oracle EBS SQL Report")
+[PAY Batch Element Entry](/PAY%20Batch%20Element%20Entry/ "PAY Batch Element Entry Oracle EBS SQL Report"), [PAY Element Entries](/PAY%20Element%20Entries/ "PAY Element Entries Oracle EBS SQL Report"), [PAY Gross to Net Summary](/PAY%20Gross%20to%20Net%20Summary/ "PAY Gross to Net Summary Oracle EBS SQL Report"), [PAY Employee Payroll History](/PAY%20Employee%20Payroll%20History/ "PAY Employee Payroll History Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/PER%20Payroll%20Element%20Entry%20Upload/PER%20Payroll%20Element%20Entry%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=per-payroll-element-entry-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
