@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-11-02
+last_modified_at: 2026-11-16
 title: 'AP Invoice Upload | Oracle EBS SQL Report'
 description: 'Creates Payables invoices through Payables Open Interface Import. Rows with the same Operating Unit, Supplier, Supplier Site and Invoice Number form one…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Invoice, dual, fnd_doc_sequence_categories, ap_invoices_all'
@@ -16,9 +16,11 @@ report_web_name: ap-invoice-upload
 ## Overview
 Creates Payables invoices through Payables Open Interface Import. Rows with the same Operating Unit, Supplier, Supplier Site and Invoice Number form one invoice, and an error on any of its rows keeps the whole invoice out of the import.
 
-To split a line across several distributions, enter it on several rows with the same Line Number and line details, each with its own Distribution Line Number and Distribution Account, and either a Distribution Percent on every row, adding up to 100, or a Distribution Amount on every row, adding up to the Line Amount. A rounding difference goes to the largest distribution, as with distribution sets. The distributions are created after the import and before invoice validation, as the Invoices window enters them.
+To split a line across several distributions, enter it on several rows with the same Line Number and line details, each with its own Distribution Line Number, and either a Distribution Percent on every row, adding up to 100, or a Distribution Amount on every row, adding up to the Line Amount. A rounding difference goes to the largest distribution, as with distribution sets. The distributions are created after the import and before invoice validation, as the Invoices window enters them.
 
-A line matched to a purchase order or receipt, using a Distribution Set or prorated cannot be split, and a project line only while profile PA: Allow Override of PA Distributions in AP/PO is Yes.
+Each row of a split line carries its own Distribution Account or its own project details. For a row with project details the Projects account generator derives the account, unless the row has a Distribution Account and profile PA: Allow Override of PA Distributions in AP/PO is Yes, as for a line that is not split. Project Quantity is the quantity of that distribution. The line keeps the project details only when all its rows share them.
+
+A line matched to a purchase order or receipt, using a Distribution Set or prorated cannot be split.
 
 The result shows one row per distribution, including the distributions Payables creates for a line from a Distribution Set or a purchase order.
 

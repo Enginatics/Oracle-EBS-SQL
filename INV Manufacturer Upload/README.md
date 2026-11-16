@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-11-09
+last_modified_at: 2026-11-16
 title: 'INV Manufacturer Upload | Oracle EBS SQL Report'
-description: 'INV Manufacturer Upload ====================== This upload can be used to create, update and delete Manufacturers.'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, INV, Manufacturer, mtl_mfg_part_numbers, mtl_manufacturers'
+description: 'INV Manufacturer Upload ====================== This upload can be used to create, update and delete Manufacturers and their Manufacturer Part Numbers. A…'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, INV, Manufacturer, mtl_mfg_part_numbers, mtl_manufacturers, mtl_parameters'
 permalink: /INV%20Manufacturer%20Upload/
 report_name: 'INV Manufacturer Upload'
 report_web_name: inv-manufacturer-upload
@@ -16,21 +16,27 @@ report_web_name: inv-manufacturer-upload
 ## Overview
 INV Manufacturer Upload
 ======================
-This upload can be used to create, update and delete Manufacturers.
+This upload can be used to create, update and delete Manufacturers and their Manufacturer Part Numbers.
+
+A row holds one manufacturer part number. The manufacturer columns repeat on each part number row of a manufacturer and are applied from the first of them. A row without Mfg Part Num and Item maintains the manufacturer only.
+
+Manufacturer part numbers belong to the item master organization. An existing one is updated, also when its Mfg Part Num or Item is changed, and removed with Delete Mfg Part.
+
+A manufacturer can only be deleted once it has no part numbers left.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-manufacturer-upload) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
-Upload Mode, Manufacturer, Manufacturer From, Manufacturer To
+Upload Mode, Manufacturer, Manufacturer From, Manufacturer To, Show Mfg Part Numbers
 
 ## Oracle EBS Tables Used
-[mtl_mfg_part_numbers](https://www.enginatics.com/library/?pg=1&find=mtl_mfg_part_numbers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-manufacturer-upload), [mtl_manufacturers](https://www.enginatics.com/library/?pg=1&find=mtl_manufacturers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-manufacturer-upload)
+[mtl_mfg_part_numbers](https://www.enginatics.com/library/?pg=1&find=mtl_mfg_part_numbers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-manufacturer-upload), [mtl_manufacturers](https://www.enginatics.com/library/?pg=1&find=mtl_manufacturers&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-manufacturer-upload), [mtl_parameters](https://www.enginatics.com/library/?pg=1&find=mtl_parameters&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-manufacturer-upload), [xxen_report_org_access](https://www.enginatics.com/library/?pg=1&find=xxen_report_org_access&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-manufacturer-upload), [mtl_system_items_vl](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_vl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-manufacturer-upload)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-manufacturer-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-manufacturer-upload)
 
 ## Related Reports
-[INV Item Upload 11i](/INV%20Item%20Upload%2011i/ "INV Item Upload 11i Oracle EBS SQL Report"), [INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [INV Item Templates](/INV%20Item%20Templates/ "INV Item Templates Oracle EBS SQL Report"), [EAM PM Schedule Upload 11i](/EAM%20PM%20Schedule%20Upload%2011i/ "EAM PM Schedule Upload 11i Oracle EBS SQL Report")
+[INV Item Upload](/INV%20Item%20Upload/ "INV Item Upload Oracle EBS SQL Report"), [INV Item Upload 11i](/INV%20Item%20Upload%2011i/ "INV Item Upload 11i Oracle EBS SQL Report"), [INV Items](/INV%20Items/ "INV Items Oracle EBS SQL Report"), [PO Approved Supplier List Upload](/PO%20Approved%20Supplier%20List%20Upload/ "PO Approved Supplier List Upload Oracle EBS SQL Report"), [PO Approved Supplier List](/PO%20Approved%20Supplier%20List/ "PO Approved Supplier List Oracle EBS SQL Report"), [OPM Batch Lot Genealogy](/OPM%20Batch%20Lot%20Genealogy/ "OPM Batch Lot Genealogy Oracle EBS SQL Report"), [ENG Engineering Change Orders](/ENG%20Engineering%20Change%20Orders/ "ENG Engineering Change Orders Oracle EBS SQL Report"), [INV Physical Inventory Locator Count Sheet](/INV%20Physical%20Inventory%20Locator%20Count%20Sheet/ "INV Physical Inventory Locator Count Sheet Oracle EBS SQL Report"), [INV Lot Upload](/INV%20Lot%20Upload/ "INV Lot Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/INV%20Manufacturer%20Upload/INV%20Manufacturer%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=inv-manufacturer-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

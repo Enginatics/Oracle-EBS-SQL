@@ -807,6 +807,18 @@ function flex_value_accessible(p_resp_appl_id in number, p_resp_id in number, p_
 function flex_ccid_accessible(p_resp_appl_id in number, p_resp_id in number, p_code_combination_id in number) return varchar2;
 
 /***********************************************************************************************/
+/*  returns 'Y' if Purchasing document security needs to be applied for a document type:       */
+/*  REQUISITION, PO (standard, planned, blanket and contract) or RELEASE                       */
+/***********************************************************************************************/
+function has_po_document_security(p_document_type in varchar2) return varchar2;
+
+/***********************************************************************************************/
+/*  Purchasing document security predicate for a report's document header alias, as the       */
+/*  Purchasing summary forms apply it (po_document_checks_pvt.po_security_check)               */
+/***********************************************************************************************/
+function po_document_security(p_document_type in varchar2, p_alias in varchar2) return varchar2;
+
+/***********************************************************************************************/
 /*  Escapes a text for XML: replaces ampersand, less than, greater than and double quote by entities and control characters by blanks, and cuts the result to 4000 bytes.  */
 /*  A value written as ="text" is unwrapped first.                                             */
 /***********************************************************************************************/
@@ -5288,6 +5300,46 @@ begin
   end if;
   return nullif(l_access,'N');
 end flex_ccid_accessible;
+
+
+function has_po_document_security(p_document_type in varchar2) return varchar2 is
+function has_po_document_security_(p_document_type in varchar2) return varchar2 result_cache is
+begin
+  for c in (select null from po_document_types_all_b pdtab where pdtab.document_type_code in (p_document_type,decode(p_document_type,'PO','PA')) and pdtab.security_level_code<>'PUBLIC' and rownum=1) loop
+    return 'Y';
+  end loop;
+  return null;
+end has_po_document_security_;
+begin
+  if fnd_profile.value('XXEN_REPORT_DISABLE_PO_DOCUMENT_SECURITY')='Y' then
+    return null;
+  else
+    return has_po_document_security_(p_document_type);
+  end if;
+end has_po_document_security;
+
+
+function po_document_security(p_document_type in varchar2, p_alias in varchar2) return varchar2 is
+l_employee varchar2(41):='(select fnd_global.employee_id from dual)';
+l_owner varchar2(100):=p_alias||case when p_document_type='REQUISITION' then '.preparer_id' else '.agent_id' end;
+l_subtype varchar2(100):=p_alias||case when p_document_type='RELEASE' then '.release_type' else '.type_lookup_code' end;
+
+function level_in(p_levels in varchar2) return varchar2 is
+begin
+  return '('||p_alias||'.org_id,'||l_subtype||') in (select pdtab.org_id,pdtab.document_subtype from po_document_types_all_b pdtab where pdtab.document_type_code in ('''||p_document_type||''''||case when p_document_type='PO' then ',''PA''' end||') and pdtab.security_level_code in ('||p_levels||'))';
+end level_in;
+begin
+  return '('||
+  case when p_document_type='PO' then l_subtype||' not in (''STANDARD'',''PLANNED'',''BLANKET'',''CONTRACT'') or ' end|| --rows outside the secured document types, such as rfqs and quotations, stay visible as in the forms
+  l_owner||'='||l_employee||' or '||
+  level_in('''PUBLIC''')||' or '||
+  level_in('''HIERARCHY''')||' and ('||p_alias||'.org_id,'||l_owner||') in (select pspa.org_id,peh.employee_id from po_system_parameters_all pspa, po_employee_hierarchies_all peh where pspa.security_position_structure_id=peh.position_structure_id and peh.superior_id='||l_employee||') or '||
+  level_in('''PURCHASING''')||' and '||l_employee||' in (select pa.agent_id from po_agents pa where sysdate between nvl(pa.start_date_active,sysdate) and nvl(pa.end_date_active,sysdate+1))'||
+  case when p_document_type<>'REQUISITION' then
+  ' or '||level_in('''HIERARCHY'',''PURCHASING''')||' and '||p_alias||case when p_document_type='RELEASE' then '.po_release_id' else '.po_header_id' end||' in (select pah.object_id from po_action_history pah where pah.object_type_code='||case when p_document_type='RELEASE' then '''RELEASE''' else 'decode('||p_alias||'.type_lookup_code,''STANDARD'',''PO'',''PLANNED'',''PO'',''BLANKET'',''PA'',''CONTRACT'',''PA'')' end||' and pah.employee_id='||l_employee||')'
+  end||
+  ')';
+end po_document_security;
 
 
 function xml_escape(p_text in varchar2) return varchar2 is

@@ -8,6 +8,8 @@
 -- Description: Upload to Create, Update, Book and Cancel Sales Orders in Oracle Order Management.
 -- Supports creating new orders, updating existing orders, adding new lines to existing orders, splitting lines, booking orders and cancelling orders.
 -- To split a line, add a row for the order with the line to split in Split From Line and the new shipment's quantity in Ordered Quantity. The original line is reduced by that quantity unless its own row sets its new quantity. As in the Split Line window, the new shipment copies all other values from the original line, only Request Date, Warehouse and Ship To can differ.
+-- A return line can reference the sales order, invoice, customer PO or serial number it returns, as on the Returns tab (Return Reference Type, Return Reference, Return Reference Line). Oracle then takes the item, unit of measure and price from the referenced line: Item defaults to the referenced item, and a different Item is rejected.
+-- Ship Set assigns a line to a ship set of its order: a new name creates the set, an existing name adds the line to it and a blank removes it. Oracle schedules the lines of a set together and rejects a line that cannot be scheduled with the set, for example one that is already pick confirmed.
 -- Excel Example Output: https://www.enginatics.com/example/ont-order-upload/
 -- Library Link: https://www.enginatics.com/reports/ont-order-upload/
 -- Run Report: https://demo.enginatics.com/
@@ -105,6 +107,7 @@ xxen_util.client_time(oola.schedule_ship_date) schedule_ship_date,
 xxen_util.client_time(oola.schedule_arrival_date) schedule_arrival_date,
 xxen_util.yes(oola.override_atp_date_code) override_atp,
 xxen_util.client_time(oola.promise_date) promise_date,
+(select os.set_name from oe_sets os where oola.ship_set_id=os.set_id) ship_set,
 -- Line Addresses Tab
 (select hcsua.location from hz_cust_site_uses_all hcsua where hcsua.site_use_id=oola.ship_to_org_id) line_ship_to,
 (select hcsua.location from hz_cust_site_uses_all hcsua where hcsua.site_use_id=oola.invoice_to_org_id) line_bill_to,
@@ -123,6 +126,9 @@ oola.tax_exempt_number line_tax_exempt_number,
 oola.tax_code tax_classification_code,
 -- Line Returns
 xxen_util.meaning(oola.return_reason_code,'CREDIT_MEMO_REASON',222) return_reason,
+xxen_util.display_flexfield_context(660,'OE_LINE_RETURN_ATTRIBUTE',oola.return_context) return_reference_type,
+xxen_ont_upload.return_reference(oola.return_context,oola.return_attribute1) return_reference,
+xxen_ont_upload.return_reference_line(oola.return_context,oola.return_attribute2) return_reference_line,
 -- Order Header DFF Attributes
 xxen_util.display_flexfield_context(660,'OE_HEADER_ATTRIBUTES',ooha.context) order_header_dff_context,
 xxen_util.display_flexfield_value(660,'OE_HEADER_ATTRIBUTES',ooha.context,'ATTRIBUTE1',ooha.rowid,ooha.attribute1) order_header_attribute1,

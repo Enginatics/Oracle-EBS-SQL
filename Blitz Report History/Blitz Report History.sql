@@ -5,7 +5,8 @@
 /*                                                                       */
 /*************************************************************************/
 -- Report Name: Blitz Report History
--- Description: History of Blitz Report executions
+-- Description: History of Blitz Report executions.
+-- A repeating schedule's next request gets its run record only when it starts. Include Scheduled Pending adds these pending requests, with the parameters and options of the run they were resubmitted from.
 -- Excel Example Output: https://www.enginatics.com/example/blitz-report-history/
 -- Library Link: https://www.enginatics.com/reports/blitz-report-history/
 -- Run Report: https://demo.enginatics.com/
@@ -66,9 +67,32 @@ xrr.upload_request_id,
 xrr.upload_file_name,
 xrr.upload_errors,
 xrr.run_id,
+xrr.parameter_run_id,
 xrr.report_id
 from
-xxen_report_runs xrr,
+(
+select
+xrr.run_id,
+xrr.run_id parameter_run_id,
+xrr.report_id,
+xrr.request_id,
+xrr.created_by,
+xrr.creation_date,
+xrr.start_date,
+xrr.completion_date,
+xrr.completion_message,
+xrr.row_count,
+xrr.file_size,
+xrr.type,
+xrr.responsibility_application_id,
+xrr.responsibility_id,
+xrr.upload_request_id,
+xrr.upload_file_name,
+xrr.upload_errors
+from
+xxen_report_runs xrr
+&scheduled_pending
+) xrr,
 xxen_reports_v xrv,
 fnd_concurrent_requests fcr,
 fnd_responsibility_tl frt,
@@ -98,9 +122,10 @@ xrr.responsibility_application_id=frt.application_id(+) and
 xrr.responsibility_id=frt.responsibility_id(+) and
 frt.language(+)=userenv('lang') and
 xrr.run_id=gs.run_id(+) and
-xrr.run_id=xrrpv0.run_id(+)
+xrr.parameter_run_id=xrrpv0.run_id(+)
 ) x
 where
 2=2
 order by
-x.run_id desc
+x.run_id desc,
+x.start_date desc

@@ -7,7 +7,7 @@
 -- Report Name: AR Customers and Sites
 -- Description: Master data report of customer master data including address, sites, site uses, payment terms, Salesperson, price list and other profile information.
 -- Payment terms are reported from each of their own sources: Account Profile Payment Term and Site Profile Payment Term from the customer profile at account and site level, and Site Use Payment Term from the site use Order Management terms.
--- Customer profiles are reported at Customer level, and at Site Use level for Bill To, Statements and Dunning site uses only. At Customer level, an account profile and a party profile are reported on separate rows. At Site Use level, the profile amounts come from the site use profile, else the account profile, else the party profile, which is also reported in the account profile columns when the account has no account profile. Profile Level shows the level of the profile amounts.
+-- Customer profiles are reported at Customer level, and at Site Use level for Bill To, Statements and Dunning site uses only. At Customer level, an account profile and a party profile are reported on separate rows. At Site Use level, the profile amounts come from the site use profile, completed by the account profile amounts in the currencies the site use profile has none for. A site use without a site use profile shows the account profile amounts, or the party profile amounts when the account has no account profile; the party profile is then also reported in the account profile columns. Parameter Profile Amount Level restricts the amounts to the account or the site use profile. Profile Level shows the level of the most specific profile of the row, Profile Amount Level the level each amount comes from. Profile Amount Currency reports only the rows with an amount in that currency.
 -- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No.
 -- Excel Example Output: https://www.enginatics.com/example/ar-customers-and-sites/
 -- Library Link: https://www.enginatics.com/reports/ar-customers-and-sites/
@@ -325,6 +325,11 @@ x.site_collector_name,
 x.credit_class_code,
 x.site_credit_class_code,
 -- profile amounts
+case
+when hcpa.cust_account_profile_id=x.site_cust_account_profile_id then xxen_util.meaning('SITE','HZ_CONS_BILL_LEVEL',222)
+when hcpa.cust_account_profile_id is not null and x.profile_cust_account_id=-1 then xxen_util.meaning('PARTY','REQUESTED_BY',222)
+when hcpa.cust_account_profile_id is not null then xxen_util.meaning('ACCOUNT','HZ_CONS_BILL_LEVEL',222)
+end profile_amount_level,
 hcpa.currency_code prof_amt_currency,
 hcpa.overall_credit_limit credit_limit,
 hcpa.trx_credit_limit order_credit_limit,
@@ -677,7 +682,11 @@ nvl(hcsua.org_id,hcasa.org_id) org_id,
 hcp1.cust_account_profile_id,
 hcp1.cust_account_id profile_cust_account_id,
 hcp2.cust_account_profile_id site_cust_account_profile_id,
-nvl(hcp2.cust_account_profile_id,hcp1.cust_account_profile_id) prof_amt_profile_id,
+case :profile_amt_level
+when 'ACCOUNT' then case when hcp1.cust_account_id<>-1 then hcp1.cust_account_profile_id end
+when 'SITE' then hcp2.cust_account_profile_id
+else nvl(hcp2.cust_account_profile_id,hcp1.cust_account_profile_id)
+end prof_amt_profile_id,
 hp.party_id,
 hca.cust_account_id,
 hcsua.site_use_id,
@@ -779,12 +788,37 @@ hcp1.profile_class_id=hcpc1.profile_class_id(+) and
 hcp2.profile_class_id=hcpc2.profile_class_id(+) and
 hca.warehouse_id=haouv1.organization_id(+) and
 hcsua.warehouse_id=haouv2.organization_id(+) and
-hps.party_site_id=nvl(hcps.party_site_id(+),hps.party_site_id)
+hps.party_site_id=hcps.party_site_id(+)
 ) x,
 &from_trx_count
 &from_latest_trx
 ra_territories_kfv rtk,
-hz_cust_profile_amts hcpa,
+(
+select
+hcpa.cust_account_profile_id join_profile_id,
+hcpa.*
+from
+hz_cust_profile_amts hcpa
+where
+:show_profile_amts='Y'
+union all
+select
+hcp.cust_account_profile_id join_profile_id,
+hcpa.*
+from
+hz_customer_profiles hcp,
+hz_customer_profiles hcp0,
+hz_cust_profile_amts hcpa
+where
+:show_profile_amts='Y' and
+:detail_level='Site Use' and
+:profile_amt_level is null and
+hcp.site_use_id is not null and
+hcp.cust_account_id=hcp0.cust_account_id and
+hcp0.site_use_id is null and
+hcp0.cust_account_profile_id=hcpa.cust_account_profile_id and
+hcpa.currency_code not in (select hcpa0.currency_code from hz_cust_profile_amts hcpa0 where hcp.cust_account_profile_id=hcpa0.cust_account_profile_id)
+) hcpa,
 zx_party_tax_profile zptp1,
 zx_party_tax_profile zptp2,
 q_zx_registrations zr,
@@ -810,7 +844,7 @@ nvl(x.party_site_id,-99)=nvl(zr.party_site_id(+),nvl(x.party_site_id,-99)) and
 nvl2(:show_fiscal_classifications,x.party_id,null)=fca.party_id(+) and
 nvl(x.party_site_id,-99)=nvl(fca.party_site_id(+),nvl(x.party_site_id,-99)) and
 --
-nvl2(:show_profile_amts,x.prof_amt_profile_id,null)=hcpa.cust_account_profile_id(+) and
+x.prof_amt_profile_id=hcpa.join_profile_id(+) and
 --
 nvl2(:show_receipt_methods,x.cust_account_id,0)=rcrm.customer_id(+) and
 nvl(x.site_use_id,-99)=nvl(rcrm.site_use_id(+),nvl(x.site_use_id,-99)) and

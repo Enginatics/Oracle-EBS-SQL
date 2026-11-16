@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-11-02
+last_modified_at: 2026-11-16
 title: 'QA Collection Plan Upload | Oracle EBS SQL Report'
 description: 'Upload to create, update, or delete Quality Collection Plans and all child entities. This upload manages: - Collection Plan headers (name, type, dates…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Upload, Collection, Plan, qa_plans, mtl_parameters, qa_plan_transactions'
@@ -27,6 +27,8 @@ This upload manages:
 - Action Outputs (output variable mappings per action)
 
 Multiple actions of the same action type can coexist under one action trigger (e.g. two Assign value actions with different formulas, or two Send email actions with different alert sets). Actions are identified by the natural key (action trigger, action name, assign type, assigned element, alert action set, alert action, status code, action message); changing any of these fields creates a new action rather than updating an existing one. Use Delete=Yes to remove an obsolete action.
+
+Result Column shows the column of the quality results table that holds the element's values. A new element takes the result column entered, so a plan copied from another instance keeps its result columns; without one it takes the next free column of its type. The result column of an element already in a plan cannot be changed.
 
 CAR (Corrective Action Request) actions are not yet supported.
 

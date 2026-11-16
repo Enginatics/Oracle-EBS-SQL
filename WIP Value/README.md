@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-16
 title: 'WIP Value | Oracle EBS SQL Report'
 description: 'Application: Work in Process Description: WIP Value Report This report will display Period To Date (PTD) and Cumulative To Date (CTD) WIP costs/variances…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Work in Process, Enginatics, WIP, Value, wip_discrete_jobs, wip_period_balances, org_acct_periods'
@@ -24,6 +24,8 @@ This report will display Period To Date (PTD) and Cumulative To Date (CTD) WIP c
 
 The raw data (without template) provides a breakdown of these values by WIP Cost Type, Class, Discrete Job/Repetitive Schedule, Assembly, Element/Variance GL Account, and Period in which the cost is incurred/relieved.
 
+Display Level Job returns one row per discrete job (per repetitive line and assembly), with the amounts summed over the elements and periods and rounded per period as the Oracle report summary does. Job Status restricts the jobs and schedules, and Category Set 1 to 3 add the assembly's item category segments as columns. The job type, release and completion dates and the start, completed, scrap and open quantities are shown for discrete jobs.
+
 Templates are provided to detail or summarize the costs as followed:
 
 Applicable Templates:
@@ -43,7 +45,7 @@ DB package: WIP_WIPUTVAL_XMLP_PKG
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-value) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
-Organization Code, Period, Include Closed Jobs, Class Type, Classes From, Classes To, Job/Schedules From, Job/Schedules To, Assemblies From, Assemblies To, Currency Code, Exchange Rate, Project
+Organization Code, Period, Include Closed Jobs, Class Type, Classes From, Classes To, Job/Schedules From, Job/Schedules To, Job Status, Assemblies From, Assemblies To, Currency Code, Exchange Rate, Project, Category Set 1, Category Set 2, Category Set 3, Display Level
 
 ## Oracle EBS Tables Used
 [wip_discrete_jobs](https://www.enginatics.com/library/?pg=1&find=wip_discrete_jobs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-value), [wip_period_balances](https://www.enginatics.com/library/?pg=1&find=wip_period_balances&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-value), [org_acct_periods](https://www.enginatics.com/library/?pg=1&find=org_acct_periods&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-value), [mfg_lookups](https://www.enginatics.com/library/?pg=1&find=mfg_lookups&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-value), [wip_entities](https://www.enginatics.com/library/?pg=1&find=wip_entities&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-value), [mtl_system_items_b_kfv](https://www.enginatics.com/library/?pg=1&find=mtl_system_items_b_kfv&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-value), [gl_code_combinations](https://www.enginatics.com/library/?pg=1&find=gl_code_combinations&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-value), [wip_repetitive_schedules](https://www.enginatics.com/library/?pg=1&find=wip_repetitive_schedules&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-value), [wip_lines](https://www.enginatics.com/library/?pg=1&find=wip_lines&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-value), [wip_repetitive_items](https://www.enginatics.com/library/?pg=1&find=wip_repetitive_items&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=wip-value)

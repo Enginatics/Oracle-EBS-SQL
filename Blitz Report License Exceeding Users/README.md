@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-11-09
+last_modified_at: 2026-11-16
 title: 'Blitz Report License Exceeding Users | Oracle EBS SQL Report'
 description: 'Users whose Blitz Report runs were refused with ''Invalid License: maximum users exceeded'' within the past 60 days, and who do not hold one of the licensed…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Blitz, Report, License, Exceeding, xxen_report_runs, fnd_user, xxen_reports_v'
@@ -42,7 +42,7 @@ The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/Blitz%
 
 | Resource | Link |
 |---|---|
-| Excel Example Output | [Example](https://www.enginatics.com/example/blitz-report-license-exceeding-users/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-license-exceeding-users) |
+| Excel Example Output | [Blitz Report License Exceeding Users 10-Nov-2026 225227.xlsx](https://www.enginatics.com/example/blitz-report-license-exceeding-users/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-license-exceeding-users) |
 | Blitz Report™ XML Import | [Blitz_Report_License_Exceeding_Users.xml](https://www.enginatics.com/xml/blitz-report-license-exceeding-users/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-license-exceeding-users) |
 | SQL Source | [Blitz Report License Exceeding Users.sql](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/Blitz%20Report%20License%20Exceeding%20Users/Blitz%20Report%20License%20Exceeding%20Users.sql) |
 | Full Report on Enginatics | [www.enginatics.com/reports/blitz-report-license-exceeding-users/](https://www.enginatics.com/reports/blitz-report-license-exceeding-users/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-license-exceeding-users) |

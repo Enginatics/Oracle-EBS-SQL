@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-11-02
+last_modified_at: 2026-11-16
 title: 'EAM Failure Codes Upload | Oracle EBS SQL Report'
 description: 'Create, update and delete EAM failure codes, cause codes and resolution codes. Codes are global, not specific to an organization, and a code is unique…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, R12 only, Upload, EAM, Failure, Codes, eam_failure_codes, eam_cause_codes, eam_resolution_codes'
@@ -32,7 +32,7 @@ Upload Mode, Code Type
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-codes-upload), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-codes-upload), [Upload](https://www.enginatics.com/library/?pg=1&category%5B%5D=Upload&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-codes-upload)
 
 ## Related Reports
-[EAM Work Orders 11i](/EAM%20Work%20Orders%2011i/ "EAM Work Orders 11i Oracle EBS SQL Report"), [EAM Work Orders](/EAM%20Work%20Orders/ "EAM Work Orders Oracle EBS SQL Report"), [EAM Failure Sets Upload](/EAM%20Failure%20Sets%20Upload/ "EAM Failure Sets Upload Oracle EBS SQL Report"), [EAM Assets](/EAM%20Assets/ "EAM Assets Oracle EBS SQL Report"), [BOM Standard Operations Upload](/BOM%20Standard%20Operations%20Upload/ "BOM Standard Operations Upload Oracle EBS SQL Report"), [EAM Weekly Schedule](/EAM%20Weekly%20Schedule/ "EAM Weekly Schedule Oracle EBS SQL Report")
+[EAM Work Orders 11i](/EAM%20Work%20Orders%2011i/ "EAM Work Orders 11i Oracle EBS SQL Report"), [EAM Work Orders](/EAM%20Work%20Orders/ "EAM Work Orders Oracle EBS SQL Report"), [EAM Assets](/EAM%20Assets/ "EAM Assets Oracle EBS SQL Report"), [EAM Failure Sets Upload](/EAM%20Failure%20Sets%20Upload/ "EAM Failure Sets Upload Oracle EBS SQL Report"), [EAM Weekly Schedule](/EAM%20Weekly%20Schedule/ "EAM Weekly Schedule Oracle EBS SQL Report"), [BOM Standard Operations Upload](/BOM%20Standard%20Operations%20Upload/ "BOM Standard Operations Upload Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/EAM%20Failure%20Codes%20Upload/EAM%20Failure%20Codes%20Upload.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=eam-failure-codes-upload) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

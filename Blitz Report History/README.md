@@ -1,8 +1,8 @@
 ---
 layout: default
-last_modified_at: 2026-11-09
+last_modified_at: 2026-11-16
 title: 'Blitz Report History | Oracle EBS SQL Report'
-description: 'History of Blitz Report executions – Oracle EBS Blitz Report SQL report: free SQL, parameters and tables used.'
+description: 'History of Blitz Report executions. A repeating schedule''s next request gets its run record only when it starts. Include Scheduled Pending adds these…'
 keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Enginatics, Blitz, Report, History, xxen_reports_h, fnd_concurrent_requests, xxen_report_runs'
 permalink: /Blitz%20Report%20History/
 report_name: 'Blitz Report History'
@@ -17,12 +17,14 @@ module_url: /modules/blitz-report/
 **Oracle EBS module:** [Blitz Report](/modules/blitz-report/ "Oracle EBS Blitz Report reports") · [all Blitz Report reports](/modules/blitz-report/)  
 
 ## Overview
-History of Blitz Report executions
+History of Blitz Report executions.
+
+A repeating schedule's next request gets its run record only when it starts. Include Scheduled Pending adds these pending requests, with the parameters and options of the run they were resubmitted from.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-history) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
 
 ## Report Parameters
-Report Name, Category, Type, Report Name starts with, Submitted by User, Started within Days, Start Date From, Start Date To, Show Parameters, Running or Errored, Running longer than x Minutes, Request Id, Run Id, Exclude System Reports, Exclude Submissions from User, License Exceeded, Incremental Alert Mode
+Report Name, Category, Type, Report Name starts with, Submitted by User, Started within Days, Start Date From, Start Date To, Show Parameters, Running or Errored, Include Scheduled Pending, Running longer than x Minutes, Request Id, Run Id, Exclude System Reports, Exclude Submissions from User, License Exceeded, Incremental Alert Mode
 
 ## Oracle EBS Tables Used
 [xxen_reports_h](https://www.enginatics.com/library/?pg=1&find=xxen_reports_h&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-history), [fnd_concurrent_requests](https://www.enginatics.com/library/?pg=1&find=fnd_concurrent_requests&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-history), [xxen_report_runs](https://www.enginatics.com/library/?pg=1&find=xxen_report_runs&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-history), [xxen_reports_v](https://www.enginatics.com/library/?pg=1&find=xxen_reports_v&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-history), [fnd_responsibility_tl](https://www.enginatics.com/library/?pg=1&find=fnd_responsibility_tl&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-history), [gv$session](https://www.enginatics.com/library/?pg=1&find=gv%24session&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-history), [fnd_lookup_values](https://www.enginatics.com/library/?pg=1&find=fnd_lookup_values&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-history), [xxen_report_run_param_values](https://www.enginatics.com/library/?pg=1&find=xxen_report_run_param_values&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-history)
@@ -31,7 +33,7 @@ Report Name, Category, Type, Report Name starts with, Submitted by User, Started
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-history)
 
 ## Related Reports
-[Blitz Report Web Service Sessions](/Blitz%20Report%20Web%20Service%20Sessions/ "Blitz Report Web Service Sessions Oracle EBS SQL Report"), [Blitz Upload History](/Blitz%20Upload%20History/ "Blitz Upload History Oracle EBS SQL Report"), [DBA Sessions](/DBA%20Sessions/ "DBA Sessions Oracle EBS SQL Report"), [FND Concurrent Requests](/FND%20Concurrent%20Requests/ "FND Concurrent Requests Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report")
+[Blitz Report Web Service Sessions](/Blitz%20Report%20Web%20Service%20Sessions/ "Blitz Report Web Service Sessions Oracle EBS SQL Report"), [Blitz Upload History](/Blitz%20Upload%20History/ "Blitz Upload History Oracle EBS SQL Report"), [DBA ORDS Configuration Validation](/DBA%20ORDS%20Configuration%20Validation/ "DBA ORDS Configuration Validation Oracle EBS SQL Report"), [DBA Sessions](/DBA%20Sessions/ "DBA Sessions Oracle EBS SQL Report"), [FND Concurrent Requests](/FND%20Concurrent%20Requests/ "FND Concurrent Requests Oracle EBS SQL Report"), [GL Account Distribution Analysis](/GL%20Account%20Distribution%20Analysis/ "GL Account Distribution Analysis Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/Blitz%20Report%20History/Blitz%20Report%20History.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=blitz-report-history) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.

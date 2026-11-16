@@ -9,6 +9,7 @@
 -- Description: WIP Value Report
 -- This report will display Period To Date (PTD) and Cumulative To Date (CTD) WIP costs/variances for the selected period.
 -- The raw data (without template) provides a breakdown of these values by WIP Cost Type, Class, Discrete Job/Repetitive Schedule, Assembly, Element/Variance GL Account, and Period in which the cost is incurred/relieved.
+-- Display Level Job returns one row per discrete job (per repetitive line and assembly), with the amounts summed over the elements and periods and rounded per period as the Oracle report summary does. Job Status restricts the jobs and schedules, and Category Set 1 to 3 add the assembly's item category segments as columns. The job type, release and completion dates and the start, completed, scrap and open quantities are shown for discrete jobs.
 -- Templates are provided to detail or summarize the costs as followed:
 -- Applicable Templates:
 -- Pivot: WIP Value by Cost Type, Class - WIP Value Summary by Cost Type, Class with Drill Down to WIP Job Details
@@ -26,18 +27,26 @@
 -- Run Report: https://demo.enginatics.com/
 
 with wip_detail_q as
-( select
+( select /*+ inline */
    wdq.job_type,
+   wdq.discrete_job_type,
    wdq.class_type_code,
    wdq.class_type,
    wdq.class_code,
    wdq.wip_entity,
    xxen_util.meaning(wdq.status_type,'WIP_JOB_STATUS',700) status,
    wdq.date_closed,
+   wdq.release_date,
+   wdq.complete_date,
    wdq.period,
    wdq.period_close_date,
    wdq.scheduled_start_date,
    wdq.assembly,
+   wdq.item_id,
+   wdq.start_quantity,
+   wdq.completed_quantity,
+   wdq.scrap_quantity,
+   wdq.open_quantity,
    wdq.element,
    wdq.gl_account,
    -- PTD
@@ -63,25 +72,36 @@ with wip_detail_q as
    wdq.wip_entity_id,
    wdq.repetitive_schedule_id,
    wdq.acct_period_id,
-   wdq.element_code
+   wdq.element_code,
+   wdq.costs_incurred,
+   wdq.costs_relieved,
+   wdq.elemental_variances_relieved,
+   wdq.single_variances_relieved
   from
    (
      select /*+ LEADING(WDJ WPB OAP WE) USE_NL(WDJ WPB OAP WE ML2) */ -- Discrete Jobs
       'Discrete'                  job_type,
+      xxen_util.meaning(wdj.job_type,'WIP_DISCRETE_JOB',700) discrete_job_type,
       wpb.class_type              class_type_code,
       ml.meaning                  class_type,
       wdj.class_code              class_code,
       we.wip_entity_name          wip_entity,
       wdj.status_type,
       wdj.date_closed,
+      wdj.date_released           release_date,
+      wdj.date_completed          complete_date,
       oap.period_name             period,
       oap.schedule_close_date     period_close_date,
       wdj.scheduled_start_date    scheduled_start_date,
       wdj.primary_item_id         item_id,
       msik.concatenated_segments  assembly,
+      wdj.start_quantity,
+      wdj.quantity_completed      completed_quantity,
+      wdj.quantity_scrapped       scrap_quantity,
+      wdj.start_quantity-wdj.quantity_completed-wdj.quantity_scrapped open_quantity,
       --
       ml2.meaning                 element,
-      nvl2(gcc.code_combination_id,fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'ALL', 'Y', 'VALUE'),null)
+      decode(:p_display_level,'Job',null,nvl2(gcc.code_combination_id,fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'ALL', 'Y', 'VALUE'),null))
                                   gl_account,
       --
       decode( ml2.lookup_code,
@@ -171,20 +191,27 @@ with wip_detail_q as
      union
      select /*+ LEADING(WRS) */ -- Repetitive Schedules
       'Repetitive'               job_type,
+      null                       discrete_job_type,
       wpb.class_type              class_type_code,
       ml.meaning                  class_type,
       wri.class_code              class_code,
       wl.line_code                wip_entity,
       wrs.status_type,
       wrs.date_closed,
+      wrs.date_released           release_date,
+      to_date(null)               complete_date,
       oap.period_name             period,
       oap.schedule_close_date     period_close_date,
       wrs.first_unit_start_date   scheduled_start_date,
       wri.primary_item_id         item_id,
       msik.concatenated_segments  assembly,
+      to_number(null)             start_quantity,
+      to_number(null)             completed_quantity,
+      to_number(null)             scrap_quantity,
+      to_number(null)             open_quantity,
       --
       ml2.meaning                 element,
-      nvl2(gcc.code_combination_id,fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'ALL', 'Y', 'VALUE'),null)
+      decode(:p_display_level,'Job',null,nvl2(gcc.code_combination_id,fnd_flex_xml_publisher_apis.process_kff_combination_1('acct_flex_bal_seg', 'SQLGL', 'GL#', gcc.chart_of_accounts_id, NULL, gcc.code_combination_id, 'ALL', 'Y', 'VALUE'),null))
                                   gl_account,
       --
       decode( ml2.lookup_code,
@@ -284,15 +311,23 @@ with wip_detail_q as
 select
  :p_organization_code organization,
  wdq.job_type,
+ wdq.discrete_job_type,
  wdq.class_type,
  wdq.class_code class,
  wdq.wip_entity "Job/Line",
  wdq.status "Job Status",
  wdq.date_closed job_closed_date,
+ wdq.release_date,
+ wdq.complete_date,
  wdq.period,
  wdq.period_close_date,
  wdq.scheduled_start_date start_date,
  wdq.assembly,
+ &category_columns
+ wdq.start_quantity,
+ wdq.completed_quantity,
+ wdq.scrap_quantity,
+ wdq.open_quantity,
  wdq.element "Element/Variance",
  wdq.gl_account,
  :p_currency_code currency,
@@ -315,7 +350,151 @@ select
  wdq.element_code,
  lpad(wdq.element_code,2) || ' ' || wdq.element || ' - ' || wdq.gl_account "Element/Variance Pivot Label"
 from
- wip_detail_q wdq
+ (
+ select
+  wdq.job_type,
+  wdq.discrete_job_type,
+  wdq.class_type_code,
+  wdq.class_type,
+  wdq.class_code,
+  wdq.wip_entity,
+  wdq.status,
+  wdq.date_closed,
+  wdq.release_date,
+  wdq.complete_date,
+  wdq.period,
+  wdq.period_close_date,
+  wdq.scheduled_start_date,
+  wdq.assembly,
+  wdq.item_id,
+  wdq.start_quantity,
+  wdq.completed_quantity,
+  wdq.scrap_quantity,
+  wdq.open_quantity,
+  wdq.element,
+  wdq.gl_account,
+  wdq.ptd_costs_incurred,
+  wdq.ptd_costs_relieved,
+  wdq.ptd_elemental_var_relieved,
+  wdq.ptd_single_var_relieved,
+  wdq.ptd_net_activity,
+  wdq.ctd_costs_incurred,
+  wdq.ctd_costs_relieved,
+  wdq.ctd_elemental_var_relieved,
+  wdq.ctd_single_var_relieved,
+  wdq.ctd_net_activity,
+  wdq.element_code,
+  wdq.organization_id
+ from
+  wip_detail_q wdq
+ where
+  lnnvl(:p_display_level='Job')
+ union all
+ select
+  y.job_type,
+  y.discrete_job_type,
+  y.class_type_code,
+  y.class_type,
+  y.class_code,
+  y.wip_entity,
+  y.status,
+  y.date_closed,
+  y.release_date,
+  y.complete_date,
+  null period,
+  to_date(null) period_close_date,
+  min(y.scheduled_start_date) scheduled_start_date,
+  y.assembly,
+  y.item_id,
+  y.start_quantity,
+  y.completed_quantity,
+  y.scrap_quantity,
+  y.open_quantity,
+  null element,
+  null gl_account,
+  sum(case when y.acct_period_id=:p_acct_period_id then round(:p_exchange_rate*y.costs_incurred,:p_precision) end) ptd_costs_incurred,
+  sum(case when y.acct_period_id=:p_acct_period_id then round(:p_exchange_rate*y.costs_relieved,:p_precision) end) ptd_costs_relieved,
+  sum(case when y.acct_period_id=:p_acct_period_id then round(:p_exchange_rate*y.elemental_variances_relieved,:p_precision) end) ptd_elemental_var_relieved,
+  sum(case when y.acct_period_id=:p_acct_period_id then round(:p_exchange_rate*y.single_variances_relieved,:p_precision) end) ptd_single_var_relieved,
+  sum(case when y.acct_period_id=:p_acct_period_id then round(:p_exchange_rate*y.costs_incurred,:p_precision)-round(:p_exchange_rate*y.costs_relieved,:p_precision)-round(:p_exchange_rate*y.elemental_variances_relieved,:p_precision) end) ptd_net_activity,
+  sum(round(:p_exchange_rate*y.costs_incurred,:p_precision)) ctd_costs_incurred,
+  sum(round(:p_exchange_rate*y.costs_relieved,:p_precision)) ctd_costs_relieved,
+  sum(round(:p_exchange_rate*y.elemental_variances_relieved,:p_precision)) ctd_elemental_var_relieved,
+  sum(round(:p_exchange_rate*y.single_variances_relieved,:p_precision)) ctd_single_var_relieved,
+  sum(round(:p_exchange_rate*y.costs_incurred,:p_precision)-round(:p_exchange_rate*y.costs_relieved,:p_precision)-round(:p_exchange_rate*y.elemental_variances_relieved,:p_precision)) ctd_net_activity,
+  to_number(null) element_code,
+  y.organization_id
+ from
+  (
+  select
+   wdq.job_type,
+   wdq.discrete_job_type,
+   wdq.class_type_code,
+   wdq.class_type,
+   wdq.class_code,
+   wdq.wip_entity,
+   wdq.status,
+   wdq.date_closed,
+   wdq.release_date,
+   wdq.complete_date,
+   wdq.assembly,
+   wdq.item_id,
+   wdq.start_quantity,
+   wdq.completed_quantity,
+   wdq.scrap_quantity,
+   wdq.open_quantity,
+   wdq.organization_id,
+   min(wdq.scheduled_start_date) scheduled_start_date,
+   wdq.repetitive_schedule_id,
+   wdq.acct_period_id,
+   sum(nvl(wdq.costs_incurred,0)) costs_incurred,
+   sum(nvl(wdq.costs_relieved,0)) costs_relieved,
+   sum(nvl(wdq.elemental_variances_relieved,0)) elemental_variances_relieved,
+   sum(nvl(wdq.single_variances_relieved,0)) single_variances_relieved
+  from
+   wip_detail_q wdq
+  where
+   :p_display_level='Job'
+  group by
+   wdq.job_type,
+   wdq.discrete_job_type,
+   wdq.class_type_code,
+   wdq.class_type,
+   wdq.class_code,
+   wdq.wip_entity,
+   wdq.status,
+   wdq.date_closed,
+   wdq.release_date,
+   wdq.complete_date,
+   wdq.assembly,
+   wdq.item_id,
+   wdq.start_quantity,
+   wdq.completed_quantity,
+   wdq.scrap_quantity,
+   wdq.open_quantity,
+   wdq.organization_id,
+   wdq.repetitive_schedule_id,
+   wdq.acct_period_id
+  ) y
+ group by
+  y.job_type,
+  y.discrete_job_type,
+  y.class_type_code,
+  y.class_type,
+  y.class_code,
+  y.wip_entity,
+  y.status,
+  y.date_closed,
+  y.release_date,
+  y.complete_date,
+  y.assembly,
+  y.item_id,
+  y.start_quantity,
+  y.completed_quantity,
+  y.scrap_quantity,
+  y.open_quantity,
+  y.organization_id
+ ) wdq
 where
  1=1
 order by

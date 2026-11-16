@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-11-09
+last_modified_at: 2026-11-16
 title: 'Oracle EBS Blitz Report Reports | 52 SQL reports'
 description: '52 free Oracle E-Business Suite Blitz Report SQL reports for Excel: Blitz Report Add-in Environment Setup, Blitz Report Application Categories, Blitz…'
 keywords: 'Oracle EBS Blitz Report reports, Oracle Blitz Report SQL, Oracle E-Business Suite, Blitz Report, xxen_reports_v, xxen_report_parameters_v, xxen_report_runs, fnd_user, fnd_application_vl'
@@ -35,7 +35,7 @@ module_page: true
 | [Blitz Report Dynamic Column Rules](/Blitz%20Report%20Dynamic%20Column%20Rules/) |  |
 | [Blitz Report Execution Summary](/Blitz%20Report%20Execution%20Summary/) | Count and performance summary of historic Blitz Report executions |
 | [Blitz Report Extension Package API Signatures](/Blitz%20Report%20Extension%20Package%20API%20Signatures/) | Shows this instance's signatures of the Oracle EBS APIs that Blitz Report's extension packages call: every argument of every procedure, with its position, data… |
-| [Blitz Report History](/Blitz%20Report%20History/) | History of Blitz Report executions |
+| [Blitz Report History](/Blitz%20Report%20History/) | History of Blitz Report executions. A repeating schedule's next request gets its run record only when it starts. Include Scheduled Pending adds these pending… |
 | [Blitz Report History Summary](/Blitz%20Report%20History%20Summary/) | Count and performance summary of historic Blitz Report executions |
 | [Blitz Report LOV Comparison between environments](/Blitz%20Report%20LOV%20Comparison%20between%20environments/) | Requires following view to be created on the remote environment to avoid ORA-64202: remote temporary or abstract LOB locator is encountered create or replace… |
 | [Blitz Report LOV SQL Validation](/Blitz%20Report%20LOV%20SQL%20Validation/) | Validates Blitz Report LOV SQLs for valid syntax. This can be useful after mass migrating reports from other tools such as Discoverer, Excl4apps, splashBI or… |

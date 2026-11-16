@@ -8,6 +8,7 @@
 -- Description: Detail Sales Order or Quote header report with line item details including status, cost, project and shipping information.
 -- Show Sales Credits adds one row per sales credit of each line, taken from the line, or from the order header for lines without sales credits of their own. Credited Amount is the line extended price times the credit percent and is shown once per line and credit, so it can be summed by salesperson; the other amount columns stay on one row per line.
 -- Show Order to Cash Details adds the booked date and open holds of each line, and for the line's latest invoice the due date, the amount still due, the date it was fully paid, the latest receipt applied, and when its final accounting was created and its journal posted in the general ledger. Amount Due Remaining is shown on one row per invoice, so it can be summed. To follow lines until they are paid, leave Open only empty, so that closed orders with unpaid invoices are included.
+-- Item Catalog adds one column per descriptive element of the selected item catalogs, showing the element value of each line's item. It does not restrict the lines.
 -- When India Localization is installed, the following GST columns are also included: GST Registration No, GST PAN No, GST TAN No, CGST Amount, SGST Amount, IGST Amount, CGST Rate, SGST Rate, IGST Rate, Custom Amount, Unclassified Tax Amount, Taxable Value, HSN SAC Code, HSN Length Warning.
 -- Excel Example Output: https://www.enginatics.com/example/ont-orders-and-lines/
 -- Library Link: https://www.enginatics.com/reports/ont-orders-and-lines/
@@ -41,6 +42,10 @@ hp3.party_name intermediate_ship_to_customer,
 hcsua3.location intermediate_ship_to_location,
 (select hz_format_pub.format_address(hps3.location_id,null,null,' , ') from dual) intermediate_ship_to_address,
 ftv3.territory_short_name intermediate_ship_to_country,
+hp4.party_name deliver_to_customer,
+hcsua4.location deliver_to_location,
+(select hz_format_pub.format_address(hps4.location_id,null,null,' , ') from dual) deliver_to_address,
+ftv4.territory_short_name deliver_to_country,
 hp2.party_name bill_to_customer,
 hca2.account_number bill_to_customer_number,
 hcsua2.location bill_to_location,
@@ -74,6 +79,7 @@ case when row_number() over (partition by x.line_id order by wnd.name nulls last
 case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 then x.invoice_accounted_amount else null end invoice_accounted_amount,
 &o2c_columns
 x.warehouse,
+x.order_warehouse,
 x.shipping_method,
 x.line_set,
 x.freight_terms,
@@ -97,6 +103,7 @@ x.item,
 x.description,
 x.item_type,
 &category_columns
+&item_catalog_columns
 x.uom,
 x.list_price,
 x.discounted_price,
@@ -110,9 +117,14 @@ x.calculate_price_flag,
 case when row_number() over (partition by x.line_id order by wnd.name nulls last) = 1 then x.pricing_quantity else null end pricing_quantity,
 x.pricing_uom,
 x.pricing_date,
+to_char(x.pricing_date,'MM') pricing_month,
+to_char(x.pricing_date,'YYYY') pricing_year,
 x.request_date,
 x.promise_date,
 x.schedule_ship_date,
+to_char(x.schedule_ship_date,'DD') schedule_ship_day,
+to_char(x.schedule_ship_date,'MM') schedule_ship_month,
+to_char(x.schedule_ship_date,'YYYY') schedule_ship_year,
 x.schedule_status,
 x.override_atp_date_code,
 x.actual_shipment_date,
@@ -227,6 +239,7 @@ sum(rctla.extended_amount) over (partition by rctla.interface_line_attribute6) i
 max(rcta.invoice_currency_code) keep (dense_rank last order by rcta.customer_trx_id) over (partition by rctla.interface_line_attribute6) invoice_currency,
 sum(rctlgda.acctd_amount) over (partition by rctla.interface_line_attribute6) invoice_accounted_amount,
 (select mp.organization_code from mtl_parameters mp where nvl(oola.ship_from_org_id,ooha.ship_from_org_id)=mp.organization_id) warehouse,
+(select mp.organization_code from mtl_parameters mp where ooha.ship_from_org_id=mp.organization_id) order_warehouse,
 (select wcv.carrier_name from wsh_carriers_v wcv where oola.freight_carrier_code=wcv.freight_code) freight_carrier,
 xxen_util.meaning(nvl(oola.shipping_method_code,ooha.shipping_method_code),'SHIP_METHOD',3) shipping_method,
 xxen_util.meaning(ooha.customer_preference_set_code,'REQUEST_DATE_TYPE',660) line_set,
@@ -295,6 +308,7 @@ oola.service_number,
 oola.line_id,
 nvl(oola.ship_to_org_id,ooha.ship_to_org_id) ship_to_org_id,
 oola.intmed_ship_to_org_id,
+nvl(oola.deliver_to_org_id,ooha.deliver_to_org_id) deliver_to_org_id,
 nvl(oola.invoice_to_org_id,ooha.invoice_to_org_id) invoice_to_org_id,
 &o2c_columns_x
 ooha.order_date_type_code,
@@ -488,7 +502,14 @@ hz_cust_accounts hca3,
 hz_parties hp3,
 hz_party_sites hps3,
 hz_locations hl3,
-fnd_territories_vl ftv3
+fnd_territories_vl ftv3,
+hz_cust_site_uses_all hcsua4,
+hz_cust_acct_sites_all hcasa4,
+hz_cust_accounts hca4,
+hz_parties hp4,
+hz_party_sites hps4,
+hz_locations hl4,
+fnd_territories_vl ftv4
 &il_from
 &osc_from
 where
@@ -514,7 +535,15 @@ hcasa3.cust_account_id=hca3.cust_account_id(+) and
 hca3.party_id=hp3.party_id(+) and
 hcasa3.party_site_id=hps3.party_site_id(+) and
 hps3.location_id=hl3.location_id(+) and
-hl3.country=ftv3.territory_code(+)
+hl3.country=ftv3.territory_code(+) and
+x.deliver_to_org_id=hcsua4.site_use_id(+) and
+hcsua4.cust_acct_site_id=hcasa4.cust_acct_site_id(+) and
+hcasa4.cust_account_id=hca4.cust_account_id(+) and
+hca4.party_id=hp4.party_id(+) and
+hcasa4.party_site_id=hps4.party_site_id(+) and
+hps4.location_id=hl4.location_id(+) and
+hl4.country=ftv4.territory_code(+)
+/*&item_catalog_list*/
 &il_where
 &osc_where
 order by

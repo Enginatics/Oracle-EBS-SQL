@@ -1,6 +1,6 @@
 ---
 layout: default
-last_modified_at: 2026-11-09
+last_modified_at: 2026-11-16
 title: 'Oracle EBS Database Administration Reports | 73 SQL reports'
 description: '73 free Oracle E-Business Suite Database Administration SQL reports for Excel: DBA ASM Disk Groups, DBA AWR Active Session History, DBA AWR Blocking…'
 keywords: 'Oracle EBS Database Administration reports, Oracle Database Administration SQL, Oracle E-Business Suite, Blitz Report, dba_hist_snapshot, dba_objects, v$parameter, dual, gv$sqlarea'
@@ -89,7 +89,7 @@ module_page: true
 | [DBA Table Modifications](/DBA%20Table%20Modifications/) | If table monitoring is activated, dbatabmodifications shows the number of rows modified since the last time a table was analyzed. |
 | [DBA Tablespace Usage](/DBA%20Tablespace%20Usage/) | Tablespace usage including currently active undo and temp tablepace usage in Megabytes |
 | [DBA Text Search](/DBA%20Text%20Search/) | Full text search through database source code objects such as packages, procedures, functions, triggers etc. The search can also be done using regular… |
-| [DBA Trace File Contents](/DBA%20Trace%20File%20Contents/) | V$DIAGTRACEFILECONTENTS contains trace data that is present in the trace files that are part of the current Automatic Diagnostic Repository (ADR). Supported… |
+| [DBA Trace File Contents](/DBA%20Trace%20File%20Contents/) | GV$DIAGTRACEFILECONTENTS contains trace data that is present in the trace files that are part of the Automatic Diagnostic Repository (ADR) of all RAC… |
 | [DBA Undo Statistics](/DBA%20Undo%20Statistics/) | Undo generation, longest running query and undo errors per 10-minute interval from gv$undostat, which keeps about four days of history. All sizes are shown in… |
 | [DBA Users](/DBA%20Users/) | Database user accounts with their status, lock and expiry dates, profile, tablespaces and quotas. Default Password flags accounts that still have an… |
 

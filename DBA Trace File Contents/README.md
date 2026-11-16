@@ -1,9 +1,9 @@
 ---
 layout: default
-last_modified_at: 2026-10-26
+last_modified_at: 2026-11-16
 title: 'DBA Trace File Contents | Oracle EBS SQL Report'
-description: 'V$DIAGTRACEFILECONTENTS contains trace data that is present in the trace files that are part of the current Automatic Diagnostic Repository (ADR)…'
-keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, R12 only, DBA, Trace, File, Contents, v$diag_trace_file_contents'
+description: 'GV$DIAGTRACEFILECONTENTS contains trace data that is present in the trace files that are part of the Automatic Diagnostic Repository (ADR) of all RAC…'
+keywords: 'Oracle EBS, Oracle E-Business Suite, SQL report, Blitz Report, Database Administration, Enginatics, R12 only, DBA, Trace, File, Contents, gv$diag_trace_file_contents'
 permalink: /DBA%20Trace%20File%20Contents/
 report_name: 'DBA Trace File Contents'
 report_web_name: dba-trace-file-contents
@@ -17,7 +17,7 @@ module_url: /modules/database-administration/
 **Oracle EBS module:** [Database Administration](/modules/database-administration/ "Oracle EBS Database Administration reports") · [all Database Administration reports](/modules/database-administration/)  
 
 ## Overview
-V$DIAG_TRACE_FILE_CONTENTS contains trace data that is present in the trace files that are part of the current Automatic Diagnostic Repository (ADR).
+GV$DIAG_TRACE_FILE_CONTENTS contains trace data that is present in the trace files that are part of the Automatic Diagnostic Repository (ADR) of all RAC instances.
 Supported starting from Oracle Database 12.2.
 
 > **Run this report in Excel in seconds:** [download Blitz Report™ free](https://www.enginatics.com/download/?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-trace-file-contents) (your first 30 reports are free) or try it in the [online demo](https://demo.enginatics.com/).
@@ -26,13 +26,13 @@ Supported starting from Oracle Database 12.2.
 Trace Filename
 
 ## Oracle EBS Tables Used
-[v$diag_trace_file_contents](https://www.enginatics.com/library/?pg=1&find=v%24diag_trace_file_contents&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-trace-file-contents)
+[gv$diag_trace_file_contents](https://www.enginatics.com/library/?pg=1&find=gv%24diag_trace_file_contents&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-trace-file-contents)
 
 ## Report Categories
 [Enginatics](https://www.enginatics.com/library/?pg=1&category%5B%5D=Enginatics&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-trace-file-contents), [R12 only](https://www.enginatics.com/library/?pg=1&category%5B%5D=R12%20only&utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-trace-file-contents)
 
 ## Related Reports
-[DBA Alert Log](/DBA%20Alert%20Log/ "DBA Alert Log Oracle EBS SQL Report"), [DBA Tablespace Usage](/DBA%20Tablespace%20Usage/ "DBA Tablespace Usage Oracle EBS SQL Report"), [DBA Data Files](/DBA%20Data%20Files/ "DBA Data Files Oracle EBS SQL Report"), [DBA Database Parameter Validation](/DBA%20Database%20Parameter%20Validation/ "DBA Database Parameter Validation Oracle EBS SQL Report"), [ECC Admin - Concurrent Programs](/ECC%20Admin%20-%20Concurrent%20Programs/ "ECC Admin - Concurrent Programs Oracle EBS SQL Report"), [ECC Admin - Data Load Tracking](/ECC%20Admin%20-%20Data%20Load%20Tracking/ "ECC Admin - Data Load Tracking Oracle EBS SQL Report"), [FND Debug and Trace Settings](/FND%20Debug%20and%20Trace%20Settings/ "FND Debug and Trace Settings Oracle EBS SQL Report"), [GL Oracle FSG Converter](/GL%20Oracle%20FSG%20Converter/ "GL Oracle FSG Converter Oracle EBS SQL Report"), [DBA AWR Tablespace Usage](/DBA%20AWR%20Tablespace%20Usage/ "DBA AWR Tablespace Usage Oracle EBS SQL Report")
+[DBA Alert Log](/DBA%20Alert%20Log/ "DBA Alert Log Oracle EBS SQL Report"), [DBA Database Parameter Validation](/DBA%20Database%20Parameter%20Validation/ "DBA Database Parameter Validation Oracle EBS SQL Report"), [DBA Data Files](/DBA%20Data%20Files/ "DBA Data Files Oracle EBS SQL Report"), [ECC Admin - Concurrent Programs](/ECC%20Admin%20-%20Concurrent%20Programs/ "ECC Admin - Concurrent Programs Oracle EBS SQL Report"), [DBA Tablespace Usage](/DBA%20Tablespace%20Usage/ "DBA Tablespace Usage Oracle EBS SQL Report"), [FND Debug and Trace Settings](/FND%20Debug%20and%20Trace%20Settings/ "FND Debug and Trace Settings Oracle EBS SQL Report"), [ECC Admin - Data Load Tracking](/ECC%20Admin%20-%20Data%20Load%20Tracking/ "ECC Admin - Data Load Tracking Oracle EBS SQL Report"), [DBA Archive / Redo Log Rate](/DBA%20Archive%20-%20Redo%20Log%20Rate/ "DBA Archive / Redo Log Rate Oracle EBS SQL Report"), [DBA Blocking Sessions](/DBA%20Blocking%20Sessions/ "DBA Blocking Sessions Oracle EBS SQL Report")
 
 ## Running This SQL Without Blitz Report
 The [SQL source](https://github.com/Enginatics/Oracle-EBS-SQL/blob/master/DBA%20Trace%20File%20Contents/DBA%20Trace%20File%20Contents.sql) can be run in any SQL client. Some Oracle EBS SQL reports in this library use functions from the utility package [xxen_util](https://www.enginatics.com/xxen_util/true?utm_source=oraclereporting.com&utm_medium=referral&utm_campaign=oracle-ebs-sql&utm_content=dba-trace-file-contents) – install it first. Blitz Report™ adds parameters, Excel output with pivots, scheduling and security on top.
